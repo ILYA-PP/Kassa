@@ -19,27 +19,27 @@ namespace KassaApp
 
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
+            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
             {
                 e.KeyChar = '\0';
             }
-            if(e.KeyChar == ',')
+            if (e.KeyChar == ',')
             {
-                if(((TextBox)sender).Text.Contains(','))
+                if (((TextBox)sender).Text.Contains(','))
                     e.KeyChar = '\0';
             }
         }
 
         private void addProductB_Click(object sender, EventArgs e)
         {
-            if (nameTB.Text != "" && countNUD.Value != 0 && priceTB.Text != ""
-                && saleTB.Text != "" && ndsTB.Text != "")
-            {
-                receiptDGV.Rows.Add(nameTB.Text, countNUD.Value, priceTB.Text, saleTB.Text, ndsTB.Text);
-                ClearContent();
-            }
-            else
-                MessageBox.Show("Заполните все данные о товаре!");
+            //if (nameTB.Text != "" && countNUD.Value != 0 && priceTB.Text != ""
+            //    && saleTB.Text != "" && ndsTB.Text != "")
+            //{
+            //    receiptDGV.Rows.Add(nameTB.Text, countNUD.Value, priceTB.Text, saleTB.Text, ndsTB.Text);
+            //    ClearContent();
+            //}
+            //else
+            //    MessageBox.Show("Заполните все данные о товаре!");
         }
 
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -57,16 +57,46 @@ namespace KassaApp
 
         private void ClearContent()
         {
-            nameTB.Text = ""; 
-            countNUD.Value = 1; 
-            priceTB.Text = ""; 
-            saleTB.Text = ""; 
-            ndsTB.Text = "";
+            //nameTB.Text = "";
+            //countNUD.Value = 1;
+            //priceTB.Text = "";
+            //saleTB.Text = "";
+            //ndsTB.Text = "";
         }
 
         private void payB_Click(object sender, EventArgs e)
         {
             new Payment(totalForReceipt).ShowDialog();
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void discountOnReceiptB_Click(object sender, EventArgs e)
+        {
+            new DiscountOnReceipt().ShowDialog();
+        }
+
+        private void editB_Click(object sender, EventArgs e)
+        {
+            new AddEditProduct().ShowDialog();
+        }
+
+        private void paymentB_Click(object sender, EventArgs e)
+        {
+            new Payment(0).ShowDialog();
         }
     }
 }

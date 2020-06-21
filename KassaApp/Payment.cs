@@ -15,8 +15,9 @@ namespace KassaApp
         public Payment(double s)
         {
             InitializeComponent();
-            resultL.Text = $"{s} руб.";
+            resultL.Text = $"Сумма по чеку: {s}";
             Sum = s;
+            moneyTB.Text = s.ToString();
         }
 
         private void priceTB_KeyPress(object sender, KeyPressEventArgs e)
@@ -34,20 +35,22 @@ namespace KassaApp
 
         private void RB_CheckedChanged(object sender, EventArgs e)
         {
-            if (cashRB.Checked)
-                moneyTB.Enabled = true;
-            else
-            {
-                moneyTB.Enabled = false;
-                changeTB.Text = "";
-                moneyTB.Text = "";
-            }
+            //if (cashRB.Checked)
+            //    moneyTB.Enabled = true;
+            //else
+            //{
+            //    moneyTB.Enabled = false;
+            //    changeTB.Text = "";
+            //    moneyTB.Text = "";
+            //}
         }
 
         private void moneyTB_TextChanged(object sender, EventArgs e)
         {
-            if(moneyTB.Text != "")
+            if (moneyTB.Text != "")
                 changeTB.Text = (Math.Round(double.Parse(moneyTB.Text) - Sum, 2)).ToString();
+            else
+                changeTB.Text = "";
         }
     }
 }
