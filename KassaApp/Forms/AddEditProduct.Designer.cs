@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ndsTB = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.saleTB = new System.Windows.Forms.TextBox();
+            this.discountTB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.addProductB = new System.Windows.Forms.Button();
             this.countNUD = new System.Windows.Forms.NumericUpDown();
@@ -40,11 +40,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.nameTB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.countB = new System.Windows.Forms.Button();
+            this.discountB = new System.Windows.Forms.Button();
+            this.priceB = new System.Windows.Forms.Button();
+            this.ndsB = new System.Windows.Forms.Button();
+            this.departmentB = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.receiptDGV = new System.Windows.Forms.DataGridView();
@@ -68,6 +68,7 @@
             this.ndsTB.Size = new System.Drawing.Size(173, 26);
             this.ndsTB.TabIndex = 32;
             this.ndsTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.ndsTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
             // 
             // label10
             // 
@@ -79,14 +80,15 @@
             this.label10.TabIndex = 31;
             this.label10.Text = "НДС";
             // 
-            // saleTB
+            // discountTB
             // 
-            this.saleTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.saleTB.Location = new System.Drawing.Point(12, 156);
-            this.saleTB.Name = "saleTB";
-            this.saleTB.Size = new System.Drawing.Size(173, 26);
-            this.saleTB.TabIndex = 29;
-            this.saleTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.discountTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.discountTB.Location = new System.Drawing.Point(12, 156);
+            this.discountTB.Name = "discountTB";
+            this.discountTB.Size = new System.Drawing.Size(173, 26);
+            this.discountTB.TabIndex = 29;
+            this.discountTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.discountTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
             // 
             // label8
             // 
@@ -107,6 +109,7 @@
             this.addProductB.TabIndex = 27;
             this.addProductB.Text = "Ввод";
             this.addProductB.UseVisualStyleBackColor = true;
+            this.addProductB.Click += new System.EventHandler(this.addProductB_Click);
             // 
             // countNUD
             // 
@@ -150,6 +153,7 @@
             this.priceTB.Size = new System.Drawing.Size(173, 26);
             this.priceTB.TabIndex = 22;
             this.priceTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.priceTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
             // 
             // label2
             // 
@@ -179,55 +183,55 @@
             this.label1.TabIndex = 19;
             this.label1.Text = "Наименование товара/услуги";
             // 
-            // button1
+            // countB
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.Location = new System.Drawing.Point(192, 82);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 45);
-            this.button1.TabIndex = 33;
-            this.button1.Text = "[*] Количество";
-            this.button1.UseVisualStyleBackColor = true;
+            this.countB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.countB.Location = new System.Drawing.Point(192, 82);
+            this.countB.Name = "countB";
+            this.countB.Size = new System.Drawing.Size(97, 45);
+            this.countB.TabIndex = 33;
+            this.countB.Text = "[*] Количество";
+            this.countB.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // discountB
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(192, 148);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 45);
-            this.button2.TabIndex = 34;
-            this.button2.Text = "[F10] Скидка";
-            this.button2.UseVisualStyleBackColor = true;
+            this.discountB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.discountB.Location = new System.Drawing.Point(192, 148);
+            this.discountB.Name = "discountB";
+            this.discountB.Size = new System.Drawing.Size(97, 45);
+            this.discountB.TabIndex = 34;
+            this.discountB.Text = "[F10] Скидка";
+            this.discountB.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // priceB
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button3.Location = new System.Drawing.Point(474, 82);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(97, 45);
-            this.button3.TabIndex = 35;
-            this.button3.Text = "[F8] Цена";
-            this.button3.UseVisualStyleBackColor = true;
+            this.priceB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.priceB.Location = new System.Drawing.Point(474, 82);
+            this.priceB.Name = "priceB";
+            this.priceB.Size = new System.Drawing.Size(97, 45);
+            this.priceB.TabIndex = 35;
+            this.priceB.Text = "[F8] Цена";
+            this.priceB.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // ndsB
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button4.Location = new System.Drawing.Point(474, 148);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(97, 45);
-            this.button4.TabIndex = 36;
-            this.button4.Text = "[F7] НДС";
-            this.button4.UseVisualStyleBackColor = true;
+            this.ndsB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ndsB.Location = new System.Drawing.Point(474, 148);
+            this.ndsB.Name = "ndsB";
+            this.ndsB.Size = new System.Drawing.Size(97, 45);
+            this.ndsB.TabIndex = 36;
+            this.ndsB.Text = "[F7] НДС";
+            this.ndsB.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // departmentB
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button5.Location = new System.Drawing.Point(192, 215);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(97, 45);
-            this.button5.TabIndex = 39;
-            this.button5.Text = "[F9] Отдел";
-            this.button5.UseVisualStyleBackColor = true;
+            this.departmentB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.departmentB.Location = new System.Drawing.Point(192, 215);
+            this.departmentB.Name = "departmentB";
+            this.departmentB.Size = new System.Drawing.Size(97, 45);
+            this.departmentB.TabIndex = 39;
+            this.departmentB.Text = "[F9] Отдел";
+            this.departmentB.UseVisualStyleBackColor = true;
             // 
             // numericUpDown1
             // 
@@ -268,14 +272,14 @@
             this.receiptDGV.AllowUserToAddRows = false;
             this.receiptDGV.AllowUserToDeleteRows = false;
             this.receiptDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -336,6 +340,7 @@
             this.button6.TabIndex = 41;
             this.button6.Text = "Отмена";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // AddEditProduct
             // 
@@ -344,16 +349,16 @@
             this.ClientSize = new System.Drawing.Size(576, 410);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.receiptDGV);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.departmentB);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ndsB);
+            this.Controls.Add(this.priceB);
+            this.Controls.Add(this.discountB);
+            this.Controls.Add(this.countB);
             this.Controls.Add(this.ndsTB);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.saleTB);
+            this.Controls.Add(this.discountTB);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.addProductB);
             this.Controls.Add(this.countNUD);
@@ -375,7 +380,7 @@
         #endregion
         private System.Windows.Forms.TextBox ndsTB;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox saleTB;
+        private System.Windows.Forms.TextBox discountTB;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button addProductB;
         private System.Windows.Forms.NumericUpDown countNUD;
@@ -384,11 +389,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox nameTB;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button countB;
+        private System.Windows.Forms.Button discountB;
+        private System.Windows.Forms.Button priceB;
+        private System.Windows.Forms.Button ndsB;
+        private System.Windows.Forms.Button departmentB;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView receiptDGV;

@@ -187,7 +187,7 @@ namespace KassaApp.Models
                         AddLog("Ожидание печати чека: ");
                         executeAndHandleError(Driver.WaitForPrinting);
                         //Thread t = new Thread(new ParameterizedThreadStart(ChequeFromWebService.ChequePrinted));
-                        t.Start(cheque.ID);//отметка чека на сервере в новом потоке
+                        //t.Start(cheque.ID);//отметка чека на сервере в новом потоке
                         AddLog("Отрезка чека: ");
                         executeAndHandleError(Driver.CutCheck);
                     }
