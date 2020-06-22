@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ndsTB = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.discountTB = new System.Windows.Forms.TextBox();
@@ -45,7 +45,7 @@
             this.priceB = new System.Windows.Forms.Button();
             this.ndsB = new System.Windows.Forms.Button();
             this.departmentB = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.departmentNUD = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.receiptDGV = new System.Windows.Forms.DataGridView();
             this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,16 +54,16 @@
             this.saleCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button6 = new System.Windows.Forms.Button();
+            this.cancelB = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
             this.SuspendLayout();
             // 
             // ndsTB
             // 
             this.ndsTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ndsTB.Location = new System.Drawing.Point(295, 156);
+            this.ndsTB.Location = new System.Drawing.Point(399, 156);
             this.ndsTB.Name = "ndsTB";
             this.ndsTB.Size = new System.Drawing.Size(173, 26);
             this.ndsTB.TabIndex = 32;
@@ -74,7 +74,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(295, 133);
+            this.label10.Location = new System.Drawing.Point(399, 133);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(47, 20);
             this.label10.TabIndex = 31;
@@ -103,7 +103,7 @@
             // addProductB
             // 
             this.addProductB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.addProductB.Location = new System.Drawing.Point(162, 367);
+            this.addProductB.Location = new System.Drawing.Point(225, 368);
             this.addProductB.Name = "addProductB";
             this.addProductB.Size = new System.Drawing.Size(117, 30);
             this.addProductB.TabIndex = 27;
@@ -148,7 +148,7 @@
             // priceTB
             // 
             this.priceTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.priceTB.Location = new System.Drawing.Point(295, 91);
+            this.priceTB.Location = new System.Drawing.Point(399, 91);
             this.priceTB.Name = "priceTB";
             this.priceTB.Size = new System.Drawing.Size(173, 26);
             this.priceTB.TabIndex = 22;
@@ -159,7 +159,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(295, 67);
+            this.label2.Location = new System.Drawing.Point(399, 67);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 20);
             this.label2.TabIndex = 21;
@@ -170,7 +170,7 @@
             this.nameTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameTB.Location = new System.Drawing.Point(12, 35);
             this.nameTB.Name = "nameTB";
-            this.nameTB.Size = new System.Drawing.Size(456, 26);
+            this.nameTB.Size = new System.Drawing.Size(663, 26);
             this.nameTB.TabIndex = 20;
             // 
             // label1
@@ -192,6 +192,7 @@
             this.countB.TabIndex = 33;
             this.countB.Text = "[*] Количество";
             this.countB.UseVisualStyleBackColor = true;
+            this.countB.Click += new System.EventHandler(this.countB_Click);
             // 
             // discountB
             // 
@@ -202,26 +203,29 @@
             this.discountB.TabIndex = 34;
             this.discountB.Text = "[F10] Скидка";
             this.discountB.UseVisualStyleBackColor = true;
+            this.discountB.Click += new System.EventHandler(this.discountB_Click);
             // 
             // priceB
             // 
             this.priceB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.priceB.Location = new System.Drawing.Point(474, 82);
+            this.priceB.Location = new System.Drawing.Point(578, 82);
             this.priceB.Name = "priceB";
             this.priceB.Size = new System.Drawing.Size(97, 45);
             this.priceB.TabIndex = 35;
             this.priceB.Text = "[F8] Цена";
             this.priceB.UseVisualStyleBackColor = true;
+            this.priceB.Click += new System.EventHandler(this.priceB_Click);
             // 
             // ndsB
             // 
             this.ndsB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ndsB.Location = new System.Drawing.Point(474, 148);
+            this.ndsB.Location = new System.Drawing.Point(578, 148);
             this.ndsB.Name = "ndsB";
             this.ndsB.Size = new System.Drawing.Size(97, 45);
             this.ndsB.TabIndex = 36;
             this.ndsB.Text = "[F7] НДС";
             this.ndsB.UseVisualStyleBackColor = true;
+            this.ndsB.Click += new System.EventHandler(this.ndsB_Click);
             // 
             // departmentB
             // 
@@ -232,26 +236,27 @@
             this.departmentB.TabIndex = 39;
             this.departmentB.Text = "[F9] Отдел";
             this.departmentB.UseVisualStyleBackColor = true;
+            this.departmentB.Click += new System.EventHandler(this.departmentB_Click);
             // 
-            // numericUpDown1
+            // departmentNUD
             // 
-            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.numericUpDown1.Location = new System.Drawing.Point(12, 224);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.departmentNUD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.departmentNUD.Location = new System.Drawing.Point(12, 224);
+            this.departmentNUD.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.departmentNUD.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(173, 26);
-            this.numericUpDown1.TabIndex = 38;
-            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.departmentNUD.Name = "departmentNUD";
+            this.departmentNUD.Size = new System.Drawing.Size(173, 26);
+            this.departmentNUD.TabIndex = 38;
+            this.departmentNUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.departmentNUD.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -272,14 +277,14 @@
             this.receiptDGV.AllowUserToAddRows = false;
             this.receiptDGV.AllowUserToDeleteRows = false;
             this.receiptDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -292,7 +297,7 @@
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
             this.receiptDGV.RowHeadersVisible = false;
-            this.receiptDGV.Size = new System.Drawing.Size(552, 84);
+            this.receiptDGV.Size = new System.Drawing.Size(663, 84);
             this.receiptDGV.TabIndex = 40;
             // 
             // nameCol
@@ -331,26 +336,26 @@
             this.sumCol.Name = "sumCol";
             this.sumCol.ReadOnly = true;
             // 
-            // button6
+            // cancelB
             // 
-            this.button6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button6.Location = new System.Drawing.Point(297, 367);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(117, 30);
-            this.button6.TabIndex = 41;
-            this.button6.Text = "Отмена";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.cancelB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cancelB.Location = new System.Drawing.Point(360, 368);
+            this.cancelB.Name = "cancelB";
+            this.cancelB.Size = new System.Drawing.Size(117, 30);
+            this.cancelB.TabIndex = 41;
+            this.cancelB.Text = "Отмена";
+            this.cancelB.UseVisualStyleBackColor = true;
+            this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
             // AddEditProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 410);
-            this.Controls.Add(this.button6);
+            this.ClientSize = new System.Drawing.Size(687, 410);
+            this.Controls.Add(this.cancelB);
             this.Controls.Add(this.receiptDGV);
             this.Controls.Add(this.departmentB);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.departmentNUD);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.ndsB);
             this.Controls.Add(this.priceB);
@@ -370,7 +375,7 @@
             this.Name = "AddEditProduct";
             this.Text = "Добавить/Изменить позицию";
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -394,7 +399,7 @@
         private System.Windows.Forms.Button priceB;
         private System.Windows.Forms.Button ndsB;
         private System.Windows.Forms.Button departmentB;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown departmentNUD;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView receiptDGV;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameCol;
@@ -403,6 +408,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn saleCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button cancelB;
     }
 }
