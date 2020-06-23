@@ -63,7 +63,20 @@ namespace KassaApp
 
         private void nonCashB_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                Terminal terminal = new Terminal();
+                if (terminal.IsEnabled())
+                {
+                    terminal.Purchase(CurrentReceipt.Summa);  
+                }
+                else
+                    MessageBox.Show("Ошибка! Нет связи с терминалом.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void cashB_Click(object sender, EventArgs e)

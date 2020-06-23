@@ -31,14 +31,18 @@ namespace KassaApp.Models
                 string cheque = Server.GParamString("Cheque");
                 return cheque;
             }
-            catch (Exception ex) { return ex.Message; }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message);
+                return ""; 
+            }
         }
         //проверка, подключен ли пинпад
         public bool IsEnabled()
         {
             try
             {
-                if (Server.NFun(13) == 0)
+                if (Server.NFun((int)Operations.PinPadEnabled) == 0)
                     return true;
             }
             catch (Exception ex)
@@ -52,11 +56,16 @@ namespace KassaApp.Models
         {
             try
             {
+                FiscalRegistrar fr = new FiscalRegistrar();
                 Server.Clear();
                 Server.SParam("Amount", sum * 100);
                 int result = Server.NFun((int)Operations.Purchase);
                 if (result == 0)
+                {
                     MessageBox.Show("Успешно!");
+                    fr.Connect();
+                    fr.Print(GetCheque());
+                }
                 else
                     MessageBox.Show($"Операция НЕ выполнена. Код ошибки: {result}");
             }

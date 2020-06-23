@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace KassaApp.Models
 {
@@ -39,6 +40,11 @@ namespace KassaApp.Models
             AddLog("Отключение от ККТ: ");
             executeAndHandleError(Driver.Disconnect);
         }
+        public void Print(string s)
+        {
+            Driver.StringForPrinting = s;
+            executeAndHandleError(Driver.PrintString);
+        }
 
         public int CheckConnect()
         {
@@ -72,7 +78,7 @@ namespace KassaApp.Models
         //вывод, возвращаемых фискальником сообщений
         private void AddLog(string mes)
         {
-            Console.Write(mes + " ");
+            MessageBox.Show(mes + " ");
         }
         //вывод возникающих ошибок
         private void CheckResult(int code, string n)
