@@ -25,12 +25,12 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
+        //обработка кнопки ВВод
         private void enterB_Click(object sender, EventArgs e)
         {
 
         }
-
+        //закрытие формы
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();

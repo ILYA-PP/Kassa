@@ -20,7 +20,7 @@ namespace KassaApp
             resultL.Text = $"Сумма по чеку: {CurrentReceipt.Summa}";
             moneyTB.Text = CurrentReceipt.Summa.ToString();
         }
-
+        //ограничение вводимых значений в текстбоксы
         private void priceTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
@@ -33,7 +33,7 @@ namespace KassaApp
                     e.KeyChar = '\0';
             }
         }
-
+        //расчёт сдачи при вводе суммы вносимых наличных
         private void moneyTB_TextChanged(object sender, EventArgs e)
         {
             if (moneyTB.Text != "")
@@ -55,7 +55,7 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
+        //закрытие формы
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();

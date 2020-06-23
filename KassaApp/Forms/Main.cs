@@ -13,7 +13,7 @@ namespace KassaApp
             InitializeComponent();
             timer.Start();
         }
-
+        //ограничение вводимых значений в текстбоксы
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
@@ -26,19 +26,22 @@ namespace KassaApp
                     e.KeyChar = '\0';
             }
         }
+        //переход на форму скидки на чек
         private void discountOnReceiptB_Click(object sender, EventArgs e)
         {
             new DiscountOnReceipt().ShowDialog();
         }
-
+        //переход на форму Добавления/Удаления товаров
         private void editB_Click(object sender, EventArgs e)
         {
+            //Если выбрана строка, то изменение
+            //иначе добавление
             if(receiptDGV.SelectedRows.Count > 0)
                 new AddEditProduct(receiptDGV.SelectedRows[0]).ShowDialog(this);
             else
                 new AddEditProduct().ShowDialog(this);
         }
-
+        //формирование объекта чека и переход на форму оплаты
         private void paymentB_Click(object sender, EventArgs e)
         {
             Receipt receipt = new Receipt();
@@ -51,7 +54,7 @@ namespace KassaApp
             receipt.Summa = sum;
             new Payment(receipt).ShowDialog();
         }
-
+        //изменение значений на форме при выборе строки таблицы
         private void receiptDGV_SelectionChanged(object sender, EventArgs e)
         {
             if(receiptDGV.SelectedRows.Count > 0)
@@ -69,12 +72,12 @@ namespace KassaApp
                     discountTB.Text = $"0.00";
             }
         }
-
+        //вывод времени
         private void timer_Tick(object sender, EventArgs e)
         {
             timeTB.Text = $"{DateTime.Now.ToLocalTime()}"; 
         }
-
+        //обработка кнопки удаления записи таблицы
         private void deleteB_Click(object sender, EventArgs e)
         {
             if (receiptDGV.SelectedRows.Count > 0)
@@ -85,12 +88,12 @@ namespace KassaApp
                     receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
             }
         }
-
+        //изменение значений на форме при добавлении и удалении записей таблицы
         private void rowCount_Changed(object sender, DataGridViewRowsAddedEventArgs e)
         {
             rowCount_Changed();
         }
-
+        //изменение значений на форме при добавлении и удалении записей таблицы
         private void rowCount_Changed()
         {
             double result = 0, sum = 0, discount = 0;
@@ -107,12 +110,12 @@ namespace KassaApp
             else
                 resultL.Text = $"0.00";
         }
-
+        //изменение значений на форме при добавлении записей таблицы
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             rowCount_Changed();
         }
-
+        //изменение значений на форме при удалении записей таблицы
         private void receiptDGV_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             rowCount_Changed();
@@ -137,7 +140,7 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
+        //изменение значений на форме изменении данных таблицы
         private void receiptDGV_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             rowCount_Changed();

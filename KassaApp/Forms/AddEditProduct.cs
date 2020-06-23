@@ -20,6 +20,7 @@ namespace KassaApp
             dgvRow = row;
             try
             {
+                //установка полученных данных для изменения
                 receiptDGV.Visible = true;
                 nameTB.Text = product.Name;
                 countNUD.Value = product.Quantity;
@@ -33,6 +34,7 @@ namespace KassaApp
                 MessageBox.Show(ex.Message);
             }
         }
+        //ограничение вводимых значений в текстбоксы
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
@@ -45,7 +47,7 @@ namespace KassaApp
                     e.KeyChar = '\0';
             }
         }
-
+        //обработка кнопки Ввод
         private void addProductB_Click(object sender, EventArgs e)
         {
             try
@@ -61,10 +63,12 @@ namespace KassaApp
                         Discount = Math.Round(double.Parse(discountTB.Text), 2),
                         NDS = Math.Round(double.Parse(ndsTB.Text), 2)
                     };
-                    product.Row_Summ = product.Quantity * product.Price;
-                    product.Row_Summ -= Math.Round(product.Row_Summ * product.Discount / 100,2);
+                    product.Row_Summ = product.Quantity * product.Price; //расчёт суммы
+                    product.Row_Summ -= Math.Round(product.Row_Summ * product.Discount / 100,2);//расчёт суммы с учётом скидки
                     receiptDGV.Rows.Clear();
                     receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                    //если идёт изменение, данные меняются на главной форме
+                    //иначе данные добавляются на новую форму
                     if (dgvRow != null)
                         for(int i = 0; i< ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells.Count; i++)
                             ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells[i].Value = receiptDGV.Rows[0].Cells[i].Value;
@@ -93,12 +97,12 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
+        //закрытие формы
         private void cancelB_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
+        //обработчики кнопок установки фокуса на текстбоксы
         private void discountB_Click(object sender, EventArgs e)
         {
             discountTB.Focus();

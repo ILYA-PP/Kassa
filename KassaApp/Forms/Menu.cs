@@ -15,12 +15,12 @@ namespace KassaApp
         {
             InitializeComponent();
         }
-
+        //переход на главную форму
         private void регистрацияПродажToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Main().Show();
         }
-
+        //переход на форму настройки связи
         private void настройкаСвязиToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Settings().Show();
