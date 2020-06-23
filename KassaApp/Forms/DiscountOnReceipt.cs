@@ -15,15 +15,25 @@ namespace KassaApp
         {
             InitializeComponent();
         }
+        //обработка горячих клавиш
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Escape: cancelB_Click(null, null); break;
+                case Keys.Enter: enterB_Click(null, null); break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        private void enterB_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void cancelB_Click(object sender, EventArgs e)
         {
-
+            Close();
         }
     }
 }

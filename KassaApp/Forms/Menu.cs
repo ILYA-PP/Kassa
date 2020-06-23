@@ -21,7 +21,7 @@ namespace KassaApp
             new Main().Show();
         }
 
-        private void настройкаПараметровToolStripMenuItem_Click(object sender, EventArgs e)
+        private void настройкаСвязиToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new Settings().Show();
         }

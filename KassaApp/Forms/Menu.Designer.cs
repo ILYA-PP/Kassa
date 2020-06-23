@@ -33,21 +33,24 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.регистрацияПродажToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.отчётыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.внесениеВыплатаНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.дополнительныеОперацииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.журналОперацийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.именаИПаролиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.настройкаПараметровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.настройкаСвязиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.сервисToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.внесениеНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.выплатаНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.хотчётбезГашенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.хотчётПоСекциямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.хотчётПоНалогамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zотчётсГашениемToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.отчётыПоБанковскимКартамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.показанияОегистровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.внесениеВыплатаНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.внесениеНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выплатаНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.дополнительныеОперацииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.журналОперацийToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.именаИПаролиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.настройкаПараметровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.настройкаСвязиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сервисToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -107,70 +110,15 @@
             this.хотчётбезГашенияToolStripMenuItem,
             this.хотчётПоСекциямToolStripMenuItem,
             this.хотчётПоНалогамToolStripMenuItem,
+            this.toolStripSeparator1,
             this.zотчётсГашениемToolStripMenuItem,
+            this.toolStripSeparator2,
             this.отчётыПоБанковскимКартамToolStripMenuItem,
+            this.toolStripSeparator3,
             this.показанияОегистровToolStripMenuItem});
             this.отчётыToolStripMenuItem.Name = "отчётыToolStripMenuItem";
             this.отчётыToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
             this.отчётыToolStripMenuItem.Text = "Отчёты";
-            // 
-            // внесениеВыплатаНаличныхToolStripMenuItem
-            // 
-            this.внесениеВыплатаНаличныхToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.внесениеНаличныхToolStripMenuItem,
-            this.выплатаНаличныхToolStripMenuItem});
-            this.внесениеВыплатаНаличныхToolStripMenuItem.Name = "внесениеВыплатаНаличныхToolStripMenuItem";
-            this.внесениеВыплатаНаличныхToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
-            this.внесениеВыплатаНаличныхToolStripMenuItem.Text = "Внесение/Выплата наличных";
-            // 
-            // дополнительныеОперацииToolStripMenuItem
-            // 
-            this.дополнительныеОперацииToolStripMenuItem.Name = "дополнительныеОперацииToolStripMenuItem";
-            this.дополнительныеОперацииToolStripMenuItem.Size = new System.Drawing.Size(242, 24);
-            this.дополнительныеОперацииToolStripMenuItem.Text = "Дополнительные операции";
-            // 
-            // журналОперацийToolStripMenuItem
-            // 
-            this.журналОперацийToolStripMenuItem.Name = "журналОперацийToolStripMenuItem";
-            this.журналОперацийToolStripMenuItem.Size = new System.Drawing.Size(242, 24);
-            this.журналОперацийToolStripMenuItem.Text = "Журнал операций";
-            // 
-            // именаИПаролиToolStripMenuItem
-            // 
-            this.именаИПаролиToolStripMenuItem.Name = "именаИПаролиToolStripMenuItem";
-            this.именаИПаролиToolStripMenuItem.Size = new System.Drawing.Size(242, 24);
-            this.именаИПаролиToolStripMenuItem.Text = "Имена и пароли";
-            // 
-            // настройкаПараметровToolStripMenuItem
-            // 
-            this.настройкаПараметровToolStripMenuItem.Name = "настройкаПараметровToolStripMenuItem";
-            this.настройкаПараметровToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
-            this.настройкаПараметровToolStripMenuItem.Text = "Настройка параметров";
-            this.настройкаПараметровToolStripMenuItem.Click += new System.EventHandler(this.настройкаПараметровToolStripMenuItem_Click);
-            // 
-            // настройкаСвязиToolStripMenuItem
-            // 
-            this.настройкаСвязиToolStripMenuItem.Name = "настройкаСвязиToolStripMenuItem";
-            this.настройкаСвязиToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
-            this.настройкаСвязиToolStripMenuItem.Text = "Настройка связи";
-            // 
-            // сервисToolStripMenuItem
-            // 
-            this.сервисToolStripMenuItem.Name = "сервисToolStripMenuItem";
-            this.сервисToolStripMenuItem.Size = new System.Drawing.Size(242, 24);
-            this.сервисToolStripMenuItem.Text = "Сервис";
-            // 
-            // внесениеНаличныхToolStripMenuItem
-            // 
-            this.внесениеНаличныхToolStripMenuItem.Name = "внесениеНаличныхToolStripMenuItem";
-            this.внесениеНаличныхToolStripMenuItem.Size = new System.Drawing.Size(228, 24);
-            this.внесениеНаличныхToolStripMenuItem.Text = "Внесение наличных";
-            // 
-            // выплатаНаличныхToolStripMenuItem
-            // 
-            this.выплатаНаличныхToolStripMenuItem.Name = "выплатаНаличныхToolStripMenuItem";
-            this.выплатаНаличныхToolStripMenuItem.Size = new System.Drawing.Size(228, 24);
-            this.выплатаНаличныхToolStripMenuItem.Text = "Выплата наличных";
             // 
             // хотчётбезГашенияToolStripMenuItem
             // 
@@ -207,6 +155,84 @@
             this.показанияОегистровToolStripMenuItem.Name = "показанияОегистровToolStripMenuItem";
             this.показанияОегистровToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.показанияОегистровToolStripMenuItem.Text = "Показания оегистров";
+            // 
+            // внесениеВыплатаНаличныхToolStripMenuItem
+            // 
+            this.внесениеВыплатаНаличныхToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.внесениеНаличныхToolStripMenuItem,
+            this.выплатаНаличныхToolStripMenuItem});
+            this.внесениеВыплатаНаличныхToolStripMenuItem.Name = "внесениеВыплатаНаличныхToolStripMenuItem";
+            this.внесениеВыплатаНаличныхToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
+            this.внесениеВыплатаНаличныхToolStripMenuItem.Text = "Внесение/Выплата наличных";
+            // 
+            // внесениеНаличныхToolStripMenuItem
+            // 
+            this.внесениеНаличныхToolStripMenuItem.Name = "внесениеНаличныхToolStripMenuItem";
+            this.внесениеНаличныхToolStripMenuItem.Size = new System.Drawing.Size(228, 24);
+            this.внесениеНаличныхToolStripMenuItem.Text = "Внесение наличных";
+            // 
+            // выплатаНаличныхToolStripMenuItem
+            // 
+            this.выплатаНаличныхToolStripMenuItem.Name = "выплатаНаличныхToolStripMenuItem";
+            this.выплатаНаличныхToolStripMenuItem.Size = new System.Drawing.Size(228, 24);
+            this.выплатаНаличныхToolStripMenuItem.Text = "Выплата наличных";
+            // 
+            // дополнительныеОперацииToolStripMenuItem
+            // 
+            this.дополнительныеОперацииToolStripMenuItem.Enabled = false;
+            this.дополнительныеОперацииToolStripMenuItem.Name = "дополнительныеОперацииToolStripMenuItem";
+            this.дополнительныеОперацииToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
+            this.дополнительныеОперацииToolStripMenuItem.Text = "Дополнительные операции";
+            // 
+            // журналОперацийToolStripMenuItem
+            // 
+            this.журналОперацийToolStripMenuItem.Enabled = false;
+            this.журналОперацийToolStripMenuItem.Name = "журналОперацийToolStripMenuItem";
+            this.журналОперацийToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
+            this.журналОперацийToolStripMenuItem.Text = "Журнал операций";
+            // 
+            // именаИПаролиToolStripMenuItem
+            // 
+            this.именаИПаролиToolStripMenuItem.Enabled = false;
+            this.именаИПаролиToolStripMenuItem.Name = "именаИПаролиToolStripMenuItem";
+            this.именаИПаролиToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
+            this.именаИПаролиToolStripMenuItem.Text = "Имена и пароли";
+            // 
+            // настройкаПараметровToolStripMenuItem
+            // 
+            this.настройкаПараметровToolStripMenuItem.Enabled = false;
+            this.настройкаПараметровToolStripMenuItem.Name = "настройкаПараметровToolStripMenuItem";
+            this.настройкаПараметровToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
+            this.настройкаПараметровToolStripMenuItem.Text = "Настройка параметров";
+            // 
+            // настройкаСвязиToolStripMenuItem
+            // 
+            this.настройкаСвязиToolStripMenuItem.Name = "настройкаСвязиToolStripMenuItem";
+            this.настройкаСвязиToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
+            this.настройкаСвязиToolStripMenuItem.Text = "Настройка связи";
+            this.настройкаСвязиToolStripMenuItem.Click += new System.EventHandler(this.настройкаСвязиToolStripMenuItem_Click);
+            // 
+            // сервисToolStripMenuItem
+            // 
+            this.сервисToolStripMenuItem.Enabled = false;
+            this.сервисToolStripMenuItem.Name = "сервисToolStripMenuItem";
+            this.сервисToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
+            this.сервисToolStripMenuItem.Text = "Сервис";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(308, 6);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(308, 6);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(308, 6);
             // 
             // Menu
             // 
@@ -248,5 +274,8 @@
         private System.Windows.Forms.ToolStripMenuItem показанияОегистровToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem внесениеНаличныхToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выплатаНаличныхToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }

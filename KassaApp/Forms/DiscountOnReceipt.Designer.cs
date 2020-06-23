@@ -65,7 +65,6 @@
             this.discountProcentRB.TabStop = true;
             this.discountProcentRB.Text = "Процент скидки";
             this.discountProcentRB.UseVisualStyleBackColor = true;
-            this.discountProcentRB.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
             // numberDiscountCardRB
             // 
@@ -88,7 +87,7 @@
             this.cancelB.TabIndex = 43;
             this.cancelB.Text = "[Esc] Отмена";
             this.cancelB.UseVisualStyleBackColor = true;
-            this.cancelB.Click += new System.EventHandler(this.button6_Click);
+            this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
             // enterB
             // 
@@ -99,6 +98,7 @@
             this.enterB.TabIndex = 42;
             this.enterB.Text = "[Enter] Ввод";
             this.enterB.UseVisualStyleBackColor = true;
+            this.enterB.Click += new System.EventHandler(this.enterB_Click);
             // 
             // DiscountOnReceipt
             // 
