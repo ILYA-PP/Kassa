@@ -106,6 +106,7 @@
             this.cashB.Text = "[Enter] Наличные";
             this.cashB.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.cashB.UseVisualStyleBackColor = true;
+            this.cashB.Click += new System.EventHandler(this.cashB_Click);
             // 
             // nonCashB
             // 
@@ -119,15 +120,17 @@
             this.nonCashB.Text = "[*] Банковская карта";
             this.nonCashB.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.nonCashB.UseVisualStyleBackColor = true;
+            this.nonCashB.Click += new System.EventHandler(this.nonCashB_Click);
             // 
             // specPayB
             // 
+            this.specPayB.Enabled = false;
             this.specPayB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.specPayB.Location = new System.Drawing.Point(50, 331);
             this.specPayB.Name = "specPayB";
             this.specPayB.Size = new System.Drawing.Size(73, 61);
             this.specPayB.TabIndex = 14;
-            this.specPayB.Text = "[=] Спец. оплата";
+            this.specPayB.Text = "[F5] Спец. оплата";
             this.specPayB.UseVisualStyleBackColor = true;
             // 
             // cancelB
@@ -139,15 +142,17 @@
             this.cancelB.TabIndex = 15;
             this.cancelB.Text = "[Esc] Отмена";
             this.cancelB.UseVisualStyleBackColor = true;
+            this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
             // additOpB
             // 
+            this.additOpB.Enabled = false;
             this.additOpB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.additOpB.Location = new System.Drawing.Point(208, 331);
             this.additOpB.Name = "additOpB";
             this.additOpB.Size = new System.Drawing.Size(73, 61);
             this.additOpB.TabIndex = 16;
-            this.additOpB.Text = "[=]  Доп.оп.";
+            this.additOpB.Text = "[F6]  Доп.оп.";
             this.additOpB.UseVisualStyleBackColor = true;
             // 
             // textBox1
@@ -161,6 +166,7 @@
             // 
             // noteB
             // 
+            this.noteB.Enabled = false;
             this.noteB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.noteB.Location = new System.Drawing.Point(326, 381);
             this.noteB.Name = "noteB";

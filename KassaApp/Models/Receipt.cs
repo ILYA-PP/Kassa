@@ -5,8 +5,9 @@ using System.Text;
 
 namespace KassaApp.Models
 {
-    class Receipt
+    public class Receipt
     {
+        private List<Product> products = new List<Product>();
         private string phone;
         public int ID { get; set; }
         public string Phone
@@ -22,6 +23,6 @@ namespace KassaApp.Models
         public string Email { get; set; }
         public double Summa { get; set; }
         public int Payment { get; set; }
-        public Product[] Products { get; set; }
+        public List<Product> Products { get { return products; } set { products = value; } }
     }
 }

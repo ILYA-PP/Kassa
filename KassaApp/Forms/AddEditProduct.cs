@@ -7,14 +7,17 @@ namespace KassaApp
 {
     public partial class AddEditProduct : Form
     {
+        private DataGridViewRow dgvRow;
         public AddEditProduct()
         {
             InitializeComponent();
             receiptDGV.Visible = false;
         }
-        public AddEditProduct(Product product)
+        public AddEditProduct(DataGridViewRow row)
         {
             InitializeComponent();
+            Product product = Product.ProductFromRow(row);
+            dgvRow = row;
             try
             {
                 receiptDGV.Visible = true;
@@ -60,8 +63,13 @@ namespace KassaApp
                     };
                     product.Row_Summ = product.Quantity * product.Price;
                     product.Row_Summ -= Math.Round(product.Row_Summ * product.Discount / 100,2);
+                    receiptDGV.Rows.Clear();
                     receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
-                    ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                    if (dgvRow != null)
+                        for(int i = 0; i< ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells.Count; i++)
+                            ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells[i].Value = receiptDGV.Rows[0].Cells[i].Value;
+                    else
+                        ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
                     Close();
                 }
                 else

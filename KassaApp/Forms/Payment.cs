@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KassaApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,13 +12,13 @@ namespace KassaApp
 {
     public partial class Payment : Form
     {
-        private double Sum = 0;
-        public Payment(double s)
+        private Receipt CurrentReceipt;
+        public Payment(Receipt receipt)
         {
             InitializeComponent();
-            resultL.Text = $"Сумма по чеку: {s}";
-            Sum = s;
-            moneyTB.Text = s.ToString();
+            CurrentReceipt = receipt;
+            resultL.Text = $"Сумма по чеку: {CurrentReceipt.Summa}";
+            moneyTB.Text = CurrentReceipt.Summa.ToString();
         }
 
         private void priceTB_KeyPress(object sender, KeyPressEventArgs e)
@@ -33,24 +34,41 @@ namespace KassaApp
             }
         }
 
-        private void RB_CheckedChanged(object sender, EventArgs e)
-        {
-            //if (cashRB.Checked)
-            //    moneyTB.Enabled = true;
-            //else
-            //{
-            //    moneyTB.Enabled = false;
-            //    changeTB.Text = "";
-            //    moneyTB.Text = "";
-            //}
-        }
-
         private void moneyTB_TextChanged(object sender, EventArgs e)
         {
             if (moneyTB.Text != "")
-                changeTB.Text = (Math.Round(double.Parse(moneyTB.Text) - Sum, 2)).ToString();
+                changeTB.Text = (Math.Round(double.Parse(moneyTB.Text) - CurrentReceipt.Summa, 2)).ToString();
             else
                 changeTB.Text = "";
+        }
+        //обработка горячих клавиш
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.F5:; break;
+                case Keys.Escape: cancelB_Click(null,null); break;
+                case Keys.F6:; break;
+                case Keys.F1:; break;
+                case Keys.Enter: cashB_Click(null,null); break;
+                case Keys.Multiply: nonCashB_Click(null, null); break;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void cancelB_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void nonCashB_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cashB_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

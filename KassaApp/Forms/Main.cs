@@ -34,14 +34,22 @@ namespace KassaApp
         private void editB_Click(object sender, EventArgs e)
         {
             if(receiptDGV.SelectedRows.Count > 0)
-                new AddEditProduct(Product.ProductFromRow(receiptDGV.SelectedRows[0])).ShowDialog(this);
+                new AddEditProduct(receiptDGV.SelectedRows[0]).ShowDialog(this);
             else
                 new AddEditProduct().ShowDialog(this);
         }
 
         private void paymentB_Click(object sender, EventArgs e)
         {
-            new Payment(0).ShowDialog();
+            Receipt receipt = new Receipt();
+            double sum = 0;
+            foreach (DataGridViewRow row in receiptDGV.Rows)
+            {
+                receipt.Products.Add(Product.ProductFromRow(row));
+                sum += (double)row.Cells["sumCol"].Value;
+            }
+            receipt.Summa = sum;
+            new Payment(receipt).ShowDialog();
         }
 
         private void receiptDGV_SelectionChanged(object sender, EventArgs e)
@@ -51,6 +59,14 @@ namespace KassaApp
                 Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0]);
                 nameL.Text = product.Name;
                 summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}";
+                if (product.Quantity * product.Price != 0)
+                    nonDiscountTB.Text = (product.Quantity * product.Price).ToString();
+                else
+                    nonDiscountTB.Text = $"0.00";
+                if (product.Discount != 0)
+                    discountTB.Text = (product.Quantity * product.Price - product.Row_Summ).ToString();
+                else
+                    discountTB.Text = $"0.00";
             }
         }
 
@@ -72,18 +88,7 @@ namespace KassaApp
 
         private void rowCount_Changed(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            double result = 0, sum = 0, discount = 0;
-            foreach (DataGridViewRow r in receiptDGV.Rows)
-            {
-                sum = double.Parse(r.Cells["countCol"].Value.ToString()) *
-                    double.Parse(r.Cells["priceCol"].Value.ToString());
-                discount = sum * double.Parse(r.Cells["saleCol"].Value.ToString()) / 100;
-                result += sum - discount;
-            }
-            totalForReceipt = Math.Round(result, 2);
-            resultL.Text = $"{totalForReceipt}";
-            discountTB.Text = discount.ToString();
-            nonDiscountTB.Text = sum.ToString();
+            rowCount_Changed();
         }
 
         private void rowCount_Changed()
@@ -101,14 +106,6 @@ namespace KassaApp
                 resultL.Text = $"{totalForReceipt}";
             else
                 resultL.Text = $"0.00";
-            if (sum != 0)
-                nonDiscountTB.Text = sum.ToString();
-            else
-                nonDiscountTB.Text = $"0.00";
-            if (discount != 0)
-                discountTB.Text = discount.ToString();
-            else
-                discountTB.Text = $"0.00";
         }
 
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -125,20 +122,27 @@ namespace KassaApp
         {
             switch (keyData)
             {
-                case Keys.F10: ; break;
+                case Keys.F10:; break;
                 case Keys.F1:; break;
                 case Keys.F3: ; break;
                 case Keys.F4:; break;
                 case Keys.F5:; break;
                 case Keys.F6:; break;
-                case Keys.F9:; break;
-                case Keys.Delete:; break;
+                case Keys.F9: editB_Click(null, null); break;
+                case Keys.Delete: deleteB_Click(null, null); break;
                 case Keys.F11:; break;
-                case Keys.F12:; break;
-                case Keys.F18:; break;
+                case Keys.F12: paymentB_Click(null, null); break;
+                case Keys.F8:; break;
                 case Keys.Insert:; break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void receiptDGV_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            rowCount_Changed();
+            if (receiptDGV.SelectedRows.Count > 0)
+                receiptDGV_SelectionChanged(null, null);
         }
     }
 }
