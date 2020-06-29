@@ -37,17 +37,7 @@ namespace KassaApp
         //ограничение вводимых значений в текстбоксы
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
-            {
-                e.KeyChar = '\0';
-            }
-            if (e.KeyChar == ',')
-            {
-                if (((TextBox)sender).Text.Contains(','))
-                {
-                    e.KeyChar = '\0';
-                }
-            }
+            GeneralCodeForForms.TextBoxFormat(sender, e);
         }
         //обработка кнопки Ввод
         private void addProductB_Click(object sender, EventArgs e)

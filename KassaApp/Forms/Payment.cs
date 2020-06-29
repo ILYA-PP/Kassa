@@ -23,15 +23,7 @@ namespace KassaApp
         //ограничение вводимых значений в текстбоксы
         private void priceTB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
-            {
-                e.KeyChar = '\0';
-            }
-            if (e.KeyChar == ',')
-            {
-                if (((TextBox)sender).Text.Contains(','))
-                    e.KeyChar = '\0';
-            }
+            GeneralCodeForForms.TextBoxFormat(sender, e);
         }
         //расчёт сдачи при вводе суммы вносимых наличных
         private void moneyTB_TextChanged(object sender, EventArgs e)
