@@ -65,6 +65,8 @@ namespace KassaApp
         {
             try
             {
+                this.Enabled = false;
+                panel1.Visible = true;
                 Terminal terminal = new Terminal();
                 if (terminal.IsEnabled())
                 {
@@ -72,6 +74,8 @@ namespace KassaApp
                 }
                 else
                     MessageBox.Show("Ошибка! Нет связи с терминалом.");
+                panel1.Visible = false;
+                this.Enabled = true;
             }
             catch (Exception ex)
             {

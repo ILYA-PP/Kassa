@@ -65,11 +65,11 @@ namespace KassaApp
                 if (product.Quantity * product.Price != 0)
                     nonDiscountTB.Text = (product.Quantity * product.Price).ToString();
                 else
-                    nonDiscountTB.Text = $"0.00";
+                    nonDiscountTB.Text = $"0,00";
                 if (product.Discount != 0)
                     discountTB.Text = (product.Quantity * product.Price - product.Row_Summ).ToString();
                 else
-                    discountTB.Text = $"0.00";
+                    discountTB.Text = $"0,00";
             }
         }
         //вывод времени
@@ -96,19 +96,18 @@ namespace KassaApp
         //изменение значений на форме при добавлении и удалении записей таблицы
         private void rowCount_Changed()
         {
-            double result = 0, sum = 0, discount = 0;
+            Product product;
+            double result = 0;
             foreach (DataGridViewRow r in receiptDGV.Rows)
             {
-                sum = double.Parse(r.Cells["countCol"].Value.ToString()) *
-                    double.Parse(r.Cells["priceCol"].Value.ToString());
-                discount = sum * double.Parse(r.Cells["saleCol"].Value.ToString()) / 100;
-                result += sum - discount;
+                product = Product.ProductFromRow(r);
+                result += product.Row_Summ;
             }
             totalForReceipt = Math.Round(result, 2);
             if(totalForReceipt != 0)
                 resultL.Text = $"{totalForReceipt}";
             else
-                resultL.Text = $"0.00";
+                resultL.Text = $"0,00";
         }
         //изменение значений на форме при добавлении записей таблицы
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)

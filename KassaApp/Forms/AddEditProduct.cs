@@ -44,7 +44,9 @@ namespace KassaApp
             if (e.KeyChar == ',')
             {
                 if (((TextBox)sender).Text.Contains(','))
+                {
                     e.KeyChar = '\0';
+                }
             }
         }
         //обработка кнопки Ввод
@@ -59,14 +61,11 @@ namespace KassaApp
                     {
                         Name = nameTB.Text,
                         Quantity = (int)countNUD.Value,
-                        Price = Math.Round(double.Parse(priceTB.Text), 2),
-                        Discount = Math.Round(double.Parse(discountTB.Text), 2),
-                        NDS = Math.Round(double.Parse(ndsTB.Text), 2)
+                        Price = double.Parse(priceTB.Text),
+                        Discount = double.Parse(discountTB.Text),
+                        NDS = double.Parse(ndsTB.Text)
                     };
-                    product.Row_Summ = product.Quantity * product.Price; //расчёт суммы
-                    product.Row_Summ -= Math.Round(product.Row_Summ * product.Discount / 100,2);//расчёт суммы с учётом скидки
-                    receiptDGV.Rows.Clear();
-                    receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                    product.RowSummCalculate();                    
                     //если идёт изменение, данные меняются на главной форме
                     //иначе данные добавляются на новую форму
                     if (dgvRow != null)
@@ -126,6 +125,21 @@ namespace KassaApp
         private void ndsB_Click(object sender, EventArgs e)
         {
             ndsTB.Focus();
+        }
+        private void textBoxs_TextChange(object sender, EventArgs e)
+        {
+            if (receiptDGV.Rows.Count > 0)
+            {
+                receiptDGV.Rows[0].Cells["nameCol"].Value = nameTB.Text;
+                receiptDGV.Rows[0].Cells["countCol"].Value = countNUD.Value;
+                receiptDGV.Rows[0].Cells["priceCol"].Value = priceTB.Text;
+                receiptDGV.Rows[0].Cells["ndsCol"].Value = ndsTB.Text;
+                receiptDGV.Rows[0].Cells["discountCol"].Value = discountTB.Text;
+                receiptDGV.Rows[0].Cells["sumCol"].Value = Math.Round((double)countNUD.Value * double.Parse(priceTB.Text)
+                    - (double)countNUD.Value * double.Parse(priceTB.Text) * double.Parse(discountTB.Text) / 100, 2);
+            }
+            if (((TextBox)sender).Text.Length == 0)
+                ((TextBox)sender).Text = "0,00";
         }
     }
 }

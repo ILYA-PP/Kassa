@@ -114,6 +114,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DiscountOnReceipt";
+            this.ShowIcon = false;
             this.Text = "Скидка на чек";
             this.ResumeLayout(false);
             this.PerformLayout();

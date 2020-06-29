@@ -32,11 +32,11 @@
             this.driverCB = new System.Windows.Forms.ComboBox();
             this.usePasswordCheckB = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.exchangeSpeedTB = new System.Windows.Forms.TextBox();
-            this.comPortTB = new System.Windows.Forms.TextBox();
             this.registrSettingsB = new System.Windows.Forms.Button();
+            this.comPortTB = new System.Windows.Forms.TextBox();
+            this.exchangeSpeedTB = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.paySrvSettingsB = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -88,15 +88,30 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Регистратор";
             // 
-            // label2
+            // registrSettingsB
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(6, 33);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 20);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "СОМ-порт:";
+            this.registrSettingsB.Location = new System.Drawing.Point(290, 30);
+            this.registrSettingsB.Name = "registrSettingsB";
+            this.registrSettingsB.Size = new System.Drawing.Size(102, 57);
+            this.registrSettingsB.TabIndex = 10;
+            this.registrSettingsB.Text = "Настройка";
+            this.registrSettingsB.UseVisualStyleBackColor = true;
+            // 
+            // comPortTB
+            // 
+            this.comPortTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comPortTB.Location = new System.Drawing.Point(157, 30);
+            this.comPortTB.Name = "comPortTB";
+            this.comPortTB.Size = new System.Drawing.Size(127, 26);
+            this.comPortTB.TabIndex = 9;
+            // 
+            // exchangeSpeedTB
+            // 
+            this.exchangeSpeedTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.exchangeSpeedTB.Location = new System.Drawing.Point(157, 61);
+            this.exchangeSpeedTB.Name = "exchangeSpeedTB";
+            this.exchangeSpeedTB.Size = new System.Drawing.Size(127, 26);
+            this.exchangeSpeedTB.TabIndex = 8;
             // 
             // label3
             // 
@@ -108,30 +123,15 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Скорость обмена:";
             // 
-            // exchangeSpeedTB
+            // label2
             // 
-            this.exchangeSpeedTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.exchangeSpeedTB.Location = new System.Drawing.Point(157, 61);
-            this.exchangeSpeedTB.Name = "exchangeSpeedTB";
-            this.exchangeSpeedTB.Size = new System.Drawing.Size(127, 26);
-            this.exchangeSpeedTB.TabIndex = 8;
-            // 
-            // comPortTB
-            // 
-            this.comPortTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comPortTB.Location = new System.Drawing.Point(157, 30);
-            this.comPortTB.Name = "comPortTB";
-            this.comPortTB.Size = new System.Drawing.Size(127, 26);
-            this.comPortTB.TabIndex = 9;
-            // 
-            // registrSettingsB
-            // 
-            this.registrSettingsB.Location = new System.Drawing.Point(290, 30);
-            this.registrSettingsB.Name = "registrSettingsB";
-            this.registrSettingsB.Size = new System.Drawing.Size(102, 57);
-            this.registrSettingsB.TabIndex = 10;
-            this.registrSettingsB.Text = "Настройка";
-            this.registrSettingsB.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(6, 33);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(90, 20);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "СОМ-порт:";
             // 
             // paySrvSettingsB
             // 
@@ -154,6 +154,7 @@
             this.Controls.Add(this.driverCB);
             this.Controls.Add(this.label1);
             this.Name = "Settings";
+            this.ShowIcon = false;
             this.Text = "Настройки";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

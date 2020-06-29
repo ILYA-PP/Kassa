@@ -1,11 +1,12 @@
 ﻿
+using System;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
 {
     public class Product
     {
-        private double discount, nds, price;
+        private double discount, nds, price, sum;
         public string Name { get; set; }
         public double Price 
         {
@@ -18,7 +19,7 @@ namespace KassaApp.Models
                 }
                 return price;
             }
-            set { price= value; }
+            set { price = Math.Round(value, 2); }
         }
         public double Discount 
         { 
@@ -31,7 +32,7 @@ namespace KassaApp.Models
                 }
                 return discount;
             }
-            set { discount = value; } 
+            set { discount = Math.Round(value, 2); } 
         }
         public int Quantity { get; set; }
         public double NDS
@@ -45,16 +46,16 @@ namespace KassaApp.Models
                 }
                 return nds;
             }
-            set { nds = value; }
+            set { nds = Math.Round(value, 2); }
         }
         public double NDS_Summ { get; set; }
         public int Row_Type { get; set; }
-        public double Row_Summ { get; set; }
+        public double Row_Summ { get { return sum; } set { sum = Math.Round(value, 2); } }
 
         public static Product ProductFromRow(DataGridViewRow row)
         {
-            return new Product() 
-            { 
+            Product product = new Product()
+            {
                 Name = row.Cells["nameCol"].Value.ToString(),
                 Quantity = (int)row.Cells["countCol"].Value,
                 Price = (double)row.Cells["priceCol"].Value,
@@ -62,6 +63,14 @@ namespace KassaApp.Models
                 NDS = (double)row.Cells["ndsCol"].Value,
                 Row_Summ = (double)row.Cells["sumCol"].Value
             };
+            product.RowSummCalculate();
+            return product;
+        }
+
+        public void RowSummCalculate()
+        {
+            Row_Summ = Quantity * Price; //расчёт суммы
+            Row_Summ -= Row_Summ * Discount / 100;//расчёт суммы с учётом скидки
         }
     }
 }

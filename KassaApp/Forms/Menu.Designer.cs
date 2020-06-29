@@ -36,8 +36,11 @@
             this.хотчётбезГашенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.хотчётПоСекциямToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.хотчётПоНалогамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.zотчётсГашениемToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.отчётыПоБанковскимКартамToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.показанияОегистровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.внесениеВыплатаНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.внесениеНаличныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,9 +51,6 @@
             this.настройкаПараметровToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.настройкаСвязиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сервисToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -138,17 +138,32 @@
             this.хотчётПоНалогамToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.хотчётПоНалогамToolStripMenuItem.Text = "Х-отчёт по налогам";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(308, 6);
+            // 
             // zотчётсГашениемToolStripMenuItem
             // 
             this.zотчётсГашениемToolStripMenuItem.Name = "zотчётсГашениемToolStripMenuItem";
             this.zотчётсГашениемToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.zотчётсГашениемToolStripMenuItem.Text = "Z-отчёт (с гашением)";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(308, 6);
+            // 
             // отчётыПоБанковскимКартамToolStripMenuItem
             // 
             this.отчётыПоБанковскимКартамToolStripMenuItem.Name = "отчётыПоБанковскимКартамToolStripMenuItem";
             this.отчётыПоБанковскимКартамToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.отчётыПоБанковскимКартамToolStripMenuItem.Text = "Отчёты по банковским картам";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(308, 6);
             // 
             // показанияОегистровToolStripMenuItem
             // 
@@ -219,21 +234,6 @@
             this.сервисToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
             this.сервисToolStripMenuItem.Text = "Сервис";
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(308, 6);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(308, 6);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(308, 6);
-            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -244,6 +244,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Menu";
+            this.ShowIcon = false;
             this.Text = "Меню";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
