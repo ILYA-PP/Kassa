@@ -57,11 +57,11 @@ namespace KassaApp.Models
             Product product = new Product()
             {
                 Name = row.Cells["nameCol"].Value.ToString(),
-                Quantity = (int)row.Cells["countCol"].Value,
-                Price = (double)row.Cells["priceCol"].Value,
-                Discount = (double)row.Cells["saleCol"].Value,
-                NDS = (double)row.Cells["ndsCol"].Value,
-                Row_Summ = (double)row.Cells["sumCol"].Value
+                Quantity = int.Parse(row.Cells["countCol"].Value.ToString()),
+                Price = double.Parse(row.Cells["priceCol"].Value.ToString()),
+                Discount = double.Parse(row.Cells["saleCol"].Value.ToString()),
+                NDS = double.Parse(row.Cells["ndsCol"].Value.ToString()),
+                Row_Summ = double.Parse(row.Cells["sumCol"].Value.ToString())
             };
             product.RowSummCalculate();
             return product;

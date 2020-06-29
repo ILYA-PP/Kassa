@@ -16,6 +16,7 @@ namespace KassaApp
         public Payment(Receipt receipt)
         {
             InitializeComponent();
+            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             CurrentReceipt = receipt;
             resultL.Text = $"Сумма по чеку: {CurrentReceipt.Summa}";
             moneyTB.Text = CurrentReceipt.Summa.ToString();

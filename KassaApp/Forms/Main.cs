@@ -11,6 +11,7 @@ namespace KassaApp
         public Main()
         {
             InitializeComponent();
+            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             timer.Start();
         }
         //ограничение вводимых значений в текстбоксы
@@ -55,13 +56,13 @@ namespace KassaApp
                 nameL.Text = product.Name;
                 summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}";
                 if (product.Quantity * product.Price != 0)
-                    nonDiscountTB.Text = (product.Quantity * product.Price).ToString();
+                    nonDiscountTB.Text = String.Format("{0:f}", product.Quantity * product.Price);
                 else
-                    nonDiscountTB.Text = $"0,00";
+                    nonDiscountTB.Text = $"0.00";
                 if (product.Discount != 0)
-                    discountTB.Text = (product.Quantity * product.Price - product.Row_Summ).ToString();
+                    discountTB.Text = String.Format("{0:f}", product.Quantity * product.Price - product.Row_Summ);
                 else
-                    discountTB.Text = $"0,00";
+                    discountTB.Text = $"0.00";
             }
         }
         //вывод времени
@@ -97,9 +98,9 @@ namespace KassaApp
             }
             totalForReceipt = Math.Round(result, 2);
             if(totalForReceipt != 0)
-                resultL.Text = $"{totalForReceipt}";
+                resultL.Text = String.Format("{0:f}", totalForReceipt);
             else
-                resultL.Text = $"0,00";
+                resultL.Text = $"0.00";
         }
         //изменение значений на форме при добавлении записей таблицы
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)

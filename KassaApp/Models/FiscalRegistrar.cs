@@ -204,5 +204,22 @@ namespace KassaApp.Models
             else
                 AddLog("Нет подключения");
         }
+
+        public void PrintXReport()
+        {
+            executeAndHandleError(Driver.PrintReportWithoutCleaning);
+        }
+        public void PrintXSectionReport()
+        {
+            executeAndHandleError(Driver.PrintDepartmentReport);
+        }
+        public void PrintXTaxReport()
+        {
+            executeAndHandleError(Driver.PrintTaxReport);
+        }
+        public void PrintZReport()
+        {
+            executeAndHandleError(Driver.PrintReportWithCleaning);
+        }
     }
 }

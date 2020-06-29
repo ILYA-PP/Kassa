@@ -14,6 +14,7 @@ namespace KassaApp
         public Menu()
         {
             InitializeComponent();
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         }
         //переход на главную форму
         private void регистрацияПродажToolStripMenuItem_Click(object sender, EventArgs e)

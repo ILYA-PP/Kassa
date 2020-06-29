@@ -11,11 +11,13 @@ namespace KassaApp
         public AddEditProduct()
         {
             InitializeComponent();
+            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             receiptDGV.Visible = false;
         }
         public AddEditProduct(DataGridViewRow row)
         {
             InitializeComponent();
+            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             Product product = Product.ProductFromRow(row);
             dgvRow = row;
             try
@@ -24,9 +26,9 @@ namespace KassaApp
                 receiptDGV.Visible = true;
                 nameTB.Text = product.Name;
                 countNUD.Value = product.Quantity;
-                priceTB.Text = product.Price.ToString();
-                discountTB.Text = product.Discount.ToString();
-                ndsTB.Text = product.NDS.ToString();
+                priceTB.Text = String.Format("{0:f}", product.Price);
+                discountTB.Text = String.Format("{0:f}", product.Discount);
+                ndsTB.Text = String.Format("{0:f}", product.NDS);
                 receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
             }
             catch (Exception ex)
@@ -128,8 +130,8 @@ namespace KassaApp
                 receiptDGV.Rows[0].Cells["sumCol"].Value = Math.Round((double)countNUD.Value * double.Parse(priceTB.Text)
                     - (double)countNUD.Value * double.Parse(priceTB.Text) * double.Parse(discountTB.Text) / 100, 2);
             }
-            if (((TextBox)sender).Text.Length == 0)
-                ((TextBox)sender).Text = "0,00";
+            if (sender.GetType() == typeof(TextBox) && ((TextBox)sender).Text.Length == 0)
+                ((TextBox)sender).Text = "0.00";
         }
     }
 }
