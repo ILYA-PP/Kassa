@@ -133,5 +133,10 @@ namespace KassaApp
             if (sender.GetType() == typeof(TextBox) && ((TextBox)sender).Text.Length == 0)
                 ((TextBox)sender).Text = "0.00";
         }
+
+        private void textBoxs_Leave(object sender, EventArgs e)
+        {
+            ((TextBox)sender).Text = String.Format("{0:f}", double.Parse(((TextBox)sender).Text));
+        }
     }
 }

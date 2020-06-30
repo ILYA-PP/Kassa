@@ -1,9 +1,6 @@
 ﻿using DrvFRLib;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
@@ -12,7 +9,7 @@ namespace KassaApp.Models
     {
         private DrvFR Driver { get; set; }
         //проверка состояния ККТ перед печатью
-        private void prepareCheque()
+        public void prepareCheque()
         {
             Driver.Password = 30;
             executeAndHandleError(Driver.WaitForPrinting);
@@ -20,16 +17,16 @@ namespace KassaApp.Models
             switch (Driver.ECRMode)
             {
                 case 3:
-                    AddLog("Снятие Z-отчёта: ");
+                    //Снятие Z-отчёта
                     executeAndHandleError(Driver.PrintReportWithCleaning);
                     executeAndHandleError(Driver.WaitForPrinting);
-                    AddLog("Открытие смены: ");
+                    //Открытие смены
                     executeAndHandleError(Driver.OpenSession); break;
                 case 4:
-                    AddLog("Открытие смены: ");
+                    //Открытие смены
                     executeAndHandleError(Driver.OpenSession); break;
                 case 8:
-                    AddLog("Отмена чека: ");
+                    //Отмена чека
                     executeAndHandleError(Driver.SysAdminCancelCheck);
                     break;
             }
@@ -37,13 +34,14 @@ namespace KassaApp.Models
         }
         public void Disconnect()
         {
-            AddLog("Отключение от ККТ: ");
+            //Отключение от ККТ
             executeAndHandleError(Driver.Disconnect);
         }
-        public void Print(string s)
+        public int Print(string s)
         {
+            prepareCheque();
             Driver.StringForPrinting = s;
-            executeAndHandleError(Driver.PrintString);
+            return executeAndHandleError(Driver.PrintString);
         }
 
         public int CheckConnect()
@@ -66,7 +64,6 @@ namespace KassaApp.Models
                     Timeout = int.Parse(driverData["Timeout"]),
                     Password = int.Parse(driverData["Password"])
                 };
-                AddLog($"Подключение к ККМ (IP = {Driver.IPAddress}): ");
                 executeAndHandleError(Driver.Connect);
                 Driver.WaitForPrintingDelay = 20;
             }
@@ -84,7 +81,7 @@ namespace KassaApp.Models
         private void CheckResult(int code, string n)
         {
             if (code != 0)
-                Console.Write($"Метод: {n} Ошибка: {Driver.ResultCodeDescription} Код: {code} ");
+                MessageBox.Show($"Метод: {n} Ошибка: {Driver.ResultCodeDescription} Код: {code} ");
             else
                 Console.Write($"Метод {n}: Успешно ");
             Console.WriteLine($"Статус: {Driver.ECRModeDescription}");
@@ -112,6 +109,7 @@ namespace KassaApp.Models
         {
             if (CheckConnect() == 0)
             {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
                 prepareCheque();
                 Driver.GetECRStatus();
                 int state = Driver.ECRMode;
@@ -119,26 +117,25 @@ namespace KassaApp.Models
                 {
                     double result = 0;
                     Driver.CheckType = 0;
-                    AddLog("Открытие чека: ");
+                    //Открытие чека
                     executeAndHandleError(Driver.OpenCheck);
                     Driver.Password = 30;
-                    if (cheque.Phone != null)
-                        Driver.CustomerEmail = cheque.Phone;
-                    else if (cheque.Email != null)
-                        Driver.CustomerEmail = cheque.Email;
-                    AddLog("Передача данных покупателя: ");
-                    executeAndHandleError(Driver.FNSendCustomerEmail);
+                    //if (cheque.Phone != null)
+                    //    Driver.CustomerEmail = cheque.Phone;
+                    //else if (cheque.Email != null)
+                    //    Driver.CustomerEmail = cheque.Email;
+                    ////Передача данных покупателя
+                    //if(cheque.Phone != null || cheque.Email != null)
+                    //    executeAndHandleError(Driver.FNSendCustomerEmail);
                     foreach (Product p in cheque.Products)
                     {
                         //add product
                         Driver.CheckType = 0;
                         Driver.StringForPrinting = p.Name;
-                        Driver.Price = (decimal)p.Price;
+                        Driver.Price = (decimal)(p.Price - Math.Round(p.Price * p.Discount / 100, 2));
                         Driver.Quantity = p.Quantity;
-                        Driver.Summ1Enabled = false;
-                        //Driver.Summ1 = (decimal)p.Row_Summ;
                         result += p.Row_Summ;
-                        Driver.TaxValueEnabled = false;
+                        //Driver.TaxValueEnabled = false;
                         Driver.Department = 1;
                         Driver.PaymentTypeSign = 4;
                         if (p.Row_Type == 1)
@@ -153,7 +150,6 @@ namespace KassaApp.Models
                         Driver.Tax2 = 0;
                         Driver.Tax3 = 0;
                         Driver.Tax4 = 0;
-                        AddLog($"Фиксация операции: Товар: {p.Name} Количество: {p.Quantity} НДС: {p.NDS} Сумма: {p.Row_Summ}");
                         executeAndHandleError(Driver.FNOperation);
                     }
                     if (cheque.Payment == 1)
@@ -187,14 +183,12 @@ namespace KassaApp.Models
                     Driver.TaxValue5 = 0;
                     Driver.TaxValue6 = 0;
                     Driver.TaxType = 1;
-                    AddLog("Закрытие чека: ");
+                    //Закрытие чека
                     if (executeAndHandleError(Driver.FNCloseCheckEx) == 0)
                     {
-                        AddLog("Ожидание печати чека: ");
+                        //Ожидание печати чека
                         executeAndHandleError(Driver.WaitForPrinting);
-                        //Thread t = new Thread(new ParameterizedThreadStart(ChequeFromWebService.ChequePrinted));
-                        //t.Start(cheque.ID);//отметка чека на сервере в новом потоке
-                        AddLog("Отрезка чека: ");
+                        //Отрезка чека
                         executeAndHandleError(Driver.CutCheck);
                     }
                 }
@@ -203,6 +197,7 @@ namespace KassaApp.Models
             }
             else
                 AddLog("Нет подключения");
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         }
 
         public void PrintXReport()

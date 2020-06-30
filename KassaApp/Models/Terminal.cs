@@ -15,7 +15,7 @@ namespace KassaApp.Models
             Purchase = 4000, // Покупка
             PinPadEnabled = 13, //статус пинпада
             Return = 4002, // Возврат покупки
-            Cancel = 4003, // Отмена операции
+            Cancel = 6004, // Отмена транзакции
             Total = 6000 // Итоги дня 
         }
         public Terminal()
@@ -56,23 +56,20 @@ namespace KassaApp.Models
         {
             try
             {
-                FiscalRegistrar fr = new FiscalRegistrar();
                 Server.Clear();
                 Server.SParam("Amount", sum * 100);
                 int result = Server.NFun((int)Operations.Purchase);
                 if (result == 0)
                 {
                     MessageBox.Show("Успешно!");
-                    fr.Connect();
-                    fr.Print(GetCheque());
                 }
                 else
                     MessageBox.Show($"Операция НЕ выполнена. Код ошибки: {result}");
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
-        //отмена покупки
-        public void Cancel()
+        //отмена транзакции
+        public void CancelTransaction()
         {
             try
             {

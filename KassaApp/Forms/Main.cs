@@ -11,7 +11,6 @@ namespace KassaApp
         public Main()
         {
             InitializeComponent();
-            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             timer.Start();
         }
         //ограничение вводимых значений в текстбоксы
@@ -100,7 +99,9 @@ namespace KassaApp
             if(totalForReceipt != 0)
                 resultL.Text = String.Format("{0:f}", totalForReceipt);
             else
+            {
                 resultL.Text = $"0.00";
+            }
         }
         //изменение значений на форме при добавлении записей таблицы
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)

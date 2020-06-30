@@ -16,7 +16,6 @@ namespace KassaApp
         public Payment(Receipt receipt)
         {
             InitializeComponent();
-            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             CurrentReceipt = receipt;
             resultL.Text = $"Сумма по чеку: {CurrentReceipt.Summa}";
             moneyTB.Text = CurrentReceipt.Summa.ToString();
@@ -63,7 +62,25 @@ namespace KassaApp
                 Terminal terminal = new Terminal();
                 if (terminal.IsEnabled())
                 {
-                    terminal.Purchase(CurrentReceipt.Summa);  
+                    //terminal.Purchase(CurrentReceipt.Summa);
+                    FiscalRegistrar Driver = new FiscalRegistrar();
+                    Driver.Connect();
+                    if (Driver.CheckConnect() == 0)
+                    {
+                        if (Driver.Print(terminal.GetCheque()) == 0)
+                        {
+                            CurrentReceipt.Payment = 2;
+                            CurrentReceipt.Row_Type = 1;
+                            Driver.PrintCheque(CurrentReceipt);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
+                            terminal.CancelTransaction();
+                        }
+                    }
+                    else
+                        MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 }
                 else
                     MessageBox.Show("Ошибка! Нет связи с терминалом.");

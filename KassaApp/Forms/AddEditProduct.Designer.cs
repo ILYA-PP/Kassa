@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ndsTB = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.discountTB = new System.Windows.Forms.TextBox();
@@ -49,13 +49,13 @@
             this.departmentNUD = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.receiptDGV = new System.Windows.Forms.DataGridView();
-            this.cancelB = new System.Windows.Forms.Button();
             this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cancelB = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
@@ -72,6 +72,7 @@
             this.ndsTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.ndsTB.TextChanged += new System.EventHandler(this.textBoxs_TextChange);
             this.ndsTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
+            this.ndsTB.Leave += new System.EventHandler(this.textBoxs_Leave);
             // 
             // label10
             // 
@@ -94,6 +95,7 @@
             this.discountTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.discountTB.TextChanged += new System.EventHandler(this.textBoxs_TextChange);
             this.discountTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
+            this.discountTB.Leave += new System.EventHandler(this.textBoxs_Leave);
             // 
             // label8
             // 
@@ -162,6 +164,7 @@
             this.priceTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.priceTB.TextChanged += new System.EventHandler(this.textBoxs_TextChange);
             this.priceTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
+            this.priceTB.Leave += new System.EventHandler(this.textBoxs_Leave);
             // 
             // label2
             // 
@@ -285,14 +288,14 @@
             this.receiptDGV.AllowUserToAddRows = false;
             this.receiptDGV.AllowUserToDeleteRows = false;
             this.receiptDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -304,28 +307,17 @@
             this.receiptDGV.Location = new System.Drawing.Point(12, 266);
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.receiptDGV.RowHeadersVisible = false;
             this.receiptDGV.Size = new System.Drawing.Size(663, 84);
             this.receiptDGV.TabIndex = 40;
-            // 
-            // cancelB
-            // 
-            this.cancelB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cancelB.Location = new System.Drawing.Point(360, 368);
-            this.cancelB.Name = "cancelB";
-            this.cancelB.Size = new System.Drawing.Size(117, 30);
-            this.cancelB.TabIndex = 41;
-            this.cancelB.Text = "Отмена";
-            this.cancelB.UseVisualStyleBackColor = true;
-            this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
             // nameCol
             // 
@@ -364,6 +356,17 @@
             this.sumCol.HeaderText = "Сумма";
             this.sumCol.Name = "sumCol";
             this.sumCol.ReadOnly = true;
+            // 
+            // cancelB
+            // 
+            this.cancelB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cancelB.Location = new System.Drawing.Point(360, 368);
+            this.cancelB.Name = "cancelB";
+            this.cancelB.Size = new System.Drawing.Size(117, 30);
+            this.cancelB.TabIndex = 41;
+            this.cancelB.Text = "Отмена";
+            this.cancelB.UseVisualStyleBackColor = true;
+            this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
             // AddEditProduct
             // 

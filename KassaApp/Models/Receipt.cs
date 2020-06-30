@@ -23,6 +23,7 @@ namespace KassaApp.Models
         public string Email { get; set; }
         public double Summa { get; set; }
         public int Payment { get; set; }
+        public int Row_Type { get; set; }
         public List<Product> Products { get { return products; } set { products = value; } }
     }
 }

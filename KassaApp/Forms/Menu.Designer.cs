@@ -125,18 +125,21 @@
             this.хотчётбезГашенияToolStripMenuItem.Name = "хотчётбезГашенияToolStripMenuItem";
             this.хотчётбезГашенияToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.хотчётбезГашенияToolStripMenuItem.Text = "Х-отчёт (без гашения)";
+            this.хотчётбезГашенияToolStripMenuItem.Click += new System.EventHandler(this.хотчётбезГашенияToolStripMenuItem_Click);
             // 
             // хотчётПоСекциямToolStripMenuItem
             // 
             this.хотчётПоСекциямToolStripMenuItem.Name = "хотчётПоСекциямToolStripMenuItem";
             this.хотчётПоСекциямToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.хотчётПоСекциямToolStripMenuItem.Text = "Х-отчёт по секциям";
+            this.хотчётПоСекциямToolStripMenuItem.Click += new System.EventHandler(this.хотчётПоСекциямToolStripMenuItem_Click);
             // 
             // хотчётПоНалогамToolStripMenuItem
             // 
             this.хотчётПоНалогамToolStripMenuItem.Name = "хотчётПоНалогамToolStripMenuItem";
             this.хотчётПоНалогамToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.хотчётПоНалогамToolStripMenuItem.Text = "Х-отчёт по налогам";
+            this.хотчётПоНалогамToolStripMenuItem.Click += new System.EventHandler(this.хотчётПоНалогамToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -148,6 +151,7 @@
             this.zотчётсГашениемToolStripMenuItem.Name = "zотчётсГашениемToolStripMenuItem";
             this.zотчётсГашениемToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.zотчётсГашениемToolStripMenuItem.Text = "Z-отчёт (с гашением)";
+            this.zотчётсГашениемToolStripMenuItem.Click += new System.EventHandler(this.zотчётсГашениемToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -159,6 +163,7 @@
             this.отчётыПоБанковскимКартамToolStripMenuItem.Name = "отчётыПоБанковскимКартамToolStripMenuItem";
             this.отчётыПоБанковскимКартамToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.отчётыПоБанковскимКартамToolStripMenuItem.Text = "Отчёты по банковским картам";
+            this.отчётыПоБанковскимКартамToolStripMenuItem.Click += new System.EventHandler(this.отчётыПоБанковскимКартамToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
