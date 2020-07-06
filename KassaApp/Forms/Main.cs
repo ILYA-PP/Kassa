@@ -1,4 +1,5 @@
-﻿using KassaApp.Models;
+﻿using KassaApp.Forms;
+using KassaApp.Models;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -128,7 +129,7 @@ namespace KassaApp
                 case Keys.F3: ; break;
                 case Keys.F4:; break;
                 case Keys.F5:; break;
-                case Keys.F6:; break;
+                case Keys.F6: searchB_Click(null,null); break;
                 case Keys.F9: editB_Click(null, null); break;
                 case Keys.Delete: deleteB_Click(null, null); break;
                 case Keys.F11:; break;
@@ -144,6 +145,11 @@ namespace KassaApp
             rowCount_Changed();
             if (receiptDGV.SelectedRows.Count > 0)
                 receiptDGV_SelectionChanged(null, null);
+        }
+
+        private void searchB_Click(object sender, EventArgs e)
+        {
+            new ChooseProduct().ShowDialog(this);
         }
     }
 }

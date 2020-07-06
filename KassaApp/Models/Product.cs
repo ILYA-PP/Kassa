@@ -60,6 +60,7 @@ namespace KassaApp
             }
             set { discount = Math.Round(value, 2); }
         }
+        [NotMapped]
         public double Row_Summ { get { return sum; } set { sum = Math.Round(value, 2); } }
 
         public int Department { get; set; }
@@ -68,17 +69,26 @@ namespace KassaApp
         public int Quantity { get; set; }
         public static Product ProductFromRow(DataGridViewRow row)
         {
-            Product product = new Product()
+            try
             {
-                Name = row.Cells["nameCol"].Value.ToString(),
-                Quantity = int.Parse(row.Cells["countCol"].Value.ToString()),
-                Price = decimal.Parse(row.Cells["priceCol"].Value.ToString()),
-                Discount = double.Parse(row.Cells["saleCol"].Value.ToString()),
-                NDS = double.Parse(row.Cells["ndsCol"].Value.ToString()),
-                Row_Summ = double.Parse(row.Cells["sumCol"].Value.ToString())
-            };
-            product.RowSummCalculate();
-            return product;
+                Product product = new Product()
+                {
+                    Name = row.Cells["nameCol"].Value.ToString(),
+                    Quantity = int.Parse(row.Cells["countCol"].Value.ToString()),
+                    Price = decimal.Parse(row.Cells["priceCol"].Value.ToString()),
+                    Discount = double.Parse(row.Cells["discountCol"].Value.ToString()),
+                    NDS = double.Parse(row.Cells["ndsCol"].Value.ToString())
+                };
+                if(row.Cells["sumCol"].Value != null)
+                    product.Row_Summ = double.Parse(row.Cells["sumCol"].Value.ToString());
+                product.RowSummCalculate();
+                return product;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
         }
 
         public void RowSummCalculate()

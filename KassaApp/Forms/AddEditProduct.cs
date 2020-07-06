@@ -46,6 +46,7 @@ namespace KassaApp
         {
             try
             {
+                KassaDBContext db = new KassaDBContext();
                 if (nameTB.Text != "" && countNUD.Value != 0 && priceTB.Text != ""
                     && discountTB.Text != "" && ndsTB.Text != "")
                 {
@@ -53,28 +54,40 @@ namespace KassaApp
                     {
                         Name = nameTB.Text,
                         Quantity = (int)countNUD.Value,
-                        Price = double.Parse(priceTB.Text),
+                        Price = decimal.Parse(priceTB.Text),
                         Discount = double.Parse(discountTB.Text),
-                        NDS = double.Parse(ndsTB.Text)
+                        NDS = double.Parse(ndsTB.Text),
+                        Department = (int)departmentNUD.Value
                     };
+                    if (productRB.Checked)
+                        product.Type = 1;
+                    else if (serviceRB.Checked)
+                        product.Type = 2;
                     product.RowSummCalculate();                    
                     //если идёт изменение, данные меняются на главной форме
-                    //иначе данные добавляются на новую форму
+                    //иначе данные добавляются на главную форму
                     if (dgvRow != null)
                         for(int i = 0; i< ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells.Count; i++)
                             ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells[i].Value = receiptDGV.Rows[0].Cells[i].Value;
                     else
                         ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                    //если товара нет в БД, то он добавляется
+                    if (db.Product.Where(p => p.Name == product.Name).FirstOrDefault() == null)
+                    {
+                        //возможно добавить сообщение Нужно ли добавлять в БД?
+                        db.Product.Add(product);
+                        db.SaveChanges();
+                    }
                     Close();
                 }
                 else
                     MessageBox.Show("Заполните все данные о товаре!");
-            }
+        }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }
+}
         //обработка горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {                

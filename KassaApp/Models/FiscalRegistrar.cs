@@ -132,15 +132,15 @@ namespace KassaApp.Models
                         //add product
                         Driver.CheckType = 0;
                         Driver.StringForPrinting = p.Name;
-                        Driver.Price = (decimal)(p.Price - Math.Round(p.Price * p.Discount / 100, 2));
+                        Driver.Price = (decimal)(p.Price - Math.Round(p.Price * (decimal)p.Discount / 100, 2));
                         Driver.Quantity = p.Quantity;
                         result += p.Row_Summ;
                         //Driver.TaxValueEnabled = false;
                         Driver.Department = p.Department;
                         Driver.PaymentTypeSign = 4;
-                        if (p.Row_Type == 1)
+                        if (p.Type == 1)
                             Driver.PaymentItemSign = 1;
-                        else if (p.Row_Type == 2)
+                        else if (p.Type == 2)
                             Driver.PaymentItemSign = 4;
                         Driver.Tax1 = 0;
                         if (p.NDS == 20)

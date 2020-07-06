@@ -32,12 +32,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.receiptDGV = new System.Windows.Forms.DataGridView();
-            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.saleCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discountOnReceiptB = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nonDiscountTB = new System.Windows.Forms.TextBox();
@@ -50,7 +44,7 @@
             this.nameB = new System.Windows.Forms.Button();
             this.priceB = new System.Windows.Forms.Button();
             this.svPriceB = new System.Windows.Forms.Button();
-            this.additOpB = new System.Windows.Forms.Button();
+            this.searchB = new System.Windows.Forms.Button();
             this.deleteB = new System.Windows.Forms.Button();
             this.boxB = new System.Windows.Forms.Button();
             this.paymentB = new System.Windows.Forms.Button();
@@ -70,6 +64,12 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -100,7 +100,7 @@
             this.nameCol,
             this.countCol,
             this.priceCol,
-            this.saleCol,
+            this.discountCol,
             this.ndsCol,
             this.sumCol});
             this.receiptDGV.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -121,42 +121,6 @@
             this.receiptDGV.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.receiptDGV_RowsAdded);
             this.receiptDGV.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.receiptDGV_RowsRemoved);
             this.receiptDGV.SelectionChanged += new System.EventHandler(this.receiptDGV_SelectionChanged);
-            // 
-            // nameCol
-            // 
-            this.nameCol.HeaderText = "Наименование";
-            this.nameCol.Name = "nameCol";
-            this.nameCol.ReadOnly = true;
-            // 
-            // countCol
-            // 
-            this.countCol.HeaderText = "Количество";
-            this.countCol.Name = "countCol";
-            this.countCol.ReadOnly = true;
-            // 
-            // priceCol
-            // 
-            this.priceCol.HeaderText = "Цена";
-            this.priceCol.Name = "priceCol";
-            this.priceCol.ReadOnly = true;
-            // 
-            // saleCol
-            // 
-            this.saleCol.HeaderText = "Скидка";
-            this.saleCol.Name = "saleCol";
-            this.saleCol.ReadOnly = true;
-            // 
-            // ndsCol
-            // 
-            this.ndsCol.HeaderText = "НДС";
-            this.ndsCol.Name = "ndsCol";
-            this.ndsCol.ReadOnly = true;
-            // 
-            // sumCol
-            // 
-            this.sumCol.HeaderText = "Сумма";
-            this.sumCol.Name = "sumCol";
-            this.sumCol.ReadOnly = true;
             // 
             // discountOnReceiptB
             // 
@@ -285,17 +249,17 @@
             this.svPriceB.Text = "[F5]  Св. цена";
             this.svPriceB.UseVisualStyleBackColor = true;
             // 
-            // additOpB
+            // searchB
             // 
-            this.additOpB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.additOpB.Enabled = false;
-            this.additOpB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.additOpB.Location = new System.Drawing.Point(483, 3);
-            this.additOpB.Name = "additOpB";
-            this.additOpB.Size = new System.Drawing.Size(114, 52);
-            this.additOpB.TabIndex = 32;
-            this.additOpB.Text = "[F6]  Доп. оп.";
-            this.additOpB.UseVisualStyleBackColor = true;
+            this.searchB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.searchB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.searchB.Location = new System.Drawing.Point(483, 3);
+            this.searchB.Name = "searchB";
+            this.searchB.Size = new System.Drawing.Size(114, 52);
+            this.searchB.TabIndex = 32;
+            this.searchB.Text = "[F6]  Поиск";
+            this.searchB.UseVisualStyleBackColor = true;
+            this.searchB.Click += new System.EventHandler(this.searchB_Click);
             // 
             // deleteB
             // 
@@ -554,7 +518,7 @@
             this.tableLayoutPanel9.Controls.Add(this.nameB, 1, 0);
             this.tableLayoutPanel9.Controls.Add(this.priceB, 2, 0);
             this.tableLayoutPanel9.Controls.Add(this.svPriceB, 3, 0);
-            this.tableLayoutPanel9.Controls.Add(this.additOpB, 4, 0);
+            this.tableLayoutPanel9.Controls.Add(this.searchB, 4, 0);
             this.tableLayoutPanel9.Controls.Add(this.editB, 5, 0);
             this.tableLayoutPanel9.Controls.Add(this.boxB, 7, 0);
             this.tableLayoutPanel9.Controls.Add(this.deleteB, 6, 0);
@@ -569,6 +533,42 @@
             // timer
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // nameCol
+            // 
+            this.nameCol.HeaderText = "Наименование";
+            this.nameCol.Name = "nameCol";
+            this.nameCol.ReadOnly = true;
+            // 
+            // countCol
+            // 
+            this.countCol.HeaderText = "Количество";
+            this.countCol.Name = "countCol";
+            this.countCol.ReadOnly = true;
+            // 
+            // priceCol
+            // 
+            this.priceCol.HeaderText = "Цена";
+            this.priceCol.Name = "priceCol";
+            this.priceCol.ReadOnly = true;
+            // 
+            // discountCol
+            // 
+            this.discountCol.HeaderText = "Скидка";
+            this.discountCol.Name = "discountCol";
+            this.discountCol.ReadOnly = true;
+            // 
+            // ndsCol
+            // 
+            this.ndsCol.HeaderText = "НДС";
+            this.ndsCol.Name = "ndsCol";
+            this.ndsCol.ReadOnly = true;
+            // 
+            // sumCol
+            // 
+            this.sumCol.HeaderText = "Сумма";
+            this.sumCol.Name = "sumCol";
+            this.sumCol.ReadOnly = true;
             // 
             // Main
             // 
@@ -615,19 +615,13 @@
         private System.Windows.Forms.Button nameB;
         private System.Windows.Forms.Button priceB;
         private System.Windows.Forms.Button svPriceB;
-        private System.Windows.Forms.Button additOpB;
+        private System.Windows.Forms.Button searchB;
         private System.Windows.Forms.Button deleteB;
         private System.Windows.Forms.Button boxB;
         private System.Windows.Forms.Button paymentB;
         private System.Windows.Forms.Button editB;
         private System.Windows.Forms.Button reserveB;
         private System.Windows.Forms.Button additInfoB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn countCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn saleCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
         private System.Windows.Forms.Label departmentL;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label resultL;
@@ -642,5 +636,11 @@
         public System.Windows.Forms.DataGridView receiptDGV;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.TextBox timeTB;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn countCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priceCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
     }
 }

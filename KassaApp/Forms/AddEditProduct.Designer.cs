@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ndsTB = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.discountTB = new System.Windows.Forms.TextBox();
@@ -56,6 +56,8 @@
             this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cancelB = new System.Windows.Forms.Button();
+            this.productRB = new System.Windows.Forms.RadioButton();
+            this.serviceRB = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
@@ -288,14 +290,14 @@
             this.receiptDGV.AllowUserToAddRows = false;
             this.receiptDGV.AllowUserToDeleteRows = false;
             this.receiptDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -307,14 +309,14 @@
             this.receiptDGV.Location = new System.Drawing.Point(12, 266);
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.receiptDGV.RowHeadersVisible = false;
             this.receiptDGV.Size = new System.Drawing.Size(663, 84);
             this.receiptDGV.TabIndex = 40;
@@ -368,11 +370,37 @@
             this.cancelB.UseVisualStyleBackColor = true;
             this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
+            // productRB
+            // 
+            this.productRB.AutoSize = true;
+            this.productRB.Checked = true;
+            this.productRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.productRB.Location = new System.Drawing.Point(453, 206);
+            this.productRB.Name = "productRB";
+            this.productRB.Size = new System.Drawing.Size(72, 24);
+            this.productRB.TabIndex = 42;
+            this.productRB.TabStop = true;
+            this.productRB.Text = "Товар";
+            this.productRB.UseVisualStyleBackColor = true;
+            // 
+            // serviceRB
+            // 
+            this.serviceRB.AutoSize = true;
+            this.serviceRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.serviceRB.Location = new System.Drawing.Point(453, 236);
+            this.serviceRB.Name = "serviceRB";
+            this.serviceRB.Size = new System.Drawing.Size(78, 24);
+            this.serviceRB.TabIndex = 43;
+            this.serviceRB.Text = "Услуга";
+            this.serviceRB.UseVisualStyleBackColor = true;
+            // 
             // AddEditProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(687, 410);
+            this.Controls.Add(this.serviceRB);
+            this.Controls.Add(this.productRB);
             this.Controls.Add(this.cancelB);
             this.Controls.Add(this.receiptDGV);
             this.Controls.Add(this.departmentB);
@@ -431,5 +459,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
+        private System.Windows.Forms.RadioButton productRB;
+        private System.Windows.Forms.RadioButton serviceRB;
     }
 }
