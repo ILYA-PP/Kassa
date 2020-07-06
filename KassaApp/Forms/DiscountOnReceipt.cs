@@ -35,5 +35,13 @@ namespace KassaApp
         {
             Close();
         }
+
+        private void RB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (discountProcentRB.Checked)
+                operationL.Text = "Процент:";
+            else if(numberDiscountCardRB.Checked)
+                operationL.Text = "ДК:";
+        }
     }
 }

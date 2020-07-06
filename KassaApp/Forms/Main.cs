@@ -43,6 +43,11 @@ namespace KassaApp
                 receipt.Products.Add(Product.ProductFromRow(row));
                 sum += (double)row.Cells["sumCol"].Value;
             }
+            if(sum == 0)
+            {
+                MessageBox.Show("Сумма чека равна 0. Оплата невозможна!");
+                return;
+            }
             receipt.Summa = sum;
             new Payment(receipt).ShowDialog();
         }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.operationL = new System.Windows.Forms.Label();
             this.discountCardNumberTB = new System.Windows.Forms.TextBox();
             this.discountProcentRB = new System.Windows.Forms.RadioButton();
             this.numberDiscountCardRB = new System.Windows.Forms.RadioButton();
@@ -36,22 +36,22 @@
             this.enterB = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1
+            // operationL
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(11, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "ДК:";
+            this.operationL.AutoSize = true;
+            this.operationL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.operationL.Location = new System.Drawing.Point(11, 15);
+            this.operationL.Name = "operationL";
+            this.operationL.Size = new System.Drawing.Size(35, 20);
+            this.operationL.TabIndex = 0;
+            this.operationL.Text = "ДК:";
             // 
             // discountCardNumberTB
             // 
             this.discountCardNumberTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.discountCardNumberTB.Location = new System.Drawing.Point(52, 12);
+            this.discountCardNumberTB.Location = new System.Drawing.Point(91, 12);
             this.discountCardNumberTB.Name = "discountCardNumberTB";
-            this.discountCardNumberTB.Size = new System.Drawing.Size(349, 26);
+            this.discountCardNumberTB.Size = new System.Drawing.Size(310, 26);
             this.discountCardNumberTB.TabIndex = 1;
             // 
             // discountProcentRB
@@ -62,13 +62,14 @@
             this.discountProcentRB.Name = "discountProcentRB";
             this.discountProcentRB.Size = new System.Drawing.Size(150, 24);
             this.discountProcentRB.TabIndex = 2;
-            this.discountProcentRB.TabStop = true;
             this.discountProcentRB.Text = "Процент скидки";
             this.discountProcentRB.UseVisualStyleBackColor = true;
+            this.discountProcentRB.CheckedChanged += new System.EventHandler(this.RB_CheckedChanged);
             // 
             // numberDiscountCardRB
             // 
             this.numberDiscountCardRB.AutoSize = true;
+            this.numberDiscountCardRB.Checked = true;
             this.numberDiscountCardRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numberDiscountCardRB.Location = new System.Drawing.Point(180, 53);
             this.numberDiscountCardRB.Name = "numberDiscountCardRB";
@@ -110,7 +111,7 @@
             this.Controls.Add(this.numberDiscountCardRB);
             this.Controls.Add(this.discountProcentRB);
             this.Controls.Add(this.discountCardNumberTB);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.operationL);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DiscountOnReceipt";
@@ -123,7 +124,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label operationL;
         private System.Windows.Forms.TextBox discountCardNumberTB;
         private System.Windows.Forms.RadioButton discountProcentRB;
         private System.Windows.Forms.RadioButton numberDiscountCardRB;

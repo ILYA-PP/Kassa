@@ -17,18 +17,6 @@ namespace KassaApp
         {
             InitializeComponent();
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-            Task t1 = Task.Factory.StartNew(() =>
-            {
-                FiscalRegistrar Driver = new FiscalRegistrar();
-                Driver.Connect();
-                if (Driver.CheckConnect() == 0)
-                {
-                    Driver.prepareCheque();
-                    Driver.Disconnect();
-                }
-                else
-                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
-            });
         }
         //переход на главную форму
         private void регистрацияПродажToolStripMenuItem_Click(object sender, EventArgs e)
@@ -47,8 +35,15 @@ namespace KassaApp
             if (terminal.IsEnabled())
             {
                 terminal.CloseDay();
-                //печать через фискальник
-                MessageBox.Show(terminal.GetCheque());
+                FiscalRegistrar fr = new FiscalRegistrar();
+                fr.Connect();
+                if (fr.CheckConnect() == 0)
+                {
+                    fr.Print(terminal.GetCheque());
+                    fr.Disconnect();
+                }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
             else
                 MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
@@ -64,7 +59,7 @@ namespace KassaApp
                 fr.Disconnect();
             }
             else
-                MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
+                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void хотчётПоНалогамToolStripMenuItem_Click(object sender, EventArgs e)
@@ -77,7 +72,7 @@ namespace KassaApp
                 fr.Disconnect();
             }
             else
-                MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
+                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void хотчётПоСекциямToolStripMenuItem_Click(object sender, EventArgs e)
@@ -90,7 +85,7 @@ namespace KassaApp
                 fr.Disconnect();
             }
             else
-                MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
+                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void хотчётбезГашенияToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,11 +95,11 @@ namespace KassaApp
             if (fr.CheckConnect() == 0)
             {
                 fr.PrintXReport();
-                fr.Cut
+                
                 fr.Disconnect();
             }
             else
-                MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
+                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
     }
 }

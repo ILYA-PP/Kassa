@@ -62,13 +62,14 @@ namespace KassaApp
                 Terminal terminal = new Terminal();
                 if (terminal.IsEnabled())
                 {
-                    //terminal.Purchase(CurrentReceipt.Summa);
+                    terminal.Purchase(CurrentReceipt.Summa);
                     FiscalRegistrar Driver = new FiscalRegistrar();
                     Driver.Connect();
                     if (Driver.CheckConnect() == 0)
                     {
                         if (Driver.Print(terminal.GetCheque()) == 0)
                         {
+                            messageL.Text = "Печать чеков";
                             CurrentReceipt.Payment = 2;
                             CurrentReceipt.Row_Type = 1;
                             Driver.PrintCheque(CurrentReceipt);

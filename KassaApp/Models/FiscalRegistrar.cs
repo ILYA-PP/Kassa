@@ -136,7 +136,7 @@ namespace KassaApp.Models
                         Driver.Quantity = p.Quantity;
                         result += p.Row_Summ;
                         //Driver.TaxValueEnabled = false;
-                        Driver.Department = 1;
+                        Driver.Department = p.Department;
                         Driver.PaymentTypeSign = 4;
                         if (p.Row_Type == 1)
                             Driver.PaymentItemSign = 1;
@@ -215,6 +215,11 @@ namespace KassaApp.Models
         public void PrintZReport()
         {
             executeAndHandleError(Driver.PrintReportWithCleaning);
+        }
+
+        public void OpenProperties()
+        {
+            executeAndHandleError(Driver.ShowProperties);
         }
     }
 }

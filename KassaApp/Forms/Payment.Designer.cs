@@ -41,7 +41,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.noteB = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.messageL = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -180,22 +180,22 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.messageL);
             this.panel1.Location = new System.Drawing.Point(18, 169);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(600, 100);
             this.panel1.TabIndex = 19;
             this.panel1.Visible = false;
             // 
-            // label2
+            // messageL
             // 
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(0, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(597, 100);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Идёт процесс оплаты через терминал";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.messageL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.messageL.Location = new System.Drawing.Point(0, 0);
+            this.messageL.Name = "messageL";
+            this.messageL.Size = new System.Drawing.Size(597, 100);
+            this.messageL.TabIndex = 0;
+            this.messageL.Text = "Идёт процесс оплаты через терминал";
+            this.messageL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Payment
             // 
@@ -240,6 +240,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button noteB;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label messageL;
     }
 }

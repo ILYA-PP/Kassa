@@ -8,6 +8,7 @@ namespace KassaApp.Models
     {
         private double discount, nds, price, sum;
         public string Name { get; set; }
+        public int Department { get; set; }
         public double Price 
         {
             get

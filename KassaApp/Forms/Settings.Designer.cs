@@ -38,6 +38,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.paySrvSettingsB = new System.Windows.Forms.Button();
+            this.testDriverPropertiesB = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,6 +76,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.testDriverPropertiesB);
             this.groupBox1.Controls.Add(this.registrSettingsB);
             this.groupBox1.Controls.Add(this.comPortTB);
             this.groupBox1.Controls.Add(this.exchangeSpeedTB);
@@ -83,7 +85,7 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox1.Location = new System.Drawing.Point(12, 76);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(398, 101);
+            this.groupBox1.Size = new System.Drawing.Size(398, 135);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Регистратор";
@@ -135,6 +137,7 @@
             // 
             // paySrvSettingsB
             // 
+            this.paySrvSettingsB.Enabled = false;
             this.paySrvSettingsB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.paySrvSettingsB.Location = new System.Drawing.Point(12, 441);
             this.paySrvSettingsB.Name = "paySrvSettingsB";
@@ -142,6 +145,17 @@
             this.paySrvSettingsB.TabIndex = 11;
             this.paySrvSettingsB.Text = "Настройка СО (сервера оплат)";
             this.paySrvSettingsB.UseVisualStyleBackColor = true;
+            // 
+            // testDriverPropertiesB
+            // 
+            this.testDriverPropertiesB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.testDriverPropertiesB.Location = new System.Drawing.Point(10, 93);
+            this.testDriverPropertiesB.Name = "testDriverPropertiesB";
+            this.testDriverPropertiesB.Size = new System.Drawing.Size(382, 28);
+            this.testDriverPropertiesB.TabIndex = 12;
+            this.testDriverPropertiesB.Text = "Настройка свойств (Тест драйвера)";
+            this.testDriverPropertiesB.UseVisualStyleBackColor = true;
+            this.testDriverPropertiesB.Click += new System.EventHandler(this.testDriverPropertiesB_Click);
             // 
             // Settings
             // 
@@ -174,5 +188,6 @@
         private System.Windows.Forms.TextBox comPortTB;
         private System.Windows.Forms.TextBox exchangeSpeedTB;
         private System.Windows.Forms.Button paySrvSettingsB;
+        private System.Windows.Forms.Button testDriverPropertiesB;
     }
 }
