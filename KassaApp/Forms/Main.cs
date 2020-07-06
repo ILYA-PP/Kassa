@@ -64,7 +64,7 @@ namespace KassaApp
                 else
                     nonDiscountTB.Text = $"0.00";
                 if (product.Discount != 0)
-                    discountTB.Text = String.Format("{0:f}", product.Quantity * product.Price - product.Row_Summ);
+                    discountTB.Text = String.Format("{0:f}", product.Quantity * product.Price - (decimal)product.Row_Summ);
                 else
                     discountTB.Text = $"0.00";
             }
