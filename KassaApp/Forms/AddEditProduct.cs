@@ -17,19 +17,22 @@ namespace KassaApp
         public AddEditProduct(DataGridViewRow row)
         {
             InitializeComponent();
-            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-            Product product = Product.ProductFromRow(row);
+            Product product = Product.ProductFromRow(row); ;
             dgvRow = row;
             try
             {
-                //установка полученных данных для изменения
-                receiptDGV.Visible = true;
-                nameTB.Text = product.Name;
-                countNUD.Value = product.Quantity;
-                priceTB.Text = String.Format("{0:f}", product.Price);
-                discountTB.Text = String.Format("{0:f}", product.Discount);
-                ndsTB.Text = String.Format("{0:f}", product.NDS);
-                receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                if(product != null)
+                {
+                    //установка полученных данных для изменения
+                    receiptDGV.Visible = true;
+                    nameTB.Text = product.Name;
+                    countNUD.Value = product.Quantity;
+                    priceTB.Text = String.Format("{0:f}", product.Price);
+                    discountTB.Text = String.Format("{0:f}", product.Discount);
+                    ndsTB.Text = String.Format("{0:f}", product.NDS);
+                    receiptDGV.Rows.Add(product.Name, product.Quantity, 
+                        product.Price, product.Discount, product.NDS, product.Row_Summ);
+                }
             }
             catch (Exception ex)
             {
@@ -69,14 +72,17 @@ namespace KassaApp
                     if (dgvRow != null)
                         for(int i = 0; i< ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells.Count; i++)
                             ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells[i].Value = receiptDGV.Rows[0].Cells[i].Value;
-                    else
-                        ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                    //else
+                    //    ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
                     //если товара нет в БД, то он добавляется
                     if (db.Product.Where(p => p.Name == product.Name).FirstOrDefault() == null)
                     {
-                        //возможно добавить сообщение Нужно ли добавлять в БД?
-                        db.Product.Add(product);
-                        db.SaveChanges();
+                        if(MessageBox.Show("Добавить данный товар в БД?", "", 
+                            MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        {
+                            db.Product.Add(product);
+                            db.SaveChanges();
+                        }      
                     }
                     Close();
                 }

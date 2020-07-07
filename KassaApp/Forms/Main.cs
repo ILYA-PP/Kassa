@@ -41,7 +41,9 @@ namespace KassaApp
             double sum = 0;
             foreach (DataGridViewRow row in receiptDGV.Rows)
             {
-                receipt.Products.Add(Product.ProductFromRow(row));
+                var p = Product.ProductFromRow(row);
+                if (p != null)
+                    receipt.Products.Add(p);
                 sum += (double)row.Cells["sumCol"].Value;
             }
             if(sum == 0)
@@ -58,16 +60,19 @@ namespace KassaApp
             if(receiptDGV.SelectedRows.Count > 0)
             {
                 Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0]);
-                nameL.Text = product.Name;
-                summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}";
-                if (product.Quantity * product.Price != 0)
-                    nonDiscountTB.Text = String.Format("{0:f}", product.Quantity * product.Price);
-                else
-                    nonDiscountTB.Text = $"0.00";
-                if (product.Discount != 0)
-                    discountTB.Text = String.Format("{0:f}", product.Quantity * product.Price - (decimal)product.Row_Summ);
-                else
-                    discountTB.Text = $"0.00";
+                if(product != null)
+                {
+                    nameL.Text = product.Name;
+                    summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}";
+                    if (product.Quantity * product.Price != 0)
+                        nonDiscountTB.Text = String.Format("{0:f}", product.Quantity * product.Price);
+                    else
+                        nonDiscountTB.Text = $"0.00";
+                    if (product.Discount != 0)
+                        discountTB.Text = String.Format("{0:f}", product.Quantity * product.Price - (decimal)product.Row_Summ);
+                    else
+                        discountTB.Text = $"0.00";
+                } 
             }
         }
         //вывод времени
@@ -81,9 +86,10 @@ namespace KassaApp
             if (receiptDGV.SelectedRows.Count > 0)
             {
                 Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0]);
-                if (MessageBox.Show("Вы действительно хотите удалить строку:\n" +
-                    $"| {product.Name} | {product.Quantity} | {product.Price} | {product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
+                if (product != null && MessageBox.Show("Вы действительно хотите удалить строку:\n" +
+                    $"| {product.Name} | {product.Quantity} | {product.Price} | " +
+                    $"{product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
             }
         }
         //изменение значений на форме при добавлении и удалении записей таблицы
@@ -99,7 +105,8 @@ namespace KassaApp
             foreach (DataGridViewRow r in receiptDGV.Rows)
             {
                 product = Product.ProductFromRow(r);
-                result += product.Row_Summ;
+                if(product != null)
+                    result += product.Row_Summ;
             }
             totalForReceipt = Math.Round(result, 2);
             if(totalForReceipt != 0)
