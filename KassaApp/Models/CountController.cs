@@ -5,8 +5,11 @@ using System.Linq;using System.Windows.Forms;namespace KassaApp.Models{	cla
 				var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
 				if (prod.Quantity <= productInDB.Quantity)
 				{
-					productInDB.Quantity -= prod.Quantity;
-					db.SaveChanges();
+					if (productInDB.Type == 1)
+					{
+						productInDB.Quantity -= prod.Quantity;
+						db.SaveChanges();
+					}
 					return true;
 				}
 				else
@@ -24,12 +27,15 @@ using System.Linq;using System.Windows.Forms;namespace KassaApp.Models{	cla
 			{
 				db = new KassaDBContext();
 				var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
-				productInDB.Quantity += prod.Quantity;
-				db.SaveChanges();
+				if (productInDB.Type == 1)
+				{
+					productInDB.Quantity += prod.Quantity;
+					db.SaveChanges();
+				}
 				return true;
 			}			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
-				return false;
 			}
+			return false;
 		}	}}

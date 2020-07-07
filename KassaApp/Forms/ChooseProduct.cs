@@ -59,8 +59,11 @@ namespace KassaApp.Forms
                                     var p = Product.ProductFromRow(row);
                                     if (p.Name == product.Name)
                                     {
-                                        row.Cells["countCol"].Value = (int)row.Cells["countCol"].Value + product.Quantity;
-                                        row.Cells["sumCol"].Value = (double)row.Cells["sumCol"].Value + product.Row_Summ;
+                                        if(p.Type == 1)
+                                        {
+                                            row.Cells["countCol"].Value = (int)row.Cells["countCol"].Value + product.Quantity;
+                                            row.Cells["sumCol"].Value = (double)row.Cells["sumCol"].Value + product.Row_Summ;
+                                        }
                                         added = true;
                                     }
                                 }
