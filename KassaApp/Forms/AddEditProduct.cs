@@ -69,7 +69,7 @@ namespace KassaApp
                     product.RowSummCalculate();                    
                     //если идёт изменение, данные меняются на главной форме
                     //иначе данные добавляются на главную форму
-                    if (dgvRow != null)
+                    if (dgvRow != null && CountController.Check(product))
                         for(int i = 0; i< ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells.Count; i++)
                             ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells[i].Value = receiptDGV.Rows[0].Cells[i].Value;
                     //else

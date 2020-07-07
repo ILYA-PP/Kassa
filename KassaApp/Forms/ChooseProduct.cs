@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KassaApp.Models;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -47,12 +48,13 @@ namespace KassaApp.Forms
                     {
                         product = Product.ProductFromRow(r);
                         if (product != null)
-                            if (product.Quantity >= (int)countNUD.Value)
+                        {
+                            product.Quantity = (int)countNUD.Value;
+                            product.RowSummCalculate();
+                            if (CountController.Check(product))
                             {
-                                product.Quantity = (int)countNUD.Value;
-                                product.RowSummCalculate();
                                 bool added = false;
-                                foreach(DataGridViewRow row in ((Main)Owner).receiptDGV.Rows)
+                                foreach (DataGridViewRow row in ((Main)Owner).receiptDGV.Rows)
                                 {
                                     var p = Product.ProductFromRow(row);
                                     if (p.Name == product.Name)
@@ -60,13 +62,13 @@ namespace KassaApp.Forms
                                         row.Cells["countCol"].Value = (int)row.Cells["countCol"].Value + product.Quantity;
                                         row.Cells["sumCol"].Value = (double)row.Cells["sumCol"].Value + product.Row_Summ;
                                         added = true;
-                                    } 
+                                    }
                                 }
-                                if(!added)
+                                if (!added)
                                     ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                                Close();
                             }
-                            else
-                                MessageBox.Show("Количество выбранного товара превышает количество имеющегося товара!");
+                        }
                     }
             }
             catch(Exception ex)

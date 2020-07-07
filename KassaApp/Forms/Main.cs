@@ -89,7 +89,10 @@ namespace KassaApp
                 if (product != null && MessageBox.Show("Вы действительно хотите удалить строку:\n" +
                     $"| {product.Name} | {product.Quantity} | {product.Price} | " +
                     $"{product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
+                {
+                    receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
+                    CountController.Recover(product);
+                }
             }
         }
         //изменение значений на форме при добавлении и удалении записей таблицы

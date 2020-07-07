@@ -138,6 +138,7 @@
       <DependentUpon>Payment.cs</DependentUpon>
     </Compile>
     <Compile Include="KassaDBContext.cs" />
+    <Compile Include="Models\CountController.cs" />
     <Compile Include="Models\FiscalRegistrar.cs" />
     <Compile Include="Models\GeneralCodeForForms.cs" />
     <Compile Include="Models\Receipt.cs" />
