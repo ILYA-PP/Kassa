@@ -74,6 +74,13 @@ namespace KassaApp
                         discountTB.Text = $"0.00";
                 } 
             }
+            else
+            {
+                nameL.Text = "";
+                summL.Text = "";
+                nonDiscountTB.Text = $"0.00";
+                discountTB.Text = $"0.00";
+            }
         }
         //вывод времени
         private void timer_Tick(object sender, EventArgs e)

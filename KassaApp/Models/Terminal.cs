@@ -28,7 +28,9 @@ namespace KassaApp.Models
         {
             try
             {
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
                 string cheque = Server.GParamString("Cheque");
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 return cheque;
             }
             catch (Exception ex) 

@@ -203,18 +203,22 @@ namespace KassaApp.Models
         public void PrintXReport()
         {
             executeAndHandleError(Driver.PrintReportWithoutCleaning);
+            executeAndHandleError(Driver.CutCheck);
         }
         public void PrintXSectionReport()
         {
             executeAndHandleError(Driver.PrintDepartmentReport);
+            executeAndHandleError(Driver.CutCheck);
         }
         public void PrintXTaxReport()
         {
             executeAndHandleError(Driver.PrintTaxReport);
+            executeAndHandleError(Driver.CutCheck);
         }
         public void PrintZReport()
         {
             executeAndHandleError(Driver.PrintReportWithCleaning);
+            executeAndHandleError(Driver.CutCheck);
         }
 
         public void OpenProperties()

@@ -71,7 +71,6 @@ namespace KassaApp
                         {
                             messageL.Text = "Печать чеков";
                             CurrentReceipt.Payment = 2;
-                            CurrentReceipt.Row_Type = 1;
                             Driver.PrintCheque(CurrentReceipt);
                         }
                         else
@@ -96,7 +95,27 @@ namespace KassaApp
 
         private void cashB_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                this.Enabled = false;
+                panel1.Visible = true;
+                FiscalRegistrar Driver = new FiscalRegistrar();
+                Driver.Connect();
+                if (Driver.CheckConnect() == 0)
+                {
+                    messageL.Text = "Печать чека";
+                    CurrentReceipt.Payment = 1;
+                    Driver.PrintCheque(CurrentReceipt);
+                }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
+                panel1.Visible = false;
+                this.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace KassaApp.Models
     {
         public static void TextBoxFormat(object sender, KeyPressEventArgs e)
         {
+            var tb = (TextBox)sender;
             if (!Char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
             {
                 e.KeyChar = '\0';
@@ -20,9 +21,9 @@ namespace KassaApp.Models
                 e.KeyChar = '\0';
                 return;
             }
-            if (((TextBox)sender).Text.Split('.').Length == 2 && ((TextBox)sender).Text != "0.00" && e.KeyChar != (char)Keys.Back)
-                if (((TextBox)sender).Text.Split('.')[1].Length == 2)
-                    e.KeyChar = '\0';
+            if (tb.Text.Split('.').Length == 2 && tb.Text != "0.00" && e.KeyChar != (char)Keys.Back)
+                if (tb.Text.Split('.')[1].Length == 2)
+                    (tb.Text = String.Format("{0:f}", double.Parse(tb.Text));
         }
     }
 }

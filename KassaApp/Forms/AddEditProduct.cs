@@ -11,7 +11,6 @@ namespace KassaApp
         public AddEditProduct()
         {
             InitializeComponent();
-            //System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
             receiptDGV.Visible = false;
         }
         public AddEditProduct(DataGridViewRow row)
