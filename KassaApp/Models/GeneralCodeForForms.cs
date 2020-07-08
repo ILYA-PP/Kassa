@@ -23,7 +23,7 @@ namespace KassaApp.Models
             }
             if (tb.Text.Split('.').Length == 2 && tb.Text != "0.00" && e.KeyChar != (char)Keys.Back)
                 if (tb.Text.Split('.')[1].Length == 2)
-                    (tb.Text = String.Format("{0:f}", double.Parse(tb.Text));
+                    tb.Text = String.Format("{0:f}", double.Parse(tb.Text));
         }
     }
 }

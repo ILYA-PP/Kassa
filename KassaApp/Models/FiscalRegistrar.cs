@@ -57,10 +57,8 @@ namespace KassaApp.Models
                 Driver = new DrvFR()
                 {
                     ConnectionType = int.Parse(driverData["ConnectionType"]),
-                    ProtocolType = int.Parse(driverData["ProtocolType"]),
-                    IPAddress = driverData["IPAddress"],
-                    UseIPAddress = bool.Parse(driverData["UseIPAddress"]),
-                    TCPPort = int.Parse(driverData["TCPPort"]),
+                    ComNumber = int.Parse(driverData["ComNumber"]),
+                    BaudRate = int.Parse(driverData["BaudRate"]),
                     Timeout = int.Parse(driverData["Timeout"]),
                     Password = int.Parse(driverData["Password"])
                 };

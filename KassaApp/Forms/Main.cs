@@ -168,5 +168,15 @@ namespace KassaApp
         {
             new ChooseProduct().ShowDialog(this);
         }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (receiptDGV != null)
+                foreach (DataGridViewRow r in receiptDGV.Rows)
+                {
+                    var p = Product.ProductFromRow(r);
+                    CountController.Recover(p);
+                }
+        }
     }
 }
