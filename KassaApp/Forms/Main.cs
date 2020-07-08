@@ -37,8 +37,8 @@ namespace KassaApp
         //формирование объекта чека и переход на форму оплаты
         private void paymentB_Click(object sender, EventArgs e)
         {
-            Receipt receipt = new Receipt();
             double sum = 0;
+            Receipt receipt = new Receipt();
             foreach (DataGridViewRow row in receiptDGV.Rows)
             {
                 var p = Product.ProductFromRow(row);

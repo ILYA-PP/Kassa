@@ -16,6 +16,7 @@ namespace KassaApp
         public Settings()
         {
             InitializeComponent();
+            driverCB.SelectedIndex = 0;
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             try
             {

@@ -194,7 +194,6 @@
             this.messageL.Name = "messageL";
             this.messageL.Size = new System.Drawing.Size(597, 100);
             this.messageL.TabIndex = 0;
-            this.messageL.Text = "Идёт процесс оплаты через терминал";
             this.messageL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Payment

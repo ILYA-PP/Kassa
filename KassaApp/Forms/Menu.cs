@@ -138,6 +138,8 @@ namespace KassaApp
             if (config.AppSettings.Settings["UsedPassword"].Value == "1"
                 && config.AppSettings.Settings["Password"].Value == passwordTB.Text)
                     return true;
+            if (config.AppSettings.Settings["UsedPassword"].Value == "0")
+                return true;
             return false;
         }
     }

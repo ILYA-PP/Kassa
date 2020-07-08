@@ -5,6 +5,7 @@ namespace KassaApp
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
     using System.Windows.Forms;
 
     [Table("Product")]
@@ -71,16 +72,26 @@ namespace KassaApp
         {
             try
             {
-                Product product = new Product()
-                {
-                    Name = row.Cells["nameCol"].Value.ToString(),
-                    Quantity = int.Parse(row.Cells["countCol"].Value.ToString()),
-                    Price = decimal.Parse(row.Cells["priceCol"].Value.ToString()),
-                    Discount = double.Parse(row.Cells["discountCol"].Value.ToString()),
-                    NDS = double.Parse(row.Cells["ndsCol"].Value.ToString())
-                };
-                if(row.Cells["sumCol"].Value != null)
-                    product.Row_Summ = double.Parse(row.Cells["sumCol"].Value.ToString());
+                //version1
+                //Product product = new Product()
+                //{
+                //    Name = row.Cells["nameCol"].Value.ToString(),
+                //    Quantity = int.Parse(row.Cells["countCol"].Value.ToString()),
+                //    Price = decimal.Parse(row.Cells["priceCol"].Value.ToString()),
+                //    Discount = double.Parse(row.Cells["discountCol"].Value.ToString()),
+                //    NDS = double.Parse(row.Cells["ndsCol"].Value.ToString())
+                //};
+                //if(row.Cells["sumCol"].Value != null)
+                //    product.Row_Summ = double.Parse(row.Cells["sumCol"].Value.ToString());
+                //version1
+
+                //version2
+                var db = new KassaDBContext();
+                string name = row.Cells["nameCol"].Value.ToString();
+                int count = int.Parse(row.Cells["countCol"].Value.ToString());
+                var product = db.Product.Where(p => p.Name == name).FirstOrDefault();
+                product.Quantity = count;
+                //version2
                 product.RowSummCalculate();
                 return product;
             }

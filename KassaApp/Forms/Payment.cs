@@ -57,6 +57,7 @@ namespace KassaApp
         {
             try
             {
+                messageL.Text = "Идёт процесс оплаты через терминал"; 
                 this.Enabled = false;
                 panel1.Visible = true;
                 Terminal terminal = new Terminal();
@@ -97,6 +98,7 @@ namespace KassaApp
         {
             try
             {
+                messageL.Text = "Оплата наличными";
                 this.Enabled = false;
                 panel1.Visible = true;
                 FiscalRegistrar Driver = new FiscalRegistrar();
