@@ -112,7 +112,6 @@ namespace KassaApp.Models
                 int state = Driver.ECRMode;
                 if (state == 2 || state == 4 || state == 7 || state == 9)
                 {
-                    double result = 0;
                     Driver.CheckType = 0;
                     //Открытие чека
                     executeAndHandleError(Driver.OpenCheck);
@@ -130,7 +129,6 @@ namespace KassaApp.Models
                         Driver.StringForPrinting = p.Name;
                         Driver.Price = (decimal)(p.Price - Math.Round(p.Price * (decimal)p.Discount / 100, 2));
                         Driver.Quantity = p.Quantity;
-                        result += p.Row_Summ;
                         //Driver.TaxValueEnabled = false;
                         Driver.Department = p.Department;
                         Driver.PaymentTypeSign = 4;
@@ -150,12 +148,12 @@ namespace KassaApp.Models
                     }
                     if (cheque.Payment == 1)
                     {
-                        Driver.Summ1 = (decimal)result;
+                        Driver.Summ1 = (decimal)cheque.Summa;
                         Driver.Summ2 = 0;
                     }
                     else if (cheque.Payment == 2)
                     {
-                        Driver.Summ2 = (decimal)result;
+                        Driver.Summ2 = (decimal)cheque.Summa;
                         Driver.Summ1 = 0;
                     }
                     Driver.Summ3 = 0;

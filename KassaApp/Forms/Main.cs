@@ -52,7 +52,7 @@ namespace KassaApp
                 return;
             }
             receipt.Summa = sum;
-            new Payment(receipt).ShowDialog();
+            new Payment(receipt).ShowDialog(this);
         }
         //изменение значений на форме при выборе строки таблицы
         private void receiptDGV_SelectionChanged(object sender, EventArgs e)

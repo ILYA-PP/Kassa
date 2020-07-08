@@ -69,7 +69,7 @@ namespace KassaApp.Forms
                                 }
                                 if (!added)
                                     ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
-                                Close();
+                                //Close();
                             }
                         }
                     }

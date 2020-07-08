@@ -73,6 +73,8 @@ namespace KassaApp
                             messageL.Text = "Печать чеков";
                             CurrentReceipt.Payment = 2;
                             Driver.PrintCheque(CurrentReceipt);
+                            ((Main)Owner).receiptDGV.Rows.Clear();
+                            Close();
                         }
                         else
                         {
@@ -107,7 +109,10 @@ namespace KassaApp
                 {
                     messageL.Text = "Печать чека";
                     CurrentReceipt.Payment = 1;
+                    CurrentReceipt.Summa = double.Parse(moneyTB.Text);
                     Driver.PrintCheque(CurrentReceipt);
+                    ((Main)Owner).receiptDGV.Rows.Clear();
+                    Close();
                 }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
