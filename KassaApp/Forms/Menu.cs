@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -21,6 +22,11 @@ namespace KassaApp
         //переход на главную форму
         private void регистрацияПродажToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
             new Main().Show();
         }
         //переход на форму настройки связи
@@ -31,6 +37,11 @@ namespace KassaApp
 
         private void отчётыПоБанковскимКартамToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
             Terminal terminal = new Terminal();
             if (terminal.IsEnabled())
             {
@@ -51,6 +62,11 @@ namespace KassaApp
 
         private void zотчётсГашениемToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
             FiscalRegistrar fr = new FiscalRegistrar();
             fr.Connect();
             if (fr.CheckConnect() == 0)
@@ -64,6 +80,11 @@ namespace KassaApp
 
         private void хотчётПоНалогамToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
             FiscalRegistrar fr = new FiscalRegistrar();
             fr.Connect();
             if (fr.CheckConnect() == 0)
@@ -77,6 +98,11 @@ namespace KassaApp
 
         private void хотчётПоСекциямToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
             FiscalRegistrar fr = new FiscalRegistrar();
             fr.Connect();
             if (fr.CheckConnect() == 0)
@@ -90,16 +116,29 @@ namespace KassaApp
 
         private void хотчётбезГашенияToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
             FiscalRegistrar fr = new FiscalRegistrar();
             fr.Connect();
             if (fr.CheckConnect() == 0)
             {
                 fr.PrintXReport();
-                
+
                 fr.Disconnect();
             }
             else
                 MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
+        }
+        private bool CheckPassword()
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            if (config.AppSettings.Settings["UsedPassword"].Value == "1"
+                && config.AppSettings.Settings["Password"].Value == passwordTB.Text)
+                    return true;
+            return false;
         }
     }
 }

@@ -32,13 +32,13 @@
             this.driverCB = new System.Windows.Forms.ComboBox();
             this.usePasswordCheckB = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkConnectB = new System.Windows.Forms.Button();
             this.registrSettingsB = new System.Windows.Forms.Button();
             this.comPortTB = new System.Windows.Forms.TextBox();
             this.exchangeSpeedTB = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.paySrvSettingsB = new System.Windows.Forms.Button();
-            this.testDriverPropertiesB = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,10 +54,12 @@
             // 
             // driverCB
             // 
+            this.driverCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.driverCB.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.driverCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.driverCB.FormattingEnabled = true;
             this.driverCB.Items.AddRange(new object[] {
-            "ШТРИХ"});
+            "ШТРИХ-М"});
             this.driverCB.Location = new System.Drawing.Point(95, 12);
             this.driverCB.Name = "driverCB";
             this.driverCB.Size = new System.Drawing.Size(315, 28);
@@ -73,10 +75,11 @@
             this.usePasswordCheckB.TabIndex = 4;
             this.usePasswordCheckB.Text = "Использовать пароль доступа";
             this.usePasswordCheckB.UseVisualStyleBackColor = true;
+            this.usePasswordCheckB.CheckedChanged += new System.EventHandler(this.usePasswordCheckB_CheckedChanged);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.testDriverPropertiesB);
+            this.groupBox1.Controls.Add(this.checkConnectB);
             this.groupBox1.Controls.Add(this.registrSettingsB);
             this.groupBox1.Controls.Add(this.comPortTB);
             this.groupBox1.Controls.Add(this.exchangeSpeedTB);
@@ -85,10 +88,21 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox1.Location = new System.Drawing.Point(12, 76);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(398, 135);
+            this.groupBox1.Size = new System.Drawing.Size(398, 129);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Регистратор";
+            // 
+            // checkConnectB
+            // 
+            this.checkConnectB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkConnectB.Location = new System.Drawing.Point(10, 93);
+            this.checkConnectB.Name = "checkConnectB";
+            this.checkConnectB.Size = new System.Drawing.Size(382, 28);
+            this.checkConnectB.TabIndex = 12;
+            this.checkConnectB.Text = "Проверка связи";
+            this.checkConnectB.UseVisualStyleBackColor = true;
+            this.checkConnectB.Click += new System.EventHandler(this.checkConnectB_Click);
             // 
             // registrSettingsB
             // 
@@ -98,6 +112,7 @@
             this.registrSettingsB.TabIndex = 10;
             this.registrSettingsB.Text = "Настройка";
             this.registrSettingsB.UseVisualStyleBackColor = true;
+            this.registrSettingsB.Click += new System.EventHandler(this.registrSettingsB_Click);
             // 
             // comPortTB
             // 
@@ -146,17 +161,6 @@
             this.paySrvSettingsB.Text = "Настройка СО (сервера оплат)";
             this.paySrvSettingsB.UseVisualStyleBackColor = true;
             // 
-            // testDriverPropertiesB
-            // 
-            this.testDriverPropertiesB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.testDriverPropertiesB.Location = new System.Drawing.Point(10, 93);
-            this.testDriverPropertiesB.Name = "testDriverPropertiesB";
-            this.testDriverPropertiesB.Size = new System.Drawing.Size(382, 28);
-            this.testDriverPropertiesB.TabIndex = 12;
-            this.testDriverPropertiesB.Text = "Настройка свойств (Тест драйвера)";
-            this.testDriverPropertiesB.UseVisualStyleBackColor = true;
-            this.testDriverPropertiesB.Click += new System.EventHandler(this.testDriverPropertiesB_Click);
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,6 +192,6 @@
         private System.Windows.Forms.TextBox comPortTB;
         private System.Windows.Forms.TextBox exchangeSpeedTB;
         private System.Windows.Forms.Button paySrvSettingsB;
-        private System.Windows.Forms.Button testDriverPropertiesB;
+        private System.Windows.Forms.Button checkConnectB;
     }
 }

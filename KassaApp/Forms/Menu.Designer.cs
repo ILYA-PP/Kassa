@@ -181,6 +181,7 @@
             this.внесениеВыплатаНаличныхToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.внесениеНаличныхToolStripMenuItem,
             this.выплатаНаличныхToolStripMenuItem});
+            this.внесениеВыплатаНаличныхToolStripMenuItem.Enabled = false;
             this.внесениеВыплатаНаличныхToolStripMenuItem.Name = "внесениеВыплатаНаличныхToolStripMenuItem";
             this.внесениеВыплатаНаличныхToolStripMenuItem.Size = new System.Drawing.Size(255, 24);
             this.внесениеВыплатаНаличныхToolStripMenuItem.Text = "Внесение/Выплата наличных";

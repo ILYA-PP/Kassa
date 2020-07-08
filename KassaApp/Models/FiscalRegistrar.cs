@@ -11,7 +11,6 @@ namespace KassaApp.Models
         //проверка состояния ККТ перед печатью
         public void prepareCheque()
         {
-            Driver.Password = 30;
             executeAndHandleError(Driver.WaitForPrinting);
             executeAndHandleError(Driver.GetECRStatus);
             switch (Driver.ECRMode)
@@ -117,7 +116,6 @@ namespace KassaApp.Models
                     Driver.CheckType = 0;
                     //Открытие чека
                     executeAndHandleError(Driver.OpenCheck);
-                    Driver.Password = 30;
                     //if (cheque.Phone != null)
                     //    Driver.CustomerEmail = cheque.Phone;
                     //else if (cheque.Email != null)
