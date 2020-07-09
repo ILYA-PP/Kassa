@@ -59,7 +59,7 @@ namespace KassaApp.Forms
                                 {
                                     if (p.Name == product.Name)
                                     {
-                                        if(p.Type == 1)
+                                        if (p.Type == 1)
                                         {
                                             p.Quantity += product.Quantity;
                                             p.Row_Summ += product.Row_Summ;
@@ -78,6 +78,8 @@ namespace KassaApp.Forms
                             }
                         }
                     }
+                else
+                    MessageBox.Show("Строка не выбрана!");
             }
             catch(Exception ex)
             {

@@ -144,5 +144,24 @@ namespace KassaApp
             {
                 MessageBox.Show(ex.Message);
             }
-    }   }
+    }
+
+        private void Payment_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(MessageBox.Show("Продолжить работу с этими позициями?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                ((Main)Owner).receipt = new Receipt();
+                ((Main)Owner).receiptDGV.Rows.Clear();
+                CountController.Reconciliation();
+            }
+            else
+            {
+                var db = new KassaDBContext();
+                var mas = db.Purchase.Where(p => p.Paid == false);
+                foreach (Purchase p in mas)
+                    db.Purchase.Remove(p);
+                db.SaveChanges();
+            }
+        }
+    }
 }
