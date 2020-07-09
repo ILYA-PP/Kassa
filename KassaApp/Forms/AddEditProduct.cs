@@ -7,7 +7,7 @@ namespace KassaApp
 {
     public partial class AddEditProduct : Form
     {
-        private DataGridViewRow dgvRow;
+        private Product OldProduct;
         public AddEditProduct()
         {
             InitializeComponent();
@@ -16,21 +16,20 @@ namespace KassaApp
         public AddEditProduct(DataGridViewRow row)
         {
             InitializeComponent();
-            Product product = Product.ProductFromRow(row); ;
-            dgvRow = row;
+            OldProduct = Product.ProductFromRow(row, null);
             try
             {
-                if(product != null)
+                if(OldProduct != null)
                 {
                     //установка полученных данных для изменения
                     receiptDGV.Visible = true;
-                    nameTB.Text = product.Name;
-                    countNUD.Value = product.Quantity;
-                    priceTB.Text = String.Format("{0:f}", product.Price);
-                    discountTB.Text = String.Format("{0:f}", product.Discount);
-                    ndsTB.Text = String.Format("{0:f}", product.NDS);
-                    receiptDGV.Rows.Add(product.Name, product.Quantity, 
-                        product.Price, product.Discount, product.NDS, product.Row_Summ);
+                    nameTB.Text = OldProduct.Name;
+                    countNUD.Value = OldProduct.Quantity;
+                    priceTB.Text = String.Format("{0:f}", OldProduct.Price);
+                    discountTB.Text = String.Format("{0:f}", OldProduct.Discount);
+                    ndsTB.Text = String.Format("{0:f}", OldProduct.NDS);
+                    receiptDGV.Rows.Add(OldProduct.Name, OldProduct.Quantity,
+                        OldProduct.Price, OldProduct.Discount, OldProduct.NDS, OldProduct.Row_Summ);
                 }
             }
             catch (Exception ex)
@@ -48,7 +47,7 @@ namespace KassaApp
         {
             try
             {
-                KassaDBContext db = new KassaDBContext();
+                var db = new KassaDBContext();
                 if (nameTB.Text != "" && countNUD.Value != 0 && priceTB.Text != ""
                     && discountTB.Text != "" && ndsTB.Text != "")
                 {
@@ -65,12 +64,18 @@ namespace KassaApp
                         product.Type = 1;
                     else if (serviceRB.Checked)
                         product.Type = 2;
-                    product.RowSummCalculate();                    
+                    product.RowSummCalculate();
                     //если идёт изменение, данные меняются на главной форме
                     //иначе данные добавляются на главную форму
-                    if (dgvRow != null && CountController.Check(product))
-                        for(int i = 0; i< ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells.Count; i++)
-                            ((Main)Owner).receiptDGV.Rows[dgvRow.Index].Cells[i].Value = receiptDGV.Rows[0].Cells[i].Value;
+                    product.Quantity -= OldProduct.Quantity; 
+                    if (CountController.Check(product))
+                    {
+                        product.Quantity += OldProduct.Quantity;
+                        int index = ((Main)Owner).receipt.Products.IndexOf(
+                            ((Main)Owner).receipt.Products.Where(p => p.Name == product.Name).FirstOrDefault());
+                        ((Main)Owner).receipt.Products[index] = product;
+                        ((Main)Owner).DGV_Refresh();
+                    }    
                     //else
                     //    ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
                     //если товара нет в БД, то он добавляется

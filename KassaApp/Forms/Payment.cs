@@ -39,10 +39,10 @@ namespace KassaApp
             switch (keyData)
             {
                 case Keys.F5:; break;
-                case Keys.Escape: cancelB_Click(null,null); break;
+                case Keys.Escape: cancelB_Click(null, null); break;
                 case Keys.F6:; break;
                 case Keys.F1:; break;
-                case Keys.Enter: cashB_Click(null,null); break;
+                case Keys.Enter: cashB_Click(null, null); break;
                 case Keys.Multiply: nonCashB_Click(null, null); break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -57,7 +57,7 @@ namespace KassaApp
         {
             try
             {
-                messageL.Text = "Идёт процесс оплаты через терминал"; 
+                messageL.Text = "Идёт процесс оплаты через терминал";
                 this.Enabled = false;
                 panel1.Visible = true;
                 Terminal terminal = new Terminal();
@@ -74,6 +74,7 @@ namespace KassaApp
                             CurrentReceipt.Payment = 2;
                             Driver.PrintCheque(CurrentReceipt);
                             ((Main)Owner).receiptDGV.Rows.Clear();
+                            MarkAsPaid();
                             Close();
                         }
                         else
@@ -112,6 +113,7 @@ namespace KassaApp
                     CurrentReceipt.Summa = double.Parse(moneyTB.Text);
                     Driver.PrintCheque(CurrentReceipt);
                     ((Main)Owner).receiptDGV.Rows.Clear();
+                    MarkAsPaid();
                     Close();
                 }
                 else
@@ -124,5 +126,23 @@ namespace KassaApp
                 MessageBox.Show(ex.Message);
             }
         }
-    }
+
+        private void MarkAsPaid()
+        {
+            try
+            {
+                var db = new KassaDBContext();
+                foreach (Product p in CurrentReceipt.Products)
+                {
+                    int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
+                    var purchase = db.Purchase.Where(pur => pur.ProductId == id).FirstOrDefault();
+                    purchase.Paid = true;
+                }
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+    }   }
 }

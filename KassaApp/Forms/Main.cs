@@ -8,7 +8,7 @@ namespace KassaApp
 {
     public partial class Main : Form
     {
-        private double totalForReceipt = 0;
+        public Receipt receipt = new Receipt();
         public Main()
         {
             InitializeComponent();
@@ -37,21 +37,27 @@ namespace KassaApp
         //формирование объекта чека и переход на форму оплаты
         private void paymentB_Click(object sender, EventArgs e)
         {
-            double sum = 0;
-            Receipt receipt = new Receipt();
-            foreach (DataGridViewRow row in receiptDGV.Rows)
-            {
-                var p = Product.ProductFromRow(row);
-                if (p != null)
-                    receipt.Products.Add(p);
-                sum += (double)row.Cells["sumCol"].Value;
-            }
-            if(sum == 0)
+            if (receipt.Summa == 0)
             {
                 MessageBox.Show("Сумма чека равна 0. Оплата невозможна!");
                 return;
             }
-            receipt.Summa = sum;
+            var db = new KassaDBContext();
+            Purchase purchase;
+            foreach(Product p in receipt.Products)
+            {
+                int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
+                purchase = new Purchase() 
+                { 
+                    ProductId = id,
+                    Count = p.Quantity,
+                    Summa = (decimal)p.Row_Summ,
+                    Date = DateTime.Now,
+                    Paid = false
+                };
+                db.Purchase.Add(purchase);
+            }
+            db.SaveChanges();
             new Payment(receipt).ShowDialog(this);
         }
         //изменение значений на форме при выборе строки таблицы
@@ -59,7 +65,7 @@ namespace KassaApp
         {
             if(receiptDGV.SelectedRows.Count > 0)
             {
-                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0]);
+                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt);
                 if(product != null)
                 {
                     nameL.Text = product.Name;
@@ -92,39 +98,26 @@ namespace KassaApp
         {
             if (receiptDGV.SelectedRows.Count > 0)
             {
-                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0]);
+                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt);
                 if (product != null && MessageBox.Show("Вы действительно хотите удалить строку:\n" +
                     $"| {product.Name} | {product.Quantity} | {product.Price} | " +
                     $"{product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    receipt.Products.Remove(product);
+                    receipt.CalculateSumm();
                     receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
                     CountController.Recover(product);
                 }
             }
         }
         //изменение значений на форме при добавлении и удалении записей таблицы
-        private void rowCount_Changed(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            rowCount_Changed();
-        }
-        //изменение значений на форме при добавлении и удалении записей таблицы
         private void rowCount_Changed()
         {
-            Product product;
-            double result = 0;
-            foreach (DataGridViewRow r in receiptDGV.Rows)
-            {
-                product = Product.ProductFromRow(r);
-                if(product != null)
-                    result += product.Row_Summ;
-            }
-            totalForReceipt = Math.Round(result, 2);
-            if(totalForReceipt != 0)
-                resultL.Text = String.Format("{0:f}", totalForReceipt);
+            receipt.CalculateSumm();
+            if(receipt.Summa != 0)
+                resultL.Text = String.Format("{0:f}", receipt.Summa);
             else
-            {
-                resultL.Text = $"0.00";
-            }
+                resultL.Text = "0.00";
         }
         //изменение значений на форме при добавлении записей таблицы
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -171,12 +164,16 @@ namespace KassaApp
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (receiptDGV != null)
-                foreach (DataGridViewRow r in receiptDGV.Rows)
-                {
-                    var p = Product.ProductFromRow(r);
+            if (receipt != null && receipt.Products != null)
+                foreach (var p in receipt.Products)
                     CountController.Recover(p);
-                }
+        }
+
+        public void DGV_Refresh()
+        {
+            receiptDGV.Rows.Clear();
+            foreach (Product p in receipt.Products)
+                Product.RowFromProduct(p, receiptDGV);
         }
     }
 }

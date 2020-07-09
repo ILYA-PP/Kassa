@@ -13,6 +13,7 @@ namespace KassaApp
         }
 
         public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Purchase> Purchase { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

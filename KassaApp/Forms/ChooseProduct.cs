@@ -7,11 +7,10 @@ namespace KassaApp.Forms
 {
     public partial class ChooseProduct : Form
     {
-        private KassaDBContext db;
+        private KassaDBContext db = new KassaDBContext();
         public ChooseProduct()
         {
             InitializeComponent();
-            db = new KassaDBContext();
             ViewResult(db.Product);
         }
 
@@ -46,7 +45,7 @@ namespace KassaApp.Forms
                 if (productsDGV.SelectedRows.Count > 0)
                     foreach (DataGridViewRow r in productsDGV.SelectedRows)
                     {
-                        product = Product.ProductFromRow(r);
+                        product = Product.ProductFromRow(r, null);
                         if (product != null)
                         {
                             product.Quantity = (int)countNUD.Value;
@@ -54,21 +53,24 @@ namespace KassaApp.Forms
                             if (CountController.Check(product))
                             {
                                 bool added = false;
-                                foreach (DataGridViewRow row in ((Main)Owner).receiptDGV.Rows)
+                                foreach (Product p in ((Main)Owner).receipt.Products)
                                 {
-                                    var p = Product.ProductFromRow(row);
                                     if (p.Name == product.Name)
                                     {
                                         if(p.Type == 1)
                                         {
-                                            row.Cells["countCol"].Value = (int)row.Cells["countCol"].Value + product.Quantity;
-                                            row.Cells["sumCol"].Value = (double)row.Cells["sumCol"].Value + product.Row_Summ;
+                                            p.Quantity += product.Quantity;
+                                            p.Row_Summ += product.Row_Summ;
+                                            ((Main)Owner).DGV_Refresh();
                                         }
                                         added = true;
                                     }
                                 }
                                 if (!added)
-                                    ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                                {
+                                    ((Main)Owner).receipt.Products.Add(product);
+                                    ((Main)Owner).DGV_Refresh();
+                                }
                                 //Close();
                             }
                         }

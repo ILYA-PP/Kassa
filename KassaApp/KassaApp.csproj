@@ -141,6 +141,7 @@
     <Compile Include="Models\CountController.cs" />
     <Compile Include="Models\FiscalRegistrar.cs" />
     <Compile Include="Models\GeneralCodeForForms.cs" />
+    <Compile Include="Models\Purchase.cs" />
     <Compile Include="Models\Receipt.cs" />
     <Compile Include="Models\Terminal.cs" />
     <Compile Include="Models\TransferDataBetweenForms.cs" />

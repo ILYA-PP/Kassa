@@ -1,7 +1,16 @@
 ﻿using System;
-using System.Linq;using System.Windows.Forms;namespace KassaApp.Models{	class CountController	{		private static KassaDBContext db;		public static bool Check(Product prod)		{			try
+using System.Linq;
+using System.Windows.Forms;
+
+namespace KassaApp.Models
+{
+	class CountController
+	{
+		public static bool Check(Product prod)
+		{
+			try
 			{
-				db = new KassaDBContext();
+				var db = new KassaDBContext();
 				var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
 				if (prod.Quantity <= productInDB.Quantity)
 				{
@@ -18,14 +27,19 @@ using System.Linq;using System.Windows.Forms;namespace KassaApp.Models{	cla
 									$"\nТовар: {productInDB.Name}" +
 									$"\nОстаток: {productInDB.Quantity}");
 				}
-			}			catch(Exception ex)
+			}
+			catch(Exception ex)
 			{
 				MessageBox.Show(ex.Message);
-			}			return false;		}		public static bool Recover(Product prod)
+			}
+			return false;
+		}
+
+		public static bool Recover(Product prod)
 		{
 			try
 			{
-				db = new KassaDBContext();
+				var db = new KassaDBContext();
 				var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
 				if (productInDB.Type == 1)
 				{
@@ -33,9 +47,12 @@ using System.Linq;using System.Windows.Forms;namespace KassaApp.Models{	cla
 					db.SaveChanges();
 				}
 				return true;
-			}			catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}
 			return false;
-		}	}}
+		}
+	}
+}

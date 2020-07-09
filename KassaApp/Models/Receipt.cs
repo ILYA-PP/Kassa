@@ -25,5 +25,13 @@ namespace KassaApp.Models
         public double Discount { get; set; }
         public int Payment { get; set; }
         public List<Product> Products { get { return products; } set { products = value; } }
+
+        public void CalculateSumm()
+        {
+            Summa = 0;
+            if (Products != null)
+                foreach (var p in Products)
+                    Summa += p.Row_Summ;
+        }
     }
 }

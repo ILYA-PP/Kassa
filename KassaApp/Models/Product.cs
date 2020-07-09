@@ -1,5 +1,6 @@
 namespace KassaApp
 {
+    using KassaApp.Models;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -26,7 +27,7 @@ namespace KassaApp
             {
                 if (price == 0)
                 {
-                    MessageBox.Show("Скидка не может быть больше 100%");
+                    MessageBox.Show("Цена не может быть равной 0!");
                     price = 0.01M;
                 }
                 return price;
@@ -68,37 +69,39 @@ namespace KassaApp
 
         public int Type { get; set; }
         public int Quantity { get; set; }
-        public static Product ProductFromRow(DataGridViewRow row)
+        public static Product ProductFromRow(DataGridViewRow row, Receipt r)
         {
             try
             {
-                //version1
-                //Product product = new Product()
-                //{
-                //    Name = row.Cells["nameCol"].Value.ToString(),
-                //    Quantity = int.Parse(row.Cells["countCol"].Value.ToString()),
-                //    Price = decimal.Parse(row.Cells["priceCol"].Value.ToString()),
-                //    Discount = double.Parse(row.Cells["discountCol"].Value.ToString()),
-                //    NDS = double.Parse(row.Cells["ndsCol"].Value.ToString())
-                //};
-                //if(row.Cells["sumCol"].Value != null)
-                //    product.Row_Summ = double.Parse(row.Cells["sumCol"].Value.ToString());
-                //version1
-
-                //version2
-                var db = new KassaDBContext();
-                string name = row.Cells["nameCol"].Value.ToString();
-                int count = int.Parse(row.Cells["countCol"].Value.ToString());
-                var product = db.Product.Where(p => p.Name == name).FirstOrDefault();
-                product.Quantity = count;
-                //version2
-                product.RowSummCalculate();
+                Product product;
+                if (r != null)
+                    product = r.Products.Where(p => p.Name == row.Cells["nameCol"].Value.ToString()).FirstOrDefault();
+                else
+                {
+                    var db = new KassaDBContext();
+                    string name = row.Cells["nameCol"].Value.ToString();
+                    int count = int.Parse(row.Cells["countCol"].Value.ToString());
+                    product = db.Product.Where(p => p.Name == name).FirstOrDefault();
+                    product.Quantity = count;
+                    product.RowSummCalculate();
+                }
                 return product;
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 return null;
+            }
+        }
+        public static void RowFromProduct(Product p, DataGridView dgv)
+        {
+            try
+            {
+                dgv.Rows.Add(p.Name, p.Quantity, p.Price, p.Discount, p.NDS, p.Row_Summ);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
