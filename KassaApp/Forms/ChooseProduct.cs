@@ -7,23 +7,25 @@ namespace KassaApp.Forms
 {
     public partial class ChooseProduct : Form
     {
-        private KassaDBContext db = new KassaDBContext();
+        
         public ChooseProduct()
         {
             InitializeComponent();
-            ViewResult(db.Product);
+            ViewResult();
         }
 
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
+            KassaDBContext db = new KassaDBContext();
             var products = db.Product.Where(p => p.Name.Contains(searchTB.Text));
-            ViewResult(products);
+            ViewResult();
         }
 
-        private void ViewResult(IQueryable<Product> ps)
+        private void ViewResult()
         {
+            KassaDBContext db = new KassaDBContext();
             productsDGV.Rows.Clear();
-            foreach (Product p in ps)
+            foreach (Product p in db.Product)
                 productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                     p.Discount, p.NDS, p.Row_Summ);
         }
@@ -71,6 +73,7 @@ namespace KassaApp.Forms
                                     ((Main)Owner).receipt.Products.Add(product);
                                     ((Main)Owner).DGV_Refresh();
                                 }
+                                ViewResult();
                                 //Close();
                             }
                         }

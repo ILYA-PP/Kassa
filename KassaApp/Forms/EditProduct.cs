@@ -5,15 +5,10 @@ using System.Windows.Forms;
 
 namespace KassaApp
 {
-    public partial class AddEditProduct : Form
+    public partial class EditProduct : Form
     {
         private Product OldProduct;
-        public AddEditProduct()
-        {
-            InitializeComponent();
-            receiptDGV.Visible = false;
-        }
-        public AddEditProduct(DataGridViewRow row)
+        public EditProduct(DataGridViewRow row)
         {
             InitializeComponent();
             OldProduct = Product.ProductFromRow(row, null);
@@ -23,11 +18,8 @@ namespace KassaApp
                 {
                     //установка полученных данных для изменения
                     receiptDGV.Visible = true;
-                    nameTB.Text = OldProduct.Name;
                     countNUD.Value = OldProduct.Quantity;
-                    priceTB.Text = String.Format("{0:f}", OldProduct.Price);
                     discountTB.Text = String.Format("{0:f}", OldProduct.Discount);
-                    ndsTB.Text = String.Format("{0:f}", OldProduct.NDS);
                     receiptDGV.Rows.Add(OldProduct.Name, OldProduct.Quantity,
                         OldProduct.Price, OldProduct.Discount, OldProduct.NDS, OldProduct.Row_Summ);
                 }
@@ -48,22 +40,18 @@ namespace KassaApp
             try
             {
                 var db = new KassaDBContext();
-                if (nameTB.Text != "" && countNUD.Value != 0 && priceTB.Text != ""
-                    && discountTB.Text != "" && ndsTB.Text != "")
+                if (countNUD.Value != 0 && discountTB.Text != "")
                 {
                     Product product = new Product()
                     {
-                        Name = nameTB.Text,
+                        Name = OldProduct.Name,
                         Quantity = (int)countNUD.Value,
-                        Price = decimal.Parse(priceTB.Text),
+                        Price = OldProduct.Price,
                         Discount = double.Parse(discountTB.Text),
-                        NDS = double.Parse(ndsTB.Text),
-                        Department = (int)departmentNUD.Value
+                        NDS = OldProduct.NDS,
+                        Department = (int)departmentNUD.Value,
+                        Type = OldProduct.Type
                     };
-                    if (productRB.Checked)
-                        product.Type = 1;
-                    else if (serviceRB.Checked)
-                        product.Type = 2;
                     product.RowSummCalculate();
                     //если идёт изменение, данные меняются на главной форме
                     //иначе данные добавляются на главную форму
@@ -76,18 +64,6 @@ namespace KassaApp
                         ((Main)Owner).receipt.Products[index] = product;
                         ((Main)Owner).DGV_Refresh();
                     }    
-                    //else
-                    //    ((Main)Owner).receiptDGV.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
-                    //если товара нет в БД, то он добавляется
-                    if (db.Product.Where(p => p.Name == product.Name).FirstOrDefault() == null)
-                    {
-                        if(MessageBox.Show("Добавить данный товар в БД?", "", 
-                            MessageBoxButtons.OKCancel) == DialogResult.OK)
-                        {
-                            db.Product.Add(product);
-                            db.SaveChanges();
-                        }      
-                    }
                     Close();
                 }
                 else
@@ -105,8 +81,6 @@ namespace KassaApp
             {
                 case Keys.F10: discountB_Click(null, null); break;
                 case Keys.F9: departmentB_Click(null, null); break;
-                case Keys.F8: priceB_Click(null, null); break;
-                case Keys.F7: ndsB_Click(null, null); break;
                 case Keys.Multiply: countB_Click(null, null); break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -131,27 +105,14 @@ namespace KassaApp
         {
             departmentNUD.Focus();
         }
-
-        private void priceB_Click(object sender, EventArgs e)
-        {
-            priceTB.Focus();
-        }
-
-        private void ndsB_Click(object sender, EventArgs e)
-        {
-            ndsTB.Focus();
-        }
         private void textBoxs_TextChange(object sender, EventArgs e)
         {
             if (receiptDGV.Rows.Count > 0)
             {
-                receiptDGV.Rows[0].Cells["nameCol"].Value = nameTB.Text;
                 receiptDGV.Rows[0].Cells["countCol"].Value = countNUD.Value;
-                receiptDGV.Rows[0].Cells["priceCol"].Value = priceTB.Text;
-                receiptDGV.Rows[0].Cells["ndsCol"].Value = ndsTB.Text;
                 receiptDGV.Rows[0].Cells["discountCol"].Value = discountTB.Text;
-                receiptDGV.Rows[0].Cells["sumCol"].Value = Math.Round((double)countNUD.Value * double.Parse(priceTB.Text)
-                    - (double)countNUD.Value * double.Parse(priceTB.Text) * double.Parse(discountTB.Text) / 100, 2);
+                receiptDGV.Rows[0].Cells["sumCol"].Value = Math.Round((double)countNUD.Value * (double)OldProduct.Price
+                    - (double)countNUD.Value * (double)OldProduct.Price * double.Parse(discountTB.Text) / 100, 2);
             }
             if (sender.GetType() == typeof(TextBox) && ((TextBox)sender).Text.Length == 0)
                 ((TextBox)sender).Text = "0.00";

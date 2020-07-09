@@ -29,10 +29,10 @@ namespace KassaApp
         {
             //Если выбрана строка, то изменение
             //иначе добавление
-            if(receiptDGV.SelectedRows.Count > 0)
-                new AddEditProduct(receiptDGV.SelectedRows[0]).ShowDialog(this);
+            if (receiptDGV.SelectedRows.Count > 0)
+                new EditProduct(receiptDGV.SelectedRows[0]).ShowDialog(this);
             else
-                new AddEditProduct().ShowDialog(this);
+                MessageBox.Show("Строка не выбрана!");
         }
         //формирование объекта чека и переход на форму оплаты
         private void paymentB_Click(object sender, EventArgs e)

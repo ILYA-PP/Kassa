@@ -1,6 +1,6 @@
 ﻿namespace KassaApp
 {
-    partial class AddEditProduct
+    partial class EditProduct
     {
         /// <summary>
         /// Required designer variable.
@@ -28,23 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.ndsTB = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.discountTB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.addProductB = new System.Windows.Forms.Button();
             this.countNUD = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.priceTB = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.nameTB = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.countB = new System.Windows.Forms.Button();
             this.discountB = new System.Windows.Forms.Button();
-            this.priceB = new System.Windows.Forms.Button();
-            this.ndsB = new System.Windows.Forms.Button();
             this.departmentB = new System.Windows.Forms.Button();
             this.departmentNUD = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
@@ -56,40 +48,15 @@
             this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cancelB = new System.Windows.Forms.Button();
-            this.productRB = new System.Windows.Forms.RadioButton();
-            this.serviceRB = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
             this.SuspendLayout();
             // 
-            // ndsTB
-            // 
-            this.ndsTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ndsTB.Location = new System.Drawing.Point(399, 156);
-            this.ndsTB.Name = "ndsTB";
-            this.ndsTB.Size = new System.Drawing.Size(173, 26);
-            this.ndsTB.TabIndex = 32;
-            this.ndsTB.Text = "0.00";
-            this.ndsTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.ndsTB.TextChanged += new System.EventHandler(this.textBoxs_TextChange);
-            this.ndsTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
-            this.ndsTB.Leave += new System.EventHandler(this.textBoxs_Leave);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label10.Location = new System.Drawing.Point(399, 133);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(47, 20);
-            this.label10.TabIndex = 31;
-            this.label10.Text = "НДС";
-            // 
             // discountTB
             // 
             this.discountTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.discountTB.Location = new System.Drawing.Point(12, 156);
+            this.discountTB.Location = new System.Drawing.Point(12, 187);
             this.discountTB.Name = "discountTB";
             this.discountTB.Size = new System.Drawing.Size(173, 26);
             this.discountTB.TabIndex = 29;
@@ -103,7 +70,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label8.Location = new System.Drawing.Point(12, 133);
+            this.label8.Location = new System.Drawing.Point(12, 164);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(71, 20);
             this.label8.TabIndex = 28;
@@ -112,7 +79,7 @@
             // addProductB
             // 
             this.addProductB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.addProductB.Location = new System.Drawing.Point(225, 368);
+            this.addProductB.Location = new System.Drawing.Point(216, 244);
             this.addProductB.Name = "addProductB";
             this.addProductB.Size = new System.Drawing.Size(117, 30);
             this.addProductB.TabIndex = 27;
@@ -123,7 +90,7 @@
             // countNUD
             // 
             this.countNUD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.countNUD.Location = new System.Drawing.Point(12, 91);
+            this.countNUD.Location = new System.Drawing.Point(12, 122);
             this.countNUD.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -149,57 +116,16 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(12, 68);
+            this.label3.Location = new System.Drawing.Point(12, 99);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 20);
             this.label3.TabIndex = 23;
             this.label3.Text = "Количество";
             // 
-            // priceTB
-            // 
-            this.priceTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.priceTB.Location = new System.Drawing.Point(399, 91);
-            this.priceTB.Name = "priceTB";
-            this.priceTB.Size = new System.Drawing.Size(173, 26);
-            this.priceTB.TabIndex = 22;
-            this.priceTB.Text = "0.00";
-            this.priceTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.priceTB.TextChanged += new System.EventHandler(this.textBoxs_TextChange);
-            this.priceTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
-            this.priceTB.Leave += new System.EventHandler(this.textBoxs_Leave);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(399, 67);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 20);
-            this.label2.TabIndex = 21;
-            this.label2.Text = "Цена";
-            // 
-            // nameTB
-            // 
-            this.nameTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nameTB.Location = new System.Drawing.Point(12, 35);
-            this.nameTB.Name = "nameTB";
-            this.nameTB.Size = new System.Drawing.Size(663, 26);
-            this.nameTB.TabIndex = 20;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(12, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(258, 20);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "Наименование товара/услуги";
-            // 
             // countB
             // 
             this.countB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.countB.Location = new System.Drawing.Point(192, 82);
+            this.countB.Location = new System.Drawing.Point(192, 113);
             this.countB.Name = "countB";
             this.countB.Size = new System.Drawing.Size(97, 45);
             this.countB.TabIndex = 33;
@@ -210,7 +136,7 @@
             // discountB
             // 
             this.discountB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.discountB.Location = new System.Drawing.Point(192, 148);
+            this.discountB.Location = new System.Drawing.Point(192, 179);
             this.discountB.Name = "discountB";
             this.discountB.Size = new System.Drawing.Size(97, 45);
             this.discountB.TabIndex = 34;
@@ -218,32 +144,10 @@
             this.discountB.UseVisualStyleBackColor = true;
             this.discountB.Click += new System.EventHandler(this.discountB_Click);
             // 
-            // priceB
-            // 
-            this.priceB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.priceB.Location = new System.Drawing.Point(578, 82);
-            this.priceB.Name = "priceB";
-            this.priceB.Size = new System.Drawing.Size(97, 45);
-            this.priceB.TabIndex = 35;
-            this.priceB.Text = "[F8] Цена";
-            this.priceB.UseVisualStyleBackColor = true;
-            this.priceB.Click += new System.EventHandler(this.priceB_Click);
-            // 
-            // ndsB
-            // 
-            this.ndsB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ndsB.Location = new System.Drawing.Point(578, 148);
-            this.ndsB.Name = "ndsB";
-            this.ndsB.Size = new System.Drawing.Size(97, 45);
-            this.ndsB.TabIndex = 36;
-            this.ndsB.Text = "[F7] НДС";
-            this.ndsB.UseVisualStyleBackColor = true;
-            this.ndsB.Click += new System.EventHandler(this.ndsB_Click);
-            // 
             // departmentB
             // 
             this.departmentB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.departmentB.Location = new System.Drawing.Point(192, 215);
+            this.departmentB.Location = new System.Drawing.Point(578, 123);
             this.departmentB.Name = "departmentB";
             this.departmentB.Size = new System.Drawing.Size(97, 45);
             this.departmentB.TabIndex = 39;
@@ -254,7 +158,7 @@
             // departmentNUD
             // 
             this.departmentNUD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.departmentNUD.Location = new System.Drawing.Point(12, 224);
+            this.departmentNUD.Location = new System.Drawing.Point(399, 132);
             this.departmentNUD.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -279,7 +183,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(12, 201);
+            this.label4.Location = new System.Drawing.Point(398, 109);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 20);
             this.label4.TabIndex = 37;
@@ -290,14 +194,14 @@
             this.receiptDGV.AllowUserToAddRows = false;
             this.receiptDGV.AllowUserToDeleteRows = false;
             this.receiptDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -306,17 +210,17 @@
             this.discountCol,
             this.ndsCol,
             this.sumCol});
-            this.receiptDGV.Location = new System.Drawing.Point(12, 266);
+            this.receiptDGV.Location = new System.Drawing.Point(12, 12);
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.receiptDGV.RowHeadersVisible = false;
             this.receiptDGV.Size = new System.Drawing.Size(663, 84);
             this.receiptDGV.TabIndex = 40;
@@ -362,7 +266,7 @@
             // cancelB
             // 
             this.cancelB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.cancelB.Location = new System.Drawing.Point(360, 368);
+            this.cancelB.Location = new System.Drawing.Point(339, 244);
             this.cancelB.Name = "cancelB";
             this.cancelB.Size = new System.Drawing.Size(117, 30);
             this.cancelB.TabIndex = 41;
@@ -370,60 +274,26 @@
             this.cancelB.UseVisualStyleBackColor = true;
             this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
-            // productRB
-            // 
-            this.productRB.AutoSize = true;
-            this.productRB.Checked = true;
-            this.productRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.productRB.Location = new System.Drawing.Point(453, 206);
-            this.productRB.Name = "productRB";
-            this.productRB.Size = new System.Drawing.Size(72, 24);
-            this.productRB.TabIndex = 42;
-            this.productRB.TabStop = true;
-            this.productRB.Text = "Товар";
-            this.productRB.UseVisualStyleBackColor = true;
-            // 
-            // serviceRB
-            // 
-            this.serviceRB.AutoSize = true;
-            this.serviceRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.serviceRB.Location = new System.Drawing.Point(453, 236);
-            this.serviceRB.Name = "serviceRB";
-            this.serviceRB.Size = new System.Drawing.Size(78, 24);
-            this.serviceRB.TabIndex = 43;
-            this.serviceRB.Text = "Услуга";
-            this.serviceRB.UseVisualStyleBackColor = true;
-            // 
-            // AddEditProduct
+            // EditProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(687, 410);
-            this.Controls.Add(this.serviceRB);
-            this.Controls.Add(this.productRB);
+            this.ClientSize = new System.Drawing.Size(687, 287);
             this.Controls.Add(this.cancelB);
             this.Controls.Add(this.receiptDGV);
             this.Controls.Add(this.departmentB);
             this.Controls.Add(this.departmentNUD);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.ndsB);
-            this.Controls.Add(this.priceB);
             this.Controls.Add(this.discountB);
             this.Controls.Add(this.countB);
-            this.Controls.Add(this.ndsTB);
-            this.Controls.Add(this.label10);
             this.Controls.Add(this.discountTB);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.addProductB);
             this.Controls.Add(this.countNUD);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.priceTB);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.nameTB);
-            this.Controls.Add(this.label1);
-            this.Name = "AddEditProduct";
+            this.Name = "EditProduct";
             this.ShowIcon = false;
-            this.Text = "Добавить/Изменить позицию";
+            this.Text = "Изменить позицию";
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).EndInit();
@@ -433,21 +303,13 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox ndsTB;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox discountTB;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button addProductB;
         private System.Windows.Forms.NumericUpDown countNUD;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox priceTB;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox nameTB;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button countB;
         private System.Windows.Forms.Button discountB;
-        private System.Windows.Forms.Button priceB;
-        private System.Windows.Forms.Button ndsB;
         private System.Windows.Forms.Button departmentB;
         private System.Windows.Forms.NumericUpDown departmentNUD;
         private System.Windows.Forms.Label label4;
@@ -459,7 +321,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
-        private System.Windows.Forms.RadioButton productRB;
-        private System.Windows.Forms.RadioButton serviceRB;
     }
 }
