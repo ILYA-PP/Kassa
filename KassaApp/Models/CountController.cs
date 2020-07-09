@@ -54,5 +54,23 @@ namespace KassaApp.Models
 			}
 			return false;
 		}
+		public static void Reconciliation()
+		{
+			try
+			{
+				var db = new KassaDBContext();
+				var purchases = db.Purchase.Where(p => p.Paid == false);
+				foreach (Purchase p in purchases)
+				{
+					var prod = db.Product.Where(pr => pr.Id == p.ProductId).FirstOrDefault();
+					if (prod != null)
+						Recover(prod);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
 	}
 }

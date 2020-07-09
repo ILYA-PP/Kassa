@@ -164,9 +164,7 @@ namespace KassaApp
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (receipt != null && receipt.Products != null)
-                foreach (var p in receipt.Products)
-                    CountController.Recover(p);
+            CountController.Reconciliation();
         }
 
         public void DGV_Refresh()
