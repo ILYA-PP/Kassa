@@ -23,6 +23,17 @@ namespace KassaApp
             modelBuilder.Entity<Product>()
                 .Property(e => e.Price)
                 .HasPrecision(19, 4);
+            modelBuilder.Entity<Purchase>()
+                .Property(e => e.Summa)
+                .HasPrecision(19, 4);
+
+            modelBuilder.Entity<Receipt>()
+                .Property(e => e.Summa)
+                .HasPrecision(19, 4);
+
+            modelBuilder.Entity<Report>()
+                .Property(e => e.ReportData)
+                .IsFixedLength();
         }
     }
 }

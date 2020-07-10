@@ -22,6 +22,6 @@
         public bool Paid { get; set; }
 
         public int? ReceiptId { get; set; }
-        public Receipt Receipt { get; set; }
+        public virtual Receipt Receipt { get; set; }
     }
 }

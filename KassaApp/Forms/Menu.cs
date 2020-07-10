@@ -1,4 +1,5 @@
-﻿using KassaApp.Models;
+﻿using KassaApp.Forms;
+using KassaApp.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -141,6 +142,11 @@ namespace KassaApp
             if (config.AppSettings.Settings["UsedPassword"].Value == "0")
                 return true;
             return false;
+        }
+
+        private void просмотрОтчётовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new ViewReports().ShowDialog();
         }
     }
 }

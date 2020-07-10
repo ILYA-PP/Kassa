@@ -11,23 +11,28 @@ namespace KassaApp.Forms
         public ChooseProduct()
         {
             InitializeComponent();
-            ViewResult();
+            ViewResult(null);
         }
 
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
             KassaDBContext db = new KassaDBContext();
             var products = db.Product.Where(p => p.Name.Contains(searchTB.Text));
-            ViewResult();
+            ViewResult(products);
         }
 
-        private void ViewResult()
+        private void ViewResult(IQueryable<Product> prod)
         {
             KassaDBContext db = new KassaDBContext();
             productsDGV.Rows.Clear();
-            foreach (Product p in db.Product)
-                productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
-                    p.Discount, p.NDS, p.Row_Summ);
+            if(prod == null)
+                foreach (Product p in db.Product)
+                    productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
+                        p.Discount, p.NDS, p.Row_Summ);
+            else
+                foreach (Product p in prod)
+                    productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
+                        p.Discount, p.NDS, p.Row_Summ);
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -73,7 +78,7 @@ namespace KassaApp.Forms
                                     ((Main)Owner).receipt.Products.Add(product);
                                     ((Main)Owner).DGV_Refresh();
                                 }
-                                ViewResult();
+                                ViewResult(null);
                                 //Close();
                             }
                         }

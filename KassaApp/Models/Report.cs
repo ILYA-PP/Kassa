@@ -11,11 +11,10 @@ namespace KassaApp.Models
     public partial class Report
     {
         public int Id { get; set; }
-
-        [Required]
         [StringLength(100)]
         public string Name { get; set; }
-        public Byte ReportData { get; set; }
+        [MaxLength(7000)]
+        public byte[] ReportData { get; set; }
         public DateTime Date { get; set; }
     }
 }

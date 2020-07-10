@@ -1,6 +1,7 @@
 ﻿using KassaApp.Forms;
 using KassaApp.Models;
 using System;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -8,9 +9,14 @@ namespace KassaApp
 {
     public partial class Main : Form
     {
-        public Receipt receipt = new Receipt();
+        public Receipt receipt;
         public Main()
         {
+            receipt = new Receipt() 
+            {
+                Email = null,
+                Phone = null
+            };
             InitializeComponent();
             timer.Start();
         }
@@ -42,23 +48,39 @@ namespace KassaApp
                 MessageBox.Show("Сумма чека равна 0. Оплата невозможна!");
                 return;
             }
-            var db = new KassaDBContext();
-            Purchase purchase;
-            foreach(Product p in receipt.Products)
+            try
             {
-                int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
-                purchase = new Purchase() 
-                { 
-                    ProductId = id,
-                    Count = p.Quantity,
-                    Summa = (decimal)p.Row_Summ,
-                    Date = DateTime.Now,
-                    Paid = false
-                };
-                db.Purchase.Add(purchase);
+                var db = new KassaDBContext();
+                Purchase purchase;
+                var r = db.Receipt.Add(receipt);
+                db.SaveChanges();
+                foreach (Product p in receipt.Products)
+                {
+                    int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
+                    purchase = new Purchase()
+                    {
+                        ProductId = id,
+                        Count = p.Quantity,
+                        Summa = (decimal)p.Row_Summ,
+                        Date = DateTime.Now,
+                        Paid = false,
+                        Receipt = r
+                    };
+                    db.Purchase.Add(purchase);
+                }
+                db.SaveChanges();
+                new Payment(receipt).ShowDialog(this);
             }
-            db.SaveChanges();
-            new Payment(receipt).ShowDialog(this);
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                    }
+                }
+            }
         }
         //изменение значений на форме при выборе строки таблицы
         private void receiptDGV_SelectionChanged(object sender, EventArgs e)

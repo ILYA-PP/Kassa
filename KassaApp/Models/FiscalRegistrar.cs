@@ -1,6 +1,8 @@
 ﻿using DrvFRLib;
 using System;
 using System.Configuration;
+using System.Data.Entity.Validation;
+using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
@@ -106,7 +108,6 @@ namespace KassaApp.Models
         {
             if (CheckConnect() == 0)
             {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
                 prepareCheque();
                 Driver.GetECRStatus();
                 int state = Driver.ECRMode;
@@ -198,26 +199,61 @@ namespace KassaApp.Models
         {
             executeAndHandleError(Driver.PrintReportWithoutCleaning);
             executeAndHandleError(Driver.CutCheck);
+            GetStringReport("X-отчёт (без гашения)");
         }
         public void PrintXSectionReport()
         {
             executeAndHandleError(Driver.PrintDepartmentReport);
             executeAndHandleError(Driver.CutCheck);
+            GetStringReport("X-отчёт по секциям");
         }
         public void PrintXTaxReport()
         {
             executeAndHandleError(Driver.PrintTaxReport);
             executeAndHandleError(Driver.CutCheck);
+            GetStringReport("X-отчёт по налогам");
         }
         public void PrintZReport()
         {
             executeAndHandleError(Driver.PrintReportWithCleaning);
             executeAndHandleError(Driver.CutCheck);
+            GetStringReport("Z-отчёт (c гашением)");
         }
 
         public void OpenProperties()
         {
             executeAndHandleError(Driver.ShowProperties);
+        }
+
+        public void GetStringReport(string name)
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
+            Driver.DocumentNumber = 14;
+            executeAndHandleError(Driver.FNGetDocumentAsString);
+            try
+            {
+                var db = new KassaDBContext();
+                byte[] data = Encoding.Default.GetBytes(Driver.StringForPrinting);
+                Report report = new Report()
+                {
+                    Name = name,
+                    ReportData = data,
+                    Date = DateTime.Now
+                };
+                db.Report.Add(report);
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                    }
+                }
+            }
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         }
     }
 }

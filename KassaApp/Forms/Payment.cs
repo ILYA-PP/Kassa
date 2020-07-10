@@ -29,7 +29,7 @@ namespace KassaApp
         private void moneyTB_TextChanged(object sender, EventArgs e)
         {
             if (moneyTB.Text != "")
-                changeTB.Text = (Math.Round(double.Parse(moneyTB.Text) - CurrentReceipt.Summa, 2)).ToString();
+                changeTB.Text = (Math.Round(double.Parse(moneyTB.Text) - (double)CurrentReceipt.Summa, 2)).ToString();
             else
                 changeTB.Text = "";
         }
@@ -63,7 +63,7 @@ namespace KassaApp
                 Terminal terminal = new Terminal();
                 if (terminal.IsEnabled())
                 {
-                    terminal.Purchase(CurrentReceipt.Summa);
+                    terminal.Purchase((double)CurrentReceipt.Summa);
                     FiscalRegistrar Driver = new FiscalRegistrar();
                     Driver.Connect();
                     if (Driver.CheckConnect() == 0)
@@ -110,7 +110,7 @@ namespace KassaApp
                 {
                     messageL.Text = "Печать чека";
                     CurrentReceipt.Payment = 1;
-                    CurrentReceipt.Summa = double.Parse(moneyTB.Text);
+                    CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
                     Driver.PrintCheque(CurrentReceipt);
                     ((Main)Owner).receiptDGV.Rows.Clear();
                     MarkAsPaid();
@@ -148,20 +148,20 @@ namespace KassaApp
 
         private void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(MessageBox.Show("Продолжить работу с этими позициями?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+            var db = new KassaDBContext();
+            if (MessageBox.Show("Продолжить работу с этими позициями?", "", MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 ((Main)Owner).receipt = new Receipt();
                 ((Main)Owner).receiptDGV.Rows.Clear();
                 CountController.Reconciliation();
+                var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
+                db.Receipt.Remove(r);
+                db.SaveChanges();
             }
             else
             {
-                var db = new KassaDBContext();
-                foreach(Product prod in CurrentReceipt.Products)
-                {
-                    var purchase = db.Purchase.Where(p => p.ProductId == prod.Id).FirstOrDefault();
-                    db.Purchase.Remove(purchase);
-                }
+                var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
+                db.Receipt.Remove(r);
                 db.SaveChanges();
             }
         }
