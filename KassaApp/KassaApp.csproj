@@ -143,6 +143,7 @@
     <Compile Include="Models\GeneralCodeForForms.cs" />
     <Compile Include="Models\Purchase.cs" />
     <Compile Include="Models\Receipt.cs" />
+    <Compile Include="Models\Report.cs" />
     <Compile Include="Models\Terminal.cs" />
     <Compile Include="Models\TransferDataBetweenForms.cs" />
     <Compile Include="Models\Product.cs" />

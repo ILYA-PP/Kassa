@@ -157,9 +157,11 @@ namespace KassaApp
             else
             {
                 var db = new KassaDBContext();
-                var mas = db.Purchase.Where(p => p.Paid == false);
-                foreach (Purchase p in mas)
-                    db.Purchase.Remove(p);
+                foreach(Product prod in CurrentReceipt.Products)
+                {
+                    var purchase = db.Purchase.Where(p => p.ProductId == prod.Id).FirstOrDefault();
+                    db.Purchase.Remove(purchase);
+                }
                 db.SaveChanges();
             }
         }

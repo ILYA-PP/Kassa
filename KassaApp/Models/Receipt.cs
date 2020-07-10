@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
 namespace KassaApp.Models
 {
-    public class Receipt
+    [Table("Receipt")]
+    public partial class Receipt
     {
-        private List<Product> products = new List<Product>();
         private string phone;
         public int ID { get; set; }
+        [Required]
+        [StringLength(12)]
         public string Phone
         {
             get
@@ -20,11 +24,15 @@ namespace KassaApp.Models
             }
             set { phone = value; }
         }
+        [Required]
+        [StringLength(100)]
         public string Email { get; set; }
+        [Column(TypeName = "money")]
         public double Summa { get; set; }
         public double Discount { get; set; }
         public int Payment { get; set; }
-        public List<Product> Products { get { return products; } set { products = value; } }
+        [NotMapped]
+        public List<Product> Products { get; set; }
 
         public void CalculateSumm()
         {
@@ -32,6 +40,11 @@ namespace KassaApp.Models
             if (Products != null)
                 foreach (var p in Products)
                     Summa += p.Row_Summ;
+        }
+        public ICollection<Purchase> Purchases{ get; set; }
+        public Receipt()
+        {
+            Purchases = new List<Purchase>();
         }
     }
 }

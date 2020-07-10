@@ -1,5 +1,6 @@
 ﻿namespace KassaApp
 {
+    using KassaApp.Models;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -19,5 +20,8 @@
         public DateTime Date { get; set; }
         [Column(TypeName = "bit")]
         public bool Paid { get; set; }
+
+        public int? ReceiptId { get; set; }
+        public Receipt Receipt { get; set; }
     }
 }
