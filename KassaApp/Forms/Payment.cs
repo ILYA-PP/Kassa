@@ -137,6 +137,7 @@ namespace KassaApp
                     int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
                     var purchase = db.Purchase.Where(pur => pur.ProductId == id).FirstOrDefault();
                     purchase.Paid = true;
+                    purchase.Date = DateTime.Now;
                 }
                 db.SaveChanges();
             }
@@ -153,16 +154,10 @@ namespace KassaApp
             {
                 ((Main)Owner).receipt = new Receipt();
                 ((Main)Owner).receiptDGV.Rows.Clear();
-                CountController.Reconciliation();
+                CountController.Reconciliation(CurrentReceipt.Id);
                 var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
                 db.Receipt.Remove(r);
                 db.SaveChanges();
-            }
-            else
-            {
-                //var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
-                //r.Purchases.Clear();
-                //db.SaveChanges();
             }
         }
     }

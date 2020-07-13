@@ -58,12 +58,6 @@ namespace KassaApp
                     receipt = db.Receipt.Add(receipt);
                     db.SaveChanges();
                 }
-                else
-                {
-                    foreach (var p in receipt.Purchases)
-                        r.Purchases.Remove(p);
-                    db.SaveChanges();
-                }
                 foreach (Product p in receipt.Products)
                 {
                     int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
@@ -76,9 +70,16 @@ namespace KassaApp
                         Paid = false,
                         Receipt = receipt
                     };
-                    db.Purchase.Add(purchase);
+                    var oldP = db.Purchase.Where(pur => pur.ProductId == id && pur.ReceiptId == receipt.Id).FirstOrDefault();
+                    if (oldP != null)
+                    {
+                        oldP.Count = purchase.Count;
+                        oldP.Summa = purchase.Summa;
+                    }
+                    else
+                        db.Purchase.Add(purchase);
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
                 new Payment(receipt).ShowDialog(this);
             }
             catch (DbEntityValidationException dbEx)
@@ -196,7 +197,7 @@ namespace KassaApp
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CountController.Reconciliation();
+            CountController.Reconciliation(0);
         }
 
         public void DGV_Refresh()

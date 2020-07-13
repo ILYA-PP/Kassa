@@ -54,18 +54,25 @@ namespace KassaApp.Models
 			}
 			return false;
 		}
-		public static void Reconciliation()
+		public static void Reconciliation(int Receipt_Id)
 		{
 			try
 			{
 				var db = new KassaDBContext();
-				var purchases = db.Purchase.Where(p => p.Paid == false);
+				IQueryable<Purchase> purchases;
+				if (Receipt_Id != 0)
+					purchases = db.Purchase.Where(p => p.Paid == false && p.ReceiptId == Receipt_Id);
+				else
+					purchases = db.Purchase.Where(p => p.Paid == false && p.ReceiptId == Receipt_Id);
 				foreach (Purchase p in purchases)
 				{
 					var prod = db.Product.Where(pr => pr.Id == p.ProductId).FirstOrDefault();
+					prod.Quantity = p.Count;
 					if (prod != null)
 						Recover(prod);
 				}
+				if(Receipt_Id != 0)
+					db.Receipt.Remove(db.Receipt.Where(r => r.Id == Receipt_Id).FirstOrDefault());
 			}
 			catch (Exception ex)
 			{
