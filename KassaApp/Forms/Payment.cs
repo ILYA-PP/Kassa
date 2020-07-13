@@ -160,9 +160,9 @@ namespace KassaApp
             }
             else
             {
-                var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
-                db.Receipt.Remove(r);
-                db.SaveChanges();
+                //var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
+                //r.Purchases.Clear();
+                //db.SaveChanges();
             }
         }
     }

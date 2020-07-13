@@ -255,5 +255,17 @@ namespace KassaApp.Models
             }
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         }
+
+        public int CashIncome(decimal summ)
+        {
+            Driver.Summ1 = summ;
+            return executeAndHandleError(Driver.CashIncome);
+        }
+
+        public int CashOutcome(decimal summ)
+        {
+            Driver.Summ1 = summ;
+            return executeAndHandleError(Driver.CashIncome);
+        }
     }
 }

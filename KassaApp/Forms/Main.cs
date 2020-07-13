@@ -52,8 +52,18 @@ namespace KassaApp
             {
                 var db = new KassaDBContext();
                 Purchase purchase;
-                var r = db.Receipt.Add(receipt);
-                db.SaveChanges();
+                var r = db.Receipt.Where(rec => rec.Id == receipt.Id).FirstOrDefault();
+                if (r == null)
+                {
+                    receipt = db.Receipt.Add(receipt);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    foreach (var p in receipt.Purchases)
+                        r.Purchases.Remove(p);
+                    db.SaveChanges();
+                }
                 foreach (Product p in receipt.Products)
                 {
                     int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
@@ -64,7 +74,7 @@ namespace KassaApp
                         Summa = (decimal)p.Row_Summ,
                         Date = DateTime.Now,
                         Paid = false,
-                        Receipt = r
+                        Receipt = receipt
                     };
                     db.Purchase.Add(purchase);
                 }

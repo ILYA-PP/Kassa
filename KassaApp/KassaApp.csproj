@@ -101,6 +101,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\CashIncomeOutcome.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CashIncomeOutcome.Designer.cs">
+      <DependentUpon>CashIncomeOutcome.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\EditProduct.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,6 +167,9 @@
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\CashIncomeOutcome.resx">
+      <DependentUpon>CashIncomeOutcome.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditProduct.resx">
       <DependentUpon>EditProduct.cs</DependentUpon>
     </EmbeddedResource>
