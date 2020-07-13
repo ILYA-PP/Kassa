@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.operationL = new System.Windows.Forms.Label();
-            this.passwordTB = new System.Windows.Forms.TextBox();
+            this.summaTB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.enterB = new System.Windows.Forms.Button();
             this.cancelB = new System.Windows.Forms.Button();
@@ -41,18 +41,17 @@
             this.operationL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.operationL.Location = new System.Drawing.Point(12, 9);
             this.operationL.Name = "operationL";
-            this.operationL.Size = new System.Drawing.Size(229, 25);
+            this.operationL.Size = new System.Drawing.Size(0, 25);
             this.operationL.TabIndex = 0;
-            this.operationL.Text = "Внесение наличных";
             // 
-            // passwordTB
+            // summaTB
             // 
-            this.passwordTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.passwordTB.Location = new System.Drawing.Point(80, 52);
-            this.passwordTB.Name = "passwordTB";
-            this.passwordTB.PasswordChar = '*';
-            this.passwordTB.Size = new System.Drawing.Size(327, 26);
-            this.passwordTB.TabIndex = 4;
+            this.summaTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.summaTB.Location = new System.Drawing.Point(80, 52);
+            this.summaTB.Name = "summaTB";
+            this.summaTB.Size = new System.Drawing.Size(327, 26);
+            this.summaTB.TabIndex = 4;
+            this.summaTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.summaTB_KeyPress);
             // 
             // label1
             // 
@@ -73,6 +72,7 @@
             this.enterB.TabIndex = 6;
             this.enterB.Text = "[Enter] Ввод";
             this.enterB.UseVisualStyleBackColor = true;
+            this.enterB.Click += new System.EventHandler(this.enterB_Click);
             // 
             // cancelB
             // 
@@ -83,6 +83,7 @@
             this.cancelB.TabIndex = 7;
             this.cancelB.Text = "[Esc] Отмена";
             this.cancelB.UseVisualStyleBackColor = true;
+            this.cancelB.Click += new System.EventHandler(this.cancelB_Click);
             // 
             // CashIncomeOutcome
             // 
@@ -92,7 +93,7 @@
             this.Controls.Add(this.cancelB);
             this.Controls.Add(this.enterB);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.passwordTB);
+            this.Controls.Add(this.summaTB);
             this.Controls.Add(this.operationL);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -107,7 +108,7 @@
         #endregion
 
         private System.Windows.Forms.Label operationL;
-        private System.Windows.Forms.TextBox passwordTB;
+        private System.Windows.Forms.TextBox summaTB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button enterB;
         private System.Windows.Forms.Button cancelB;

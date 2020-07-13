@@ -148,5 +148,15 @@ namespace KassaApp
         {
             new ViewReports().ShowDialog();
         }
+
+        private void внесениеНаличныхToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new CashIncomeOutcome(true).ShowDialog();
+        }
+
+        private void выплатаНаличныхToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new CashIncomeOutcome(false).ShowDialog();
+        }
     }
 }

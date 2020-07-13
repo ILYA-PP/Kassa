@@ -21,11 +21,14 @@ namespace KassaApp.Models
                     //Снятие Z-отчёта
                     executeAndHandleError(Driver.PrintReportWithCleaning);
                     executeAndHandleError(Driver.WaitForPrinting);
+                    GetStringReport("Отчёт о закрытии смены");
                     //Открытие смены
-                    executeAndHandleError(Driver.OpenSession); break;
+                    executeAndHandleError(Driver.OpenSession);
+                    GetStringReport("Отчёт об открытии смены"); break;
                 case 4:
                     //Открытие смены
-                    executeAndHandleError(Driver.OpenSession); break;
+                    executeAndHandleError(Driver.OpenSession);
+                    GetStringReport("Отчёт об открытии смены"); break;
                 case 8:
                     //Отмена чека
                     executeAndHandleError(Driver.SysAdminCancelCheck);
@@ -228,7 +231,6 @@ namespace KassaApp.Models
         public void GetStringReport(string name)
         {
             System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
-            Driver.DocumentNumber = 14;
             executeAndHandleError(Driver.FNGetDocumentAsString);
             try
             {
