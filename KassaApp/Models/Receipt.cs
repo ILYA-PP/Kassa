@@ -28,10 +28,10 @@ namespace KassaApp.Models
         [Column(TypeName = "money")]
         public decimal Summa { get; set; }
         public double Discount { get; set; }
+        [Column(TypeName = "bit")]
+        public bool Paid { get; set; }
         public int Payment { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Purchase> Purchases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public Receipt()
         {
             Purchases = new List<Purchase>();

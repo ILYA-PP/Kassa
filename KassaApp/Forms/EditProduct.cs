@@ -44,6 +44,7 @@ namespace KassaApp
                 {
                     Product product = new Product()
                     {
+                        Id = OldProduct.Id,
                         Name = OldProduct.Name,
                         Quantity = (int)countNUD.Value,
                         Price = OldProduct.Price,
@@ -63,6 +64,10 @@ namespace KassaApp
                             ((Main)Owner).receipt.Products.Where(p => p.Name == product.Name).FirstOrDefault());
                         ((Main)Owner).receipt.Products[index] = product;
                         ((Main)Owner).DGV_Refresh();
+                        var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
+                        oldP.Count = product.Quantity;
+                        oldP.Summa = (decimal)product.Row_Summ;
+                        db.SaveChanges();
                     }    
                     Close();
                 }

@@ -40,7 +40,7 @@ namespace KassaApp.Models
 			try
 			{
 				var db = new KassaDBContext();
-				var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
+				var productInDB = db.Product.Where(p => p.Id == prod.Id).FirstOrDefault();
 				if (productInDB.Type == 1)
 				{
 					productInDB.Quantity += prod.Quantity;
@@ -54,25 +54,18 @@ namespace KassaApp.Models
 			}
 			return false;
 		}
-		public static void Reconciliation(int Receipt_Id)
+		public static void Reconciliation(Receipt receipt)
 		{
 			try
 			{
 				var db = new KassaDBContext();
-				IQueryable<Purchase> purchases;
-				if (Receipt_Id != 0)
-					purchases = db.Purchase.Where(p => p.Paid == false && p.ReceiptId == Receipt_Id);
-				else
-					purchases = db.Purchase.Where(p => p.Paid == false && p.ReceiptId == Receipt_Id);
-				foreach (Purchase p in purchases)
+				foreach (Product p in receipt.Products)
+					Recover(p);
+				if(receipt != null)
 				{
-					var prod = db.Product.Where(pr => pr.Id == p.ProductId).FirstOrDefault();
-					prod.Quantity = p.Count;
-					if (prod != null)
-						Recover(prod);
+					db.Receipt.Remove(db.Receipt.Where(r => r.Id == receipt.Id).FirstOrDefault());
+					db.SaveChanges();
 				}
-				if(Receipt_Id != 0)
-					db.Receipt.Remove(db.Receipt.Where(r => r.Id == Receipt_Id).FirstOrDefault());
 			}
 			catch (Exception ex)
 			{

@@ -12,11 +12,10 @@ namespace KassaApp
         public Receipt receipt;
         public Main()
         {
-            receipt = new Receipt() 
-            {
-                Email = null,
-                Phone = null
-            };
+            var db = new KassaDBContext();
+            receipt = new Receipt();
+            receipt = db.Receipt.Add(receipt);
+            db.SaveChanges();
             InitializeComponent();
             timer.Start();
         }
@@ -48,50 +47,7 @@ namespace KassaApp
                 MessageBox.Show("Сумма чека равна 0. Оплата невозможна!");
                 return;
             }
-            try
-            {
-                var db = new KassaDBContext();
-                Purchase purchase;
-                var r = db.Receipt.Where(rec => rec.Id == receipt.Id).FirstOrDefault();
-                if (r == null)
-                {
-                    receipt = db.Receipt.Add(receipt);
-                    db.SaveChanges();
-                }
-                foreach (Product p in receipt.Products)
-                {
-                    int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
-                    purchase = new Purchase()
-                    {
-                        ProductId = id,
-                        Count = p.Quantity,
-                        Summa = (decimal)p.Row_Summ,
-                        Date = DateTime.Now,
-                        Paid = false,
-                        Receipt = receipt
-                    };
-                    var oldP = db.Purchase.Where(pur => pur.ProductId == id && pur.ReceiptId == receipt.Id).FirstOrDefault();
-                    if (oldP != null)
-                    {
-                        oldP.Count = purchase.Count;
-                        oldP.Summa = purchase.Summa;
-                    }
-                    else
-                        db.Purchase.Add(purchase);
-                    db.SaveChanges();
-                }
-                new Payment(receipt).ShowDialog(this);
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
-                    }
-                }
-            }
+            new Payment(receipt).ShowDialog(this);
         }
         //изменение значений на форме при выборе строки таблицы
         private void receiptDGV_SelectionChanged(object sender, EventArgs e)
@@ -136,6 +92,10 @@ namespace KassaApp
                     $"| {product.Name} | {product.Quantity} | {product.Price} | " +
                     $"{product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    var db = new KassaDBContext();
+                    var purchase = db.Purchase.Where(p => p.ProductId == product.Id && p.ReceiptId == receipt.Id).FirstOrDefault();
+                    db.Purchase.Remove(purchase);
+                    db.SaveChanges();
                     receipt.Products.Remove(product);
                     receipt.CalculateSumm();
                     receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
@@ -197,7 +157,7 @@ namespace KassaApp
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CountController.Reconciliation(0);
+            CountController.Reconciliation(receipt);
         }
 
         public void DGV_Refresh()

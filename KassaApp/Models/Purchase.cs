@@ -18,8 +18,6 @@
         [Column(TypeName = "money")]
         public decimal Summa { get; set; }
         public DateTime Date { get; set; }
-        [Column(TypeName = "bit")]
-        public bool Paid { get; set; }
 
         public int? ReceiptId { get; set; }
         public virtual Receipt Receipt { get; set; }

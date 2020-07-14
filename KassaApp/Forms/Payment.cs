@@ -132,13 +132,8 @@ namespace KassaApp
             try
             {
                 var db = new KassaDBContext();
-                foreach (Product p in CurrentReceipt.Products)
-                {
-                    int id = db.Product.Where(pr => pr.Name == p.Name).FirstOrDefault().Id;
-                    var purchase = db.Purchase.Where(pur => pur.ProductId == id).FirstOrDefault();
-                    purchase.Paid = true;
-                    purchase.Date = DateTime.Now;
-                }
+                var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
+                rec.Paid = true;
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -154,9 +149,10 @@ namespace KassaApp
             {
                 ((Main)Owner).receipt = new Receipt();
                 ((Main)Owner).receiptDGV.Rows.Clear();
-                CountController.Reconciliation(CurrentReceipt.Id);
+                CountController.Reconciliation(CurrentReceipt);
                 var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
                 db.Receipt.Remove(r);
+                db.Receipt.Add(((Main)Owner).receipt);
                 db.SaveChanges();
             }
         }

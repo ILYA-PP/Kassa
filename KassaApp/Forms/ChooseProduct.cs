@@ -48,7 +48,10 @@ namespace KassaApp.Forms
         {
             try
             {
+                var db = new KassaDBContext();
+                var rec = db.Receipt.Where(re => re.Id == ((Main)Owner).receipt.Id).FirstOrDefault();
                 Product product;
+                Purchase purchase;
                 if (productsDGV.SelectedRows.Count > 0)
                     foreach (DataGridViewRow r in productsDGV.SelectedRows)
                     {
@@ -60,15 +63,19 @@ namespace KassaApp.Forms
                             if (CountController.Check(product))
                             {
                                 bool added = false;
-                                foreach (Product p in ((Main)Owner).receipt.Products)
+                                foreach (Product p in rec.Products)
                                 {
                                     if (p.Name == product.Name)
                                     {
                                         if (p.Type == 1)
                                         {
+                                            var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == rec.Id).FirstOrDefault();
+                                            oldP.Count += product.Quantity;
+                                            oldP.Summa += (decimal)product.Row_Summ;
                                             p.Quantity += product.Quantity;
                                             p.Row_Summ += product.Row_Summ;
                                             ((Main)Owner).DGV_Refresh();
+                                            db.SaveChanges();
                                         }
                                         added = true;
                                     }
@@ -77,6 +84,17 @@ namespace KassaApp.Forms
                                 {
                                     ((Main)Owner).receipt.Products.Add(product);
                                     ((Main)Owner).DGV_Refresh();
+                                    purchase = new Purchase()
+                                    {
+                                        ProductId = product.Id,
+                                        Count = product.Quantity,
+                                        Summa = (decimal)product.Row_Summ,
+                                        Date = DateTime.Now,
+                                        Receipt = rec
+                                    };
+                                    ((Main)Owner).receipt.Purchases.Add(purchase);
+                                    db.Purchase.Add(purchase);
+                                    db.SaveChanges();
                                 }
                                 ViewResult(null);
                                 //Close();
