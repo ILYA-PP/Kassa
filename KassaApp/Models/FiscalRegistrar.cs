@@ -21,14 +21,15 @@ namespace KassaApp.Models
                     //Снятие Z-отчёта
                     executeAndHandleError(Driver.PrintReportWithCleaning);
                     executeAndHandleError(Driver.WaitForPrinting);
-                    GetStringReport("Отчёт о закрытии смены");
+                    executeAndHandleError(Driver.PrintReportWithCleaning);
+                    GetReport(null, "Z-отчёт (c гашением)");
                     //Открытие смены
                     executeAndHandleError(Driver.OpenSession);
-                    GetStringReport("Отчёт об открытии смены"); break;
+                    GetReport(null, "Отчёт об открытии смены"); break;
                 case 4:
                     //Открытие смены
                     executeAndHandleError(Driver.OpenSession);
-                    GetStringReport("Отчёт об открытии смены"); break;
+                    GetReport(null, "Отчёт об открытии смены"); break;
                 case 8:
                     //Отмена чека
                     executeAndHandleError(Driver.SysAdminCancelCheck);
@@ -195,32 +196,36 @@ namespace KassaApp.Models
             }
             else
                 AddLog("Нет подключения");
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         }
 
         public void PrintXReport()
         {
-            executeAndHandleError(Driver.PrintReportWithoutCleaning);
-            executeAndHandleError(Driver.CutCheck);
-            GetStringReport("X-отчёт (без гашения)");
+            GetReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)");
         }
         public void PrintXSectionReport()
         {
-            executeAndHandleError(Driver.PrintDepartmentReport);
-            executeAndHandleError(Driver.CutCheck);
-            GetStringReport("X-отчёт по секциям");
+            GetReport(Driver.PrintDepartmentReport, "X-отчёт по секциям");
         }
         public void PrintXTaxReport()
         {
-            executeAndHandleError(Driver.PrintTaxReport);
-            executeAndHandleError(Driver.CutCheck);
-            GetStringReport("X-отчёт по налогам");
+            GetReport(Driver.PrintTaxReport, "X-отчёт по налогам");
         }
         public void PrintZReport()
         {
-            executeAndHandleError(Driver.PrintReportWithCleaning);
-            executeAndHandleError(Driver.CutCheck);
-            GetStringReport("Z-отчёт (c гашением)");
+            GetReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
+        }
+
+        private void GetReport(Func m, string name)
+        {
+            executeAndHandleError(Driver.GetECRStatus);
+            int state = Driver.ECRMode;
+            if(state == 2 || state == 3 || state == 4 || state == 8)
+                prepareCheque();
+            if (m == null || executeAndHandleError(m) == 0)
+            {
+                executeAndHandleError(Driver.CutCheck);
+                GetStringReport(name);
+            }
         }
 
         public void OpenProperties()
@@ -230,44 +235,48 @@ namespace KassaApp.Models
 
         public void GetStringReport(string name)
         {
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
-            executeAndHandleError(Driver.FNGetDocumentAsString);
-            try
+            executeAndHandleError(Driver.FNGetStatus);
+            if (executeAndHandleError(Driver.FNGetDocumentAsString) == 0)
             {
-                var db = new KassaDBContext();
-                byte[] data = Encoding.Default.GetBytes(Driver.StringForPrinting);
-                Report report = new Report()
+                try
                 {
-                    Name = name,
-                    ReportData = data,
-                    Date = DateTime.Now
-                };
-                db.Report.Add(report);
-                db.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
+                    var db = new KassaDBContext();
+                    if (Driver.StringForPrinting != null)
                     {
-                        MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                        byte[] data = Encoding.Default.GetBytes(Driver.StringForPrinting);
+                        Report report = new Report()
+                        {
+                            Name = name,
+                            ReportData = data,
+                            Date = DateTime.Now
+                        };
+                        db.Report.Add(report);
+                        db.SaveChanges();
+                    }
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                        }
                     }
                 }
             }
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
         }
 
-        public int CashIncome(decimal summ)
+        public void CashIncome(decimal summ)
         {
             Driver.Summ1 = summ;
-            return executeAndHandleError(Driver.CashIncome);
+            GetReport(Driver.CashIncome, "Внесение наличных");
         }
 
-        public int CashOutcome(decimal summ)
+        public void CashOutcome(decimal summ)
         {
             Driver.Summ1 = summ;
-            return executeAndHandleError(Driver.CashIncome);
+            GetReport(Driver.CashOutcome, "Выдача наличных");
         }
     }
 }

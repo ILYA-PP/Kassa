@@ -73,7 +73,6 @@ namespace KassaApp
                             messageL.Text = "Печать чеков";
                             CurrentReceipt.Payment = 2;
                             Driver.PrintCheque(CurrentReceipt);
-                            ((Main)Owner).receiptDGV.Rows.Clear();
                             MarkAsPaid();
                             Close();
                         }
@@ -112,7 +111,6 @@ namespace KassaApp
                     CurrentReceipt.Payment = 1;
                     CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
                     Driver.PrintCheque(CurrentReceipt);
-                    ((Main)Owner).receiptDGV.Rows.Clear();
                     MarkAsPaid();
                     Close();
                 }
@@ -140,7 +138,7 @@ namespace KassaApp
             {
                 MessageBox.Show(ex.Message);
             }
-    }
+        }
 
         private void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -150,8 +148,9 @@ namespace KassaApp
                 ((Main)Owner).receipt = new Receipt();
                 ((Main)Owner).receiptDGV.Rows.Clear();
                 CountController.Reconciliation(CurrentReceipt);
-                var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id).FirstOrDefault();
-                db.Receipt.Remove(r);
+                var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id && p.Paid == false).FirstOrDefault();
+                if(r != null)
+                    db.Receipt.Remove(r);
                 db.Receipt.Add(((Main)Owner).receipt);
                 db.SaveChanges();
             }

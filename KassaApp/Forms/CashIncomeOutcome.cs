@@ -45,13 +45,10 @@ namespace KassaApp.Forms
                     fr.Connect();
                     if (fr.CheckConnect() == 0)
                     {
-                        int result;
                         if (IsCashIncome)
-                           result = fr.CashIncome(summ);
+                           fr.CashIncome(summ);
                         else
-                           result = fr.CashOutcome(summ);
-                        if (result == 0)
-                            MessageBox.Show("Успешно!");
+                           fr.CashOutcome(summ);
                         fr.Disconnect();
                     }
                     else

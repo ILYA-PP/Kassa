@@ -1,6 +1,7 @@
 ﻿using SBRFSRV;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -28,9 +29,7 @@ namespace KassaApp.Models
         {
             try
             {
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
                 string cheque = Server.GParamString("Cheque");
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 return cheque;
             }
             catch (Exception ex) 
@@ -108,9 +107,41 @@ namespace KassaApp.Models
                 if (result != 0)
                     MessageBox.Show($"День НЕ закрыт. Код ошибки: {result}");
                 else
+                {
                     MessageBox.Show("День закрыт");
+                    SaveStringReport(GetCheque());
+                }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+        public void SaveStringReport(string d)
+        {
+            if (d != "")
+            {
+                try
+                {
+                    var db = new KassaDBContext();
+                    byte[] data = Encoding.Default.GetBytes(d);
+                    Report report = new Report()
+                    {
+                        Name = "Отчёт по банковским картам",
+                        ReportData = data,
+                        Date = DateTime.Now
+                    };
+                    db.Report.Add(report);
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                        }
+                    }
+                }
+            }
         }
     }
 }
