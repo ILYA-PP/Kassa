@@ -157,5 +157,23 @@ namespace KassaApp
         {
             new CashIncomeOutcome(false).ShowDialog();
         }
+
+        private void показанияОегистровToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
+            FiscalRegistrar fr = new FiscalRegistrar();
+            fr.Connect();
+            if (fr.CheckConnect() == 0)
+            {
+                
+                fr.Disconnect();
+            }
+            else
+                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
+        }
     }
 }

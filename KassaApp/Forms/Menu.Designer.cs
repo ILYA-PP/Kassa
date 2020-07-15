@@ -179,6 +179,7 @@
             this.показанияОегистровToolStripMenuItem.Name = "показанияОегистровToolStripMenuItem";
             this.показанияОегистровToolStripMenuItem.Size = new System.Drawing.Size(311, 24);
             this.показанияОегистровToolStripMenuItem.Text = "Показания регистров";
+            this.показанияОегистровToolStripMenuItem.Click += new System.EventHandler(this.показанияОегистровToolStripMenuItem_Click);
             // 
             // toolStripSeparator4
             // 

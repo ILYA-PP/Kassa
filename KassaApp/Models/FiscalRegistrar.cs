@@ -214,6 +214,10 @@ namespace KassaApp.Models
         {
             GetReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
         }
+        public void PrintOperationReg()
+        {
+            GetReport(Driver.PrintOperationReg, "Показания регистров");
+        }
 
         private void GetReport(Func m, string name)
         {
@@ -278,5 +282,29 @@ namespace KassaApp.Models
             Driver.Summ1 = summ;
             GetReport(Driver.CashOutcome, "Выдача наличных");
         }
+        //public RegistrerItem GetOperationRegItem(int num)
+        //{
+        //    Driver.RegisterNumber = num;
+        //    if (executeAndHandleError(Driver.GetOperationReg) == 0)
+        //        return new RegistrerItem() 
+        //        { 
+        //            Number = num,
+        //            Name = Driver.NameOperationReg,
+        //            Content = Driver.ContentsOfOperationRegister
+        //        };
+        //    return null;
+        //}
+        //public RegistrerItem GetCashRegItem(int num)
+        //{
+        //    Driver.RegisterNumber = num;
+        //    if (executeAndHandleError(Driver.GetCashReg) == 0)
+        //        return new RegistrerItem()
+        //        {
+        //            Number = num,
+        //            Name = Driver.NameCashReg,
+        //            Content = Driver.ContentsOfCashRegister
+        //        };
+        //    return null;
+        //}
     }
 }
