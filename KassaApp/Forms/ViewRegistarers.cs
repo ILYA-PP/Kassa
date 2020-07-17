@@ -30,10 +30,52 @@ namespace KassaApp.Forms
                 {
                     ri = fr.GetOperationRegItem(i);
                     if (ri != null)
+                    {
                         operationRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
+                        i++;
+                    }
                     else
                         break;
                 }
+                fr.Disconnect();
+            }
+            else
+                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
+        }
+
+        private void readCashRegB_Click(object sender, EventArgs e)
+        {
+            FiscalRegistrar fr = new FiscalRegistrar();
+            fr.Connect();
+            if (fr.CheckConnect() == 0)
+            {
+                int i = 1;
+                RegistrerItem ri;
+                cashRegLB.Items.Clear();
+                while (true)
+                {
+                    ri = fr.GetCashRegItem(i);
+                    if (ri != null)
+                    {
+                        cashRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
+                        i++;
+                    }
+                    else
+                        break;
+                }
+                fr.Disconnect();
+            }
+            else
+                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
+        }
+
+        private void printOperationRegB_Click(object sender, EventArgs e)
+        {
+            FiscalRegistrar fr = new FiscalRegistrar();
+            fr.Connect();
+            if (fr.CheckConnect() == 0)
+            {
+                fr.PrintOperationReg();
                 fr.Disconnect();
             }
             else

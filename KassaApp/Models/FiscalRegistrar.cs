@@ -208,7 +208,11 @@ namespace KassaApp.Models
         }
         public void PrintXTaxReport()
         {
-            GetReport(Driver.PrintTaxReport, "X-отчёт по налогам");
+            //string title = $"ЗН ККТ: {}\nИНН: {Driver.INN}\nДАТА: {DateTime.Now}\nКассир: {}\nОТЧЁТ ПО НАЛОГАМ\nРН ККТ: {Driver.KKTRegistrationNumber}\ФН: {Driver.FN}\n";
+            string template = "Группа А: {}\n   Оборот по налогу: {}\n   Налог: {}\nГруппа Б: {}\n   Оборот по налогу: {}\n   Налог: {}\n" +
+                "Группа В: {}\n   Оборот по налогу: {}\n   Налог: {}\nГруппа Г: {}\n   Оборот по налогу: {}\n   Налог: {}\n" +
+                "Группа Д: {}\n   Оборот по налогу: {}\n   Налог: {}\nГруппа Е: {}\n   Оборот по налогу: {}\n   Налог: {}\n";
+            GetReport(Driver.PrintTaxReport, "X-отчёт по налогам", template);
         }
         public void PrintZReport()
         {
@@ -216,10 +220,10 @@ namespace KassaApp.Models
         }
         public void PrintOperationReg()
         {
-            GetReport(Driver.PrintOperationReg, "Показания регистров");
+            GetReport(Driver.PrintOperationReg, "Операционные регистры");
         }
 
-        private void GetReport(Func m, string name)
+        private void GetReport(Func m, string name, string template = null)
         {
             executeAndHandleError(Driver.GetECRStatus);
             int state = Driver.ECRMode;
@@ -228,7 +232,7 @@ namespace KassaApp.Models
             if (m == null || executeAndHandleError(m) == 0)
             {
                 executeAndHandleError(Driver.CutCheck);
-                GetStringReport(name);
+                GetStringReport(name, template);
             }
         }
 
@@ -237,7 +241,7 @@ namespace KassaApp.Models
             executeAndHandleError(Driver.ShowProperties);
         }
 
-        public void GetStringReport(string name)
+        private void GetStringReport(string name, string template = null)
         {
             executeAndHandleError(Driver.FNGetStatus);
             if (executeAndHandleError(Driver.FNGetDocumentAsString) == 0)
@@ -245,9 +249,14 @@ namespace KassaApp.Models
                 try
                 {
                     var db = new KassaDBContext();
+                    string d = null;
                     if (Driver.StringForPrinting != null)
+                        d = Driver.StringForPrinting;
+                    else if (template != null)
+                        d = template;
+                    if (d != null)
                     {
-                        byte[] data = Encoding.Default.GetBytes(Driver.StringForPrinting);
+                        byte[] data = Encoding.Default.GetBytes(d);
                         Report report = new Report()
                         {
                             Name = name,
@@ -282,29 +291,29 @@ namespace KassaApp.Models
             Driver.Summ1 = summ;
             GetReport(Driver.CashOutcome, "Выдача наличных");
         }
-        //public RegistrerItem GetOperationRegItem(int num)
-        //{
-        //    Driver.RegisterNumber = num;
-        //    if (executeAndHandleError(Driver.GetOperationReg) == 0)
-        //        return new RegistrerItem() 
-        //        { 
-        //            Number = num,
-        //            Name = Driver.NameOperationReg,
-        //            Content = Driver.ContentsOfOperationRegister
-        //        };
-        //    return null;
-        //}
-        //public RegistrerItem GetCashRegItem(int num)
-        //{
-        //    Driver.RegisterNumber = num;
-        //    if (executeAndHandleError(Driver.GetCashReg) == 0)
-        //        return new RegistrerItem()
-        //        {
-        //            Number = num,
-        //            Name = Driver.NameCashReg,
-        //            Content = Driver.ContentsOfCashRegister
-        //        };
-        //    return null;
-        //}
+        public RegistrerItem GetOperationRegItem(int num)
+        {
+            Driver.RegisterNumber = num;
+            if (executeAndHandleError(Driver.GetOperationReg) == 0)
+                return new RegistrerItem()
+                {
+                    Number = num,
+                    Name = Driver.NameOperationReg,
+                    Content = Driver.ContentsOfOperationRegister
+                };
+            return null;
+        }
+        public RegistrerItem GetCashRegItem(int num)
+        {
+            Driver.RegisterNumber = num;
+            if (executeAndHandleError(Driver.GetCashReg) == 0)
+                return new RegistrerItem()
+                {
+                    Number = num,
+                    Name = Driver.NameCashReg,
+                    Content = Driver.ContentsOfCashRegister
+                };
+            return null;
+        }
     }
 }

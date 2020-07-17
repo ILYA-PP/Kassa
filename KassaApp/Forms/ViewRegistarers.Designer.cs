@@ -30,14 +30,14 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cashRegLB = new System.Windows.Forms.ListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.operationRegLB = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.readOperationRegB = new System.Windows.Forms.Button();
             this.readCashRegB = new System.Windows.Forms.Button();
-            this.readCashRegExB = new System.Windows.Forms.Button();
-            this.cashRegLB = new System.Windows.Forms.ListBox();
-            this.operationRegLB = new System.Windows.Forms.ListBox();
+            this.printOperationRegB = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -69,6 +69,16 @@
             this.tabPage1.Text = "Денежные регистры";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // cashRegLB
+            // 
+            this.cashRegLB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cashRegLB.FormattingEnabled = true;
+            this.cashRegLB.ItemHeight = 20;
+            this.cashRegLB.Location = new System.Drawing.Point(3, 3);
+            this.cashRegLB.Name = "cashRegLB";
+            this.cashRegLB.Size = new System.Drawing.Size(803, 444);
+            this.cashRegLB.TabIndex = 0;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.operationRegLB);
@@ -79,6 +89,16 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Операционные регистры";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // operationRegLB
+            // 
+            this.operationRegLB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.operationRegLB.FormattingEnabled = true;
+            this.operationRegLB.ItemHeight = 20;
+            this.operationRegLB.Location = new System.Drawing.Point(3, 3);
+            this.operationRegLB.Name = "operationRegLB";
+            this.operationRegLB.Size = new System.Drawing.Size(803, 444);
+            this.operationRegLB.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -104,7 +124,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel2.Controls.Add(this.readOperationRegB, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.readCashRegB, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.readCashRegExB, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.printOperationRegB, 1, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 492);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -135,37 +155,19 @@
             this.readCashRegB.TabIndex = 1;
             this.readCashRegB.Text = "Прочитать денежные регистры";
             this.readCashRegB.UseVisualStyleBackColor = true;
+            this.readCashRegB.Click += new System.EventHandler(this.readCashRegB_Click);
             // 
-            // readCashRegExB
+            // printOperationRegB
             // 
-            this.readCashRegExB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.readCashRegExB.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.readCashRegExB.Location = new System.Drawing.Point(3, 3);
-            this.readCashRegExB.Name = "readCashRegExB";
-            this.readCashRegExB.Size = new System.Drawing.Size(266, 36);
-            this.readCashRegExB.TabIndex = 2;
-            this.readCashRegExB.Text = "Прочитать расширенные регистры (К)";
-            this.readCashRegExB.UseVisualStyleBackColor = true;
-            // 
-            // cashRegLB
-            // 
-            this.cashRegLB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cashRegLB.FormattingEnabled = true;
-            this.cashRegLB.ItemHeight = 20;
-            this.cashRegLB.Location = new System.Drawing.Point(3, 3);
-            this.cashRegLB.Name = "cashRegLB";
-            this.cashRegLB.Size = new System.Drawing.Size(803, 444);
-            this.cashRegLB.TabIndex = 0;
-            // 
-            // operationRegLB
-            // 
-            this.operationRegLB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.operationRegLB.FormattingEnabled = true;
-            this.operationRegLB.ItemHeight = 20;
-            this.operationRegLB.Location = new System.Drawing.Point(3, 3);
-            this.operationRegLB.Name = "operationRegLB";
-            this.operationRegLB.Size = new System.Drawing.Size(803, 444);
-            this.operationRegLB.TabIndex = 0;
+            this.printOperationRegB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.printOperationRegB.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.printOperationRegB.Location = new System.Drawing.Point(3, 3);
+            this.printOperationRegB.Name = "printOperationRegB";
+            this.printOperationRegB.Size = new System.Drawing.Size(266, 36);
+            this.printOperationRegB.TabIndex = 2;
+            this.printOperationRegB.Text = "Печать операционных регистров";
+            this.printOperationRegB.UseVisualStyleBackColor = true;
+            this.printOperationRegB.Click += new System.EventHandler(this.printOperationRegB_Click);
             // 
             // ViewRegistarers
             // 
@@ -196,7 +198,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button readOperationRegB;
         private System.Windows.Forms.Button readCashRegB;
-        private System.Windows.Forms.Button readCashRegExB;
+        private System.Windows.Forms.Button printOperationRegB;
         private System.Windows.Forms.ListBox cashRegLB;
         private System.Windows.Forms.ListBox operationRegLB;
     }

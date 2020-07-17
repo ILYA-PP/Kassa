@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -24,11 +26,11 @@ namespace KassaApp.Forms
             var reports = db.Report.Where(p => p.Name.Contains(searchTB.Text));
             ViewResult(reports);
         }
-        private void ViewResult(IQueryable<Report>rep)
+        private void ViewResult(IQueryable<Report> rep)
         {
             KassaDBContext db = new KassaDBContext();
             reportsDGV.Rows.Clear();
-            if (rep== null)
+            if (rep == null)
                 foreach (Report p in db.Report)
                     reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
             else
@@ -39,7 +41,9 @@ namespace KassaApp.Forms
         private void dateSearchDTP_ValueChanged(object sender, EventArgs e)
         {
             KassaDBContext db = new KassaDBContext();
-            var reports = db.Report.Where(r => r.Date.Date == dateSearchDTP.Value.Date);
+            var reports = db.Report.Where(r => r.Date.Year == dateSearchDTP.Value.Year && 
+                                               r.Date.Month == dateSearchDTP.Value.Month &&
+                                               r.Date.Day == dateSearchDTP.Value.Day );
             ViewResult(reports);
         }
 

@@ -18,6 +18,7 @@ namespace KassaApp
         public Menu()
         {
             InitializeComponent();
+            AppDomain.CurrentDomain.SetData("DataDirectory", Application.StartupPath);
         }
         //переход на главную форму
         private void регистрацияПродажToolStripMenuItem_Click(object sender, EventArgs e)
@@ -160,20 +161,21 @@ namespace KassaApp
 
         private void показанияОегистровToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            FiscalRegistrar fr = new FiscalRegistrar();
-            fr.Connect();
-            if (fr.CheckConnect() == 0)
-            {
+            new ViewRegistarers().ShowDialog();
+            //if (!CheckPassword())
+            //{
+            //    MessageBox.Show("Неверный пароль!");
+            //    return;
+            //}
+            //FiscalRegistrar fr = new FiscalRegistrar();
+            //fr.Connect();
+            //if (fr.CheckConnect() == 0)
+            //{
                 
-                fr.Disconnect();
-            }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
+            //    fr.Disconnect();
+            //}
+            //else
+            //    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
     }
 }
