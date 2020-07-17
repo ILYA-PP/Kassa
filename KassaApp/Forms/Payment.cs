@@ -72,9 +72,11 @@ namespace KassaApp
                         {
                             messageL.Text = "Печать чеков";
                             CurrentReceipt.Payment = 2;
-                            Driver.PrintCheque(CurrentReceipt);
-                            MarkAsPaid();
-                            Close();
+                            if (Driver.PrintCheque(CurrentReceipt) == 0)
+                            {
+                                MarkAsPaid();
+                                Close();
+                            }
                         }
                         else
                         {
@@ -98,6 +100,11 @@ namespace KassaApp
 
         private void cashB_Click(object sender, EventArgs e)
         {
+            if (decimal.Parse(moneyTB.Text) < CurrentReceipt.Summa)
+            {
+                MessageBox.Show("Вносимая сумма не может быть меньше суммы по чеку!");
+                return;
+            }
             try
             {
                 messageL.Text = "Оплата наличными";
@@ -110,9 +117,11 @@ namespace KassaApp
                     messageL.Text = "Печать чека";
                     CurrentReceipt.Payment = 1;
                     CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
-                    Driver.PrintCheque(CurrentReceipt);
-                    MarkAsPaid();
-                    Close();
+                    if(Driver.PrintCheque(CurrentReceipt) == 0)
+                    {
+                        MarkAsPaid();
+                        Close();
+                    }
                 }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
@@ -132,6 +141,8 @@ namespace KassaApp
                 var db = new KassaDBContext();
                 var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
                 rec.Paid = true;
+                rec.Summa = CurrentReceipt.Summa;
+                rec.Payment = CurrentReceipt.Payment;
                 db.SaveChanges();
             }
             catch (Exception ex)
@@ -147,10 +158,9 @@ namespace KassaApp
             {
                 ((Main)Owner).receipt = new Receipt();
                 ((Main)Owner).receiptDGV.Rows.Clear();
-                CountController.Reconciliation(CurrentReceipt);
                 var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id && p.Paid == false).FirstOrDefault();
                 if(r != null)
-                    db.Receipt.Remove(r);
+                    CountController.Reconciliation(CurrentReceipt);
                 db.Receipt.Add(((Main)Owner).receipt);
                 db.SaveChanges();
             }
