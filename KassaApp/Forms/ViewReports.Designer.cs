@@ -87,6 +87,7 @@
             this.reportTB.Location = new System.Drawing.Point(487, 12);
             this.reportTB.Multiline = true;
             this.reportTB.Name = "reportTB";
+            this.reportTB.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.reportTB.Size = new System.Drawing.Size(377, 426);
             this.reportTB.TabIndex = 51;
             // 
