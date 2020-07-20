@@ -11,6 +11,10 @@ namespace KassaApp.Models
     class FiscalRegistrar
     {
         private DrvFR Driver { get; set; }
+        ~FiscalRegistrar()
+        {
+            Disconnect();
+        }
         //проверка состояния ККТ перед печатью
         public void prepareCheque()
         {
@@ -109,14 +113,15 @@ namespace KassaApp.Models
         {
             if (CheckConnect() == 0)
             {
-                prepareCheque();
+                //prepareCheque();
                 Driver.GetECRStatus();
                 int state = Driver.ECRMode;
                 if (state == 2 || state == 4 || state == 7 || state == 9)
                 {
                     Driver.CheckType = 0;
                     //Открытие чека
-                    executeAndHandleError(Driver.OpenCheck, true);
+                    if (executeAndHandleError(Driver.OpenCheck, true) != 0)
+                        return -1;
                     //if (cheque.Phone != null)
                     //    Driver.CustomerEmail = cheque.Phone;
                     //else if (cheque.Email != null)
@@ -142,7 +147,8 @@ namespace KassaApp.Models
                             Driver.Tax1 = 1;
                         else if (p.NDS == 18)
                             Driver.Tax1 = 2;
-                        executeAndHandleError(Driver.FNOperation, true);
+                        if (executeAndHandleError(Driver.FNOperation, true) != 0)
+                            return -1;
                     }
                     if (cheque.Payment == 1)
                     {

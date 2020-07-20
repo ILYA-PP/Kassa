@@ -214,6 +214,7 @@
             this.Controls.Add(this.moneyTB);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.resultL);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Payment";
