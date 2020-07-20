@@ -28,7 +28,25 @@ namespace KassaApp
         //обработка кнопки ВВод
         private void enterB_Click(object sender, EventArgs e)
         {
+            double discount = 0;
+            if (discountDataTB.Text != "")
+            {
+                if (discountProcentRB.Checked)
+                {
+                    discount = double.Parse(discountDataTB.Text);
+                    if(((Main)Owner).receipt != null)
+                    {
+                        ((Main)Owner).receipt.Discount = discount;
+                        MessageBox.Show("Скидка на чек установлена!");
+                    }
+                }
+                else if (numberDiscountCardRB.Checked)
+                {
 
+                }
+            }
+            else
+                MessageBox.Show("Заполните поле!");
         }
         //закрытие формы
         private void cancelB_Click(object sender, EventArgs e)

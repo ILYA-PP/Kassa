@@ -12,8 +12,8 @@ namespace KassaApp
     [Table("Product")]
     public partial class Product
     {
-        private double discount, nds, sum;
-        private decimal price;
+        private double discount, nds;
+        private decimal price, sum;
         public int Id { get; set; }
 
         [Required]
@@ -63,7 +63,7 @@ namespace KassaApp
             set { discount = Math.Round(value, 2); }
         }
         [NotMapped]
-        public double Row_Summ { get { return sum; } set { sum = Math.Round(value, 2); } }
+        public decimal Row_Summ { get { return sum; } set { sum = Math.Round(value, 2); } }
 
         public int Department { get; set; }
 
@@ -107,8 +107,7 @@ namespace KassaApp
 
         public void RowSummCalculate()
         {
-            Row_Summ = (double)(Quantity * Price); //расчёт суммы
-            Row_Summ -= Row_Summ * Discount / 100;//расчёт суммы с учётом скидки
+            Row_Summ = (Price - Math.Round(Price * (decimal)Discount / 100, 2))*Quantity;
         }
     }
 }

@@ -68,9 +68,9 @@ namespace KassaApp
                     Driver.Connect();
                     if (Driver.CheckConnect() == 0)
                     {
+                        messageL.Text = "Печать чеков";
                         if (Driver.Print(terminal.GetCheque()) == 0)
                         {
-                            messageL.Text = "Печать чеков";
                             CurrentReceipt.Payment = 2;
                             if (Driver.PrintCheque(CurrentReceipt) == 0)
                             {
@@ -141,6 +141,7 @@ namespace KassaApp
                 var db = new KassaDBContext();
                 var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
                 rec.Paid = true;
+                rec.Discount = CurrentReceipt.Discount;
                 rec.Summa = CurrentReceipt.Summa;
                 rec.Payment = CurrentReceipt.Payment;
                 db.SaveChanges();

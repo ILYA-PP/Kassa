@@ -27,7 +27,7 @@ namespace KassaApp
         //переход на форму скидки на чек
         private void discountOnReceiptB_Click(object sender, EventArgs e)
         {
-            new DiscountOnReceipt().ShowDialog();
+            new DiscountOnReceipt().ShowDialog(this);
         }
         //переход на форму Добавления/Удаления товаров
         private void editB_Click(object sender, EventArgs e)

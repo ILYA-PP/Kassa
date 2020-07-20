@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.operationL = new System.Windows.Forms.Label();
-            this.discountCardNumberTB = new System.Windows.Forms.TextBox();
+            this.discountDataTB = new System.Windows.Forms.TextBox();
             this.discountProcentRB = new System.Windows.Forms.RadioButton();
             this.numberDiscountCardRB = new System.Windows.Forms.RadioButton();
             this.cancelB = new System.Windows.Forms.Button();
@@ -46,13 +46,13 @@
             this.operationL.TabIndex = 0;
             this.operationL.Text = "ДК:";
             // 
-            // discountCardNumberTB
+            // discountDataTB
             // 
-            this.discountCardNumberTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.discountCardNumberTB.Location = new System.Drawing.Point(91, 12);
-            this.discountCardNumberTB.Name = "discountCardNumberTB";
-            this.discountCardNumberTB.Size = new System.Drawing.Size(310, 26);
-            this.discountCardNumberTB.TabIndex = 1;
+            this.discountDataTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.discountDataTB.Location = new System.Drawing.Point(91, 12);
+            this.discountDataTB.Name = "discountDataTB";
+            this.discountDataTB.Size = new System.Drawing.Size(310, 26);
+            this.discountDataTB.TabIndex = 1;
             // 
             // discountProcentRB
             // 
@@ -110,7 +110,7 @@
             this.Controls.Add(this.enterB);
             this.Controls.Add(this.numberDiscountCardRB);
             this.Controls.Add(this.discountProcentRB);
-            this.Controls.Add(this.discountCardNumberTB);
+            this.Controls.Add(this.discountDataTB);
             this.Controls.Add(this.operationL);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -125,7 +125,7 @@
         #endregion
 
         private System.Windows.Forms.Label operationL;
-        private System.Windows.Forms.TextBox discountCardNumberTB;
+        private System.Windows.Forms.TextBox discountDataTB;
         private System.Windows.Forms.RadioButton discountProcentRB;
         private System.Windows.Forms.RadioButton numberDiscountCardRB;
         private System.Windows.Forms.Button cancelB;
