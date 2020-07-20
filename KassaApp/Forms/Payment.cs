@@ -77,6 +77,11 @@ namespace KassaApp
                                 MarkAsPaid();
                                 Close();
                             }
+                            else
+                            {
+                                MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
+                                terminal.CancelTransaction();
+                            }
                         }
                         else
                         {

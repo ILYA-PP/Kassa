@@ -95,10 +95,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.summaTB);
             this.Controls.Add(this.operationL);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CashIncomeOutcome";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Внесение/Выплата наличных";
             this.ResumeLayout(false);
             this.PerformLayout();

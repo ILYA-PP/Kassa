@@ -112,10 +112,12 @@
             this.Controls.Add(this.discountProcentRB);
             this.Controls.Add(this.discountDataTB);
             this.Controls.Add(this.operationL);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DiscountOnReceipt";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Скидка на чек";
             this.ResumeLayout(false);
             this.PerformLayout();

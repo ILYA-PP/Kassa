@@ -170,6 +170,9 @@
             this.Controls.Add(this.usePasswordCheckB);
             this.Controls.Add(this.driverCB);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Settings";
             this.ShowIcon = false;
             this.Text = "Настройки";
