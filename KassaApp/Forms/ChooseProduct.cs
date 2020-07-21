@@ -7,7 +7,6 @@ namespace KassaApp.Forms
 {
     public partial class ChooseProduct : Form
     {
-        
         public ChooseProduct()
         {
             InitializeComponent();
@@ -49,7 +48,6 @@ namespace KassaApp.Forms
             try
             {
                 var db = new KassaDBContext();
-                var rec = db.Receipt.Where(re => re.Id == ((Main)Owner).receipt.Id).FirstOrDefault();
                 Product product;
                 Purchase purchase;
                 if (productsDGV.SelectedRows.Count > 0)
@@ -63,13 +61,13 @@ namespace KassaApp.Forms
                             if (CountController.Check(product))
                             {
                                 bool added = false;
-                                foreach (Product p in rec.Products)
+                                foreach (Product p in ((Main)Owner).receipt.Products)
                                 {
                                     if (p.Name == product.Name)
                                     {
                                         if (p.Type == 1)
                                         {
-                                            var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == rec.Id).FirstOrDefault();
+                                            var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
                                             oldP.Count += product.Quantity;
                                             oldP.Summa += (decimal)product.Row_Summ;
                                             p.Quantity += product.Quantity;
@@ -90,7 +88,7 @@ namespace KassaApp.Forms
                                         Count = product.Quantity,
                                         Summa = (decimal)product.Row_Summ,
                                         Date = DateTime.Now,
-                                        Receipt = rec
+                                        Receipt = ((Main)Owner).receipt
                                     };
                                     ((Main)Owner).receipt.Purchases.Add(purchase);
                                     db.Purchase.Add(purchase);

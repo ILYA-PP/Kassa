@@ -47,13 +47,15 @@ namespace KassaApp
             if (terminal.IsEnabled())
             {
                 terminal.CloseDay();
-                FiscalRegistrar fr = new FiscalRegistrar();
-                if (fr.CheckConnect() == 0)
+                using (FiscalRegistrar fr = new FiscalRegistrar())
                 {
-                    fr.Print(terminal.GetCheque());
+                    if (fr.CheckConnect() == 0)
+                    {
+                        fr.Print(terminal.GetCheque());
+                    }
+                    else
+                        MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 }
-                else
-                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
             else
                 MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
@@ -66,13 +68,15 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            FiscalRegistrar fr = new FiscalRegistrar();
-            if (fr.CheckConnect() == 0)
+            using (FiscalRegistrar fr = new FiscalRegistrar())
             {
-                fr.PrintZReport();
+                if (fr.CheckConnect() == 0)
+                {
+                    fr.PrintZReport();
+                }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void хотчётПоНалогамToolStripMenuItem_Click(object sender, EventArgs e)
@@ -82,13 +86,15 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            FiscalRegistrar fr = new FiscalRegistrar();
-            if (fr.CheckConnect() == 0)
+            using (FiscalRegistrar fr = new FiscalRegistrar())
             {
-                fr.PrintXTaxReport();
+                if (fr.CheckConnect() == 0)
+                {
+                    fr.PrintXTaxReport();
+                }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void хотчётПоСекциямToolStripMenuItem_Click(object sender, EventArgs e)
@@ -98,13 +104,15 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            FiscalRegistrar fr = new FiscalRegistrar();
-            if (fr.CheckConnect() == 0)
+            using (FiscalRegistrar fr = new FiscalRegistrar())
             {
-                fr.PrintXSectionReport();
+                if (fr.CheckConnect() == 0)
+                {
+                    fr.PrintXSectionReport();
+                }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void хотчётбезГашенияToolStripMenuItem_Click(object sender, EventArgs e)
@@ -114,13 +122,15 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            FiscalRegistrar fr = new FiscalRegistrar();
-            if (fr.CheckConnect() == 0)
+            using (FiscalRegistrar fr = new FiscalRegistrar())
             {
-                fr.PrintXReport();
+                if (fr.CheckConnect() == 0)
+                {
+                    fr.PrintXReport();
+                }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
         private bool CheckPassword()
         {

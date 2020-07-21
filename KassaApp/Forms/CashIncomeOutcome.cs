@@ -41,19 +41,21 @@ namespace KassaApp.Forms
                 summ = decimal.Parse(summaTB.Text);
                 if (summ > 0)
                 {
-                    FiscalRegistrar fr = new FiscalRegistrar();
-                    if (fr.CheckConnect() == 0)
+                    using (FiscalRegistrar fr = new FiscalRegistrar())
                     {
-                        if (IsCashIncome)
-                           res = fr.CashIncome(summ);
+                        if (fr.CheckConnect() == 0)
+                        {
+                            if (IsCashIncome)
+                                res = fr.CashIncome(summ);
+                            else
+                                res = fr.CashOutcome(summ);
+                            if (res == 0)
+                                MessageBox.Show("Успешно!");
+                            summaTB.Text = "";
+                        }
                         else
-                           res = fr.CashOutcome(summ);
-                        if (res == 0)
-                            MessageBox.Show("Успешно!");
-                        summaTB.Text = "";
+                            MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                     }
-                    else
-                        MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 }
                 else
                     MessageBox.Show("Сумма должна быть больше 0!");

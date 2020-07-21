@@ -19,61 +19,67 @@ namespace KassaApp.Forms
 
         private void readOperationRegB_Click(object sender, EventArgs e)
         {
-            FiscalRegistrar fr = new FiscalRegistrar();
-            if (fr.CheckConnect() == 0)
+            using (FiscalRegistrar fr = new FiscalRegistrar())
             {
-                int i = 1;
-                RegistrerItem ri;
-                operationRegLB.Items.Clear();
-                while(true)
+                if (fr.CheckConnect() == 0)
                 {
-                    ri = fr.GetOperationRegItem(i);
-                    if (ri != null)
+                    int i = 1;
+                    RegistrerItem ri;
+                    operationRegLB.Items.Clear();
+                    while (true)
                     {
-                        operationRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
-                        i++;
+                        ri = fr.GetOperationRegItem(i);
+                        if (ri != null)
+                        {
+                            operationRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
+                            i++;
+                        }
+                        else
+                            break;
                     }
-                    else
-                        break;
                 }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void readCashRegB_Click(object sender, EventArgs e)
         {
-            FiscalRegistrar fr = new FiscalRegistrar();
-            if (fr.CheckConnect() == 0)
+            using (FiscalRegistrar fr = new FiscalRegistrar())
             {
-                int i = 1;
-                RegistrerItem ri;
-                cashRegLB.Items.Clear();
-                while (true)
+                if (fr.CheckConnect() == 0)
                 {
-                    ri = fr.GetCashRegItem(i);
-                    if (ri != null)
+                    int i = 1;
+                    RegistrerItem ri;
+                    cashRegLB.Items.Clear();
+                    while (true)
                     {
-                        cashRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
-                        i++;
+                        ri = fr.GetCashRegItem(i);
+                        if (ri != null)
+                        {
+                            cashRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
+                            i++;
+                        }
+                        else
+                            break;
                     }
-                    else
-                        break;
                 }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
 
         private void printOperationRegB_Click(object sender, EventArgs e)
         {
-            FiscalRegistrar fr = new FiscalRegistrar();
-            if (fr.CheckConnect() == 0)
+            using (FiscalRegistrar fr = new FiscalRegistrar())
             {
-                fr.PrintOperationReg();
+                if (fr.CheckConnect() == 0)
+                {
+                    fr.PrintOperationReg();
+                }
+                else
+                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
-            else
-                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
         }
     }
 }

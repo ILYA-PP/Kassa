@@ -55,7 +55,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 32);
+            this.label1.Size = new System.Drawing.Size(63, 33);
             this.label1.TabIndex = 47;
             this.label1.Text = "Поиск:";
             // 
@@ -74,7 +74,7 @@
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(3, 32);
+            this.label2.Location = new System.Drawing.Point(3, 33);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 33);
             this.label2.TabIndex = 49;
@@ -85,7 +85,7 @@
             this.dateSearchDTP.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateSearchDTP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dateSearchDTP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dateSearchDTP.Location = new System.Drawing.Point(72, 35);
+            this.dateSearchDTP.Location = new System.Drawing.Point(72, 36);
             this.dateSearchDTP.Name = "dateSearchDTP";
             this.dateSearchDTP.Size = new System.Drawing.Size(351, 26);
             this.dateSearchDTP.TabIndex = 50;
@@ -140,7 +140,7 @@
             this.dataCol,
             this.dateCol});
             this.reportsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.reportsDGV.Location = new System.Drawing.Point(3, 74);
+            this.reportsDGV.Location = new System.Drawing.Point(3, 75);
             this.reportsDGV.Name = "reportsDGV";
             this.reportsDGV.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -151,7 +151,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.reportsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.reportsDGV.Size = new System.Drawing.Size(426, 355);
+            this.reportsDGV.Size = new System.Drawing.Size(426, 354);
             this.reportsDGV.TabIndex = 52;
             this.reportsDGV.SelectionChanged += new System.EventHandler(this.reportsDGV_SelectionChanged);
             // 
@@ -200,7 +200,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(426, 65);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(426, 66);
             this.tableLayoutPanel3.TabIndex = 53;
             // 
             // ViewReports

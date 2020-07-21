@@ -64,32 +64,34 @@ namespace KassaApp
                 if (terminal.IsEnabled())
                 {
                     terminal.Purchase((double)CurrentReceipt.Summa);
-                    FiscalRegistrar Driver = new FiscalRegistrar();
-                    if (Driver.CheckConnect() == 0)
+                    using (FiscalRegistrar fr = new FiscalRegistrar())
                     {
-                        messageL.Text = "Печать чеков";
-                        if (Driver.Print(terminal.GetCheque()) == 0)
+                        if (fr.CheckConnect() == 0)
                         {
-                            CurrentReceipt.Payment = 2;
-                            if (Driver.PrintCheque(CurrentReceipt) == 0)
+                            messageL.Text = "Печать чеков";
+                            if (fr.Print(terminal.GetCheque()) == 0)
                             {
-                                MarkAsPaid();
-                                Close();
+                                CurrentReceipt.Payment = 2;
+                                if (fr.PrintCheque(CurrentReceipt) == 0)
+                                {
+                                    MarkAsPaid();
+                                    Close();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
+                                    terminal.CancelTransaction();
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
+                                MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
                                 terminal.CancelTransaction();
                             }
                         }
                         else
-                        {
-                            MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
-                            terminal.CancelTransaction();
-                        }
+                            MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                     }
-                    else
-                        MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 }
                 else
                     MessageBox.Show("Ошибка! Нет связи с терминалом.");
@@ -114,20 +116,22 @@ namespace KassaApp
                 messageL.Text = "Оплата наличными";
                 this.Enabled = false;
                 panel1.Visible = true;
-                FiscalRegistrar Driver = new FiscalRegistrar();
-                if (Driver.CheckConnect() == 0)
+                using (FiscalRegistrar fr = new FiscalRegistrar())
                 {
-                    messageL.Text = "Печать чека";
-                    CurrentReceipt.Payment = 1;
-                    CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
-                    if(Driver.PrintCheque(CurrentReceipt) == 0)
+                    if (fr.CheckConnect() == 0)
                     {
-                        MarkAsPaid();
-                        Close();
+                        messageL.Text = "Печать чека";
+                        CurrentReceipt.Payment = 1;
+                        CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
+                        if (fr.PrintCheque(CurrentReceipt) == 0)
+                        {
+                            MarkAsPaid();
+                            Close();
+                        }
                     }
+                    else
+                        MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 }
-                else
-                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 panel1.Visible = false;
                 this.Enabled = true;
             }
