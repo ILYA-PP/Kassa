@@ -15,23 +15,27 @@ namespace KassaApp.Forms
 
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
-            KassaDBContext db = new KassaDBContext();
-            var products = db.Product.Where(p => p.Name.Contains(searchTB.Text));
-            ViewResult(products);
+            using (var db = new KassaDBContext())
+            {
+                var products = db.Product.Where(p => p.Name.Contains(searchTB.Text));
+                ViewResult(products);
+            }
         }
 
         private void ViewResult(IQueryable<Product> prod)
         {
-            KassaDBContext db = new KassaDBContext();
-            productsDGV.Rows.Clear();
-            if(prod == null)
-                foreach (Product p in db.Product)
-                    productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
-                        p.Discount, p.NDS, p.Row_Summ);
-            else
-                foreach (Product p in prod)
-                    productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
-                        p.Discount, p.NDS, p.Row_Summ);
+            using (var db = new KassaDBContext())
+            {
+                productsDGV.Rows.Clear();
+                if (prod == null)
+                    foreach (Product p in db.Product)
+                        productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
+                            p.Discount, p.NDS, p.Row_Summ);
+                else
+                    foreach (Product p in prod)
+                        productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
+                            p.Discount, p.NDS, p.Row_Summ);
+            }
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -47,60 +51,62 @@ namespace KassaApp.Forms
         {
             try
             {
-                var db = new KassaDBContext();
-                Product product;
-                Purchase purchase;
-                if (productsDGV.SelectedRows.Count > 0)
-                    foreach (DataGridViewRow r in productsDGV.SelectedRows)
-                    {
-                        product = Product.ProductFromRow(r, null);
-                        if (product != null)
+                using (var db = new KassaDBContext())
+                {
+                    Product product;
+                    Purchase purchase;
+                    if (productsDGV.SelectedRows.Count > 0)
+                        foreach (DataGridViewRow r in productsDGV.SelectedRows)
                         {
-                            product.Quantity = (int)countNUD.Value;
-                            product.RowSummCalculate();
-                            if (CountController.Check(product))
+                            product = Product.ProductFromRow(r, null);
+                            if (product != null)
                             {
-                                bool added = false;
-                                foreach (Product p in ((Main)Owner).receipt.Products)
+                                product.Quantity = (int)countNUD.Value;
+                                product.RowSummCalculate();
+                                if (CountController.Check(product))
                                 {
-                                    if (p.Name == product.Name)
+                                    bool added = false;
+                                    foreach (Product p in ((Main)Owner).receipt.Products)
                                     {
-                                        if (p.Type == 1)
+                                        if (p.Name == product.Name)
                                         {
-                                            var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
-                                            oldP.Count += product.Quantity;
-                                            oldP.Summa += (decimal)product.Row_Summ;
-                                            p.Quantity += product.Quantity;
-                                            p.Row_Summ += product.Row_Summ;
-                                            ((Main)Owner).DGV_Refresh();
-                                            db.SaveChanges();
+                                            if (p.Type == 1)
+                                            {
+                                                var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
+                                                oldP.Count += product.Quantity;
+                                                oldP.Summa += (decimal)product.Row_Summ;
+                                                p.Quantity += product.Quantity;
+                                                p.Row_Summ += product.Row_Summ;
+                                                ((Main)Owner).DGV_Refresh();
+                                                db.SaveChanges();
+                                            }
+                                            added = true;
                                         }
-                                        added = true;
                                     }
-                                }
-                                if (!added)
-                                {
-                                    ((Main)Owner).receipt.Products.Add(product);
-                                    ((Main)Owner).DGV_Refresh();
-                                    purchase = new Purchase()
+                                    if (!added)
                                     {
-                                        ProductId = product.Id,
-                                        Count = product.Quantity,
-                                        Summa = (decimal)product.Row_Summ,
-                                        Date = DateTime.Now,
-                                        Receipt = ((Main)Owner).receipt
-                                    };
-                                    ((Main)Owner).receipt.Purchases.Add(purchase);
-                                    db.Purchase.Add(purchase);
-                                    db.SaveChanges();
+                                        ((Main)Owner).receipt.Products.Add(product);
+                                        ((Main)Owner).DGV_Refresh();
+                                        purchase = new Purchase()
+                                        {
+                                            ProductId = product.Id,
+                                            Count = product.Quantity,
+                                            Summa = (decimal)product.Row_Summ,
+                                            Date = DateTime.Now,
+                                            Receipt = ((Main)Owner).receipt
+                                        };
+                                        ((Main)Owner).receipt.Purchases.Add(purchase);
+                                        db.Purchase.Add(purchase);
+                                        db.SaveChanges();
+                                    }
+                                    ViewResult(null);
+                                    //Close();
                                 }
-                                ViewResult(null);
-                                //Close();
                             }
                         }
-                    }
-                else
-                    MessageBox.Show("Строка не выбрана!");
+                    else
+                        MessageBox.Show("Строка не выбрана!");
+                }
             }
             catch(Exception ex)
             {

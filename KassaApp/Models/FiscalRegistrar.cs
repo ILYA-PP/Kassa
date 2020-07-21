@@ -328,23 +328,25 @@ namespace KassaApp.Models
             {
                 try
                 {
-                    var db = new KassaDBContext();
-                    string d = null;
-                    if (template != null)
-                        d = template;
-                    else if (Driver.StringForPrinting != null)
-                        d = Driver.StringForPrinting;
-                    if (d != null)
+                    using (var db = new KassaDBContext())
                     {
-                        byte[] data = Encoding.Default.GetBytes(d);
-                        Report report = new Report()
+                        string d = null;
+                        if (template != null)
+                            d = template;
+                        else if (Driver.StringForPrinting != null)
+                            d = Driver.StringForPrinting;
+                        if (d != null)
                         {
-                            Name = name,
-                            ReportData = data,
-                            Date = DateTime.Now
-                        };
-                        db.Report.Add(report);
-                        db.SaveChanges();
+                            byte[] data = Encoding.Default.GetBytes(d);
+                            Report report = new Report()
+                            {
+                                Name = name,
+                                ReportData = data,
+                                Date = DateTime.Now
+                            };
+                            db.Report.Add(report);
+                            db.SaveChanges();
+                        }
                     }
                 }
                 catch (DbEntityValidationException dbEx)

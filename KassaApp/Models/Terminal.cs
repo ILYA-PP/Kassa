@@ -120,16 +120,18 @@ namespace KassaApp.Models
             {
                 try
                 {
-                    var db = new KassaDBContext();
-                    byte[] data = Encoding.Default.GetBytes(d);
-                    Report report = new Report()
+                    using (var db = new KassaDBContext())
                     {
-                        Name = "Отчёт по банковским картам",
-                        ReportData = data,
-                        Date = DateTime.Now
-                    };
-                    db.Report.Add(report);
-                    db.SaveChanges();
+                        byte[] data = Encoding.Default.GetBytes(d);
+                        Report report = new Report()
+                        {
+                            Name = "Отчёт по банковским картам",
+                            ReportData = data,
+                            Date = DateTime.Now
+                        };
+                        db.Report.Add(report);
+                        db.SaveChanges();
+                    }
                 }
                 catch (DbEntityValidationException dbEx)
                 {

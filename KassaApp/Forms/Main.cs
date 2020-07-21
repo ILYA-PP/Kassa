@@ -12,12 +12,14 @@ namespace KassaApp
         public Receipt receipt;
         public Main()
         {
-            var db = new KassaDBContext();
-            receipt = new Receipt();
-            receipt = db.Receipt.Add(receipt);
-            db.SaveChanges();
-            InitializeComponent();
-            timer.Start();
+            using (var db = new KassaDBContext())
+            {
+                receipt = new Receipt();
+                receipt = db.Receipt.Add(receipt);
+                db.SaveChanges();
+                InitializeComponent();
+                timer.Start();
+            }
         }
         //ограничение вводимых значений в текстбоксы
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
@@ -92,14 +94,16 @@ namespace KassaApp
                     $"| {product.Name} | {product.Quantity} | {product.Price} | " +
                     $"{product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    var db = new KassaDBContext();
-                    var purchase = db.Purchase.Where(p => p.ProductId == product.Id && p.ReceiptId == receipt.Id).FirstOrDefault();
-                    db.Purchase.Remove(purchase);
-                    db.SaveChanges();
-                    receipt.Products.Remove(product);
-                    receipt.CalculateSumm();
-                    receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
-                    CountController.Recover(product);
+                    using (var db = new KassaDBContext())
+                    {
+                        var purchase = db.Purchase.Where(p => p.ProductId == product.Id && p.ReceiptId == receipt.Id).FirstOrDefault();
+                        db.Purchase.Remove(purchase);
+                        db.SaveChanges();
+                        receipt.Products.Remove(product);
+                        receipt.CalculateSumm();
+                        receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
+                        CountController.Recover(product);
+                    }
                 }
             }
         }

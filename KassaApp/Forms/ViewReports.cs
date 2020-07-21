@@ -22,29 +22,35 @@ namespace KassaApp.Forms
 
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
-            KassaDBContext db = new KassaDBContext();
-            var reports = db.Report.Where(p => p.Name.Contains(searchTB.Text));
-            ViewResult(reports);
+            using (var db = new KassaDBContext())
+            {
+                var reports = db.Report.Where(p => p.Name.Contains(searchTB.Text));
+                ViewResult(reports);
+            }
         }
         private void ViewResult(IQueryable<Report> rep)
         {
-            KassaDBContext db = new KassaDBContext();
-            reportsDGV.Rows.Clear();
-            if (rep == null)
-                foreach (Report p in db.Report)
-                    reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
-            else
-                foreach (Report p in rep)
-                    reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
+            using (var db = new KassaDBContext())
+            {
+                reportsDGV.Rows.Clear();
+                if (rep == null)
+                    foreach (Report p in db.Report)
+                        reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
+                else
+                    foreach (Report p in rep)
+                        reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
+            }
         }
 
         private void dateSearchDTP_ValueChanged(object sender, EventArgs e)
         {
-            KassaDBContext db = new KassaDBContext();
-            var reports = db.Report.Where(r => r.Date.Year == dateSearchDTP.Value.Year && 
+            using (var db = new KassaDBContext())
+            {
+                var reports = db.Report.Where(r => r.Date.Year == dateSearchDTP.Value.Year &&
                                                r.Date.Month == dateSearchDTP.Value.Month &&
-                                               r.Date.Day == dateSearchDTP.Value.Day );
-            ViewResult(reports);
+                                               r.Date.Day == dateSearchDTP.Value.Day);
+                ViewResult(reports);
+            }
         }
 
         private void reportsDGV_SelectionChanged(object sender, EventArgs e)

@@ -78,12 +78,14 @@ namespace KassaApp
                     product = r.Products.Where(p => p.Name == row.Cells["nameCol"].Value.ToString()).FirstOrDefault();
                 else
                 {
-                    var db = new KassaDBContext();
-                    string name = row.Cells["nameCol"].Value.ToString();
-                    int count = int.Parse(row.Cells["countCol"].Value.ToString());
-                    product = db.Product.Where(p => p.Name == name).FirstOrDefault();
-                    product.Quantity = count;
-                    product.RowSummCalculate();
+                    using (var db = new KassaDBContext())
+                    {
+                        string name = row.Cells["nameCol"].Value.ToString();
+                        int count = int.Parse(row.Cells["countCol"].Value.ToString());
+                        product = db.Product.Where(p => p.Name == name).FirstOrDefault();
+                        product.Quantity = count;
+                        product.RowSummCalculate();
+                    }
                 }
                 return product;
             }

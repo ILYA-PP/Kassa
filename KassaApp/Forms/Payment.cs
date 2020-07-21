@@ -145,13 +145,15 @@ namespace KassaApp
         {
             try
             {
-                var db = new KassaDBContext();
-                var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
-                rec.Paid = true;
-                rec.Discount = CurrentReceipt.Discount;
-                rec.Summa = CurrentReceipt.Summa;
-                rec.Payment = CurrentReceipt.Payment;
-                db.SaveChanges();
+                using (var db = new KassaDBContext())
+                {
+                    var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
+                    rec.Paid = true;
+                    rec.Discount = CurrentReceipt.Discount;
+                    rec.Summa = CurrentReceipt.Summa;
+                    rec.Payment = CurrentReceipt.Payment;
+                    db.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -161,16 +163,18 @@ namespace KassaApp
 
         private void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var db = new KassaDBContext();
-            if (MessageBox.Show("Продолжить работу с этими позициями?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+            using (var db = new KassaDBContext())
             {
-                ((Main)Owner).receipt = new Receipt();
-                ((Main)Owner).receiptDGV.Rows.Clear();
-                var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id && p.Paid == false).FirstOrDefault();
-                if(r != null)
-                    CountController.Reconciliation(CurrentReceipt);
-                db.Receipt.Add(((Main)Owner).receipt);
-                db.SaveChanges();
+                if (MessageBox.Show("Продолжить работу с этими позициями?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    ((Main)Owner).receipt = new Receipt();
+                    ((Main)Owner).receiptDGV.Rows.Clear();
+                    var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id && p.Paid == false).FirstOrDefault();
+                    if (r != null)
+                        CountController.Reconciliation(CurrentReceipt);
+                    db.Receipt.Add(((Main)Owner).receipt);
+                    db.SaveChanges();
+                }
             }
         }
     }

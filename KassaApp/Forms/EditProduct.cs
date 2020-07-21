@@ -39,46 +39,48 @@ namespace KassaApp
         {
             try
             {
-                var db = new KassaDBContext();
-                if (countNUD.Value != 0 && discountTB.Text != "")
+                using (var db = new KassaDBContext())
                 {
-                    Product product = new Product()
+                    if (countNUD.Value != 0 && discountTB.Text != "")
                     {
-                        Id = OldProduct.Id,
-                        Name = OldProduct.Name,
-                        Quantity = (int)countNUD.Value,
-                        Price = OldProduct.Price,
-                        Discount = double.Parse(discountTB.Text),
-                        NDS = OldProduct.NDS,
-                        Department = (int)departmentNUD.Value,
-                        Type = OldProduct.Type
-                    };
-                    product.RowSummCalculate();
-                    //если идёт изменение, данные меняются на главной форме
-                    //иначе данные добавляются на главную форму
-                    product.Quantity -= OldProduct.Quantity; 
-                    if (CountController.Check(product))
-                    {
-                        product.Quantity += OldProduct.Quantity;
-                        int index = ((Main)Owner).receipt.Products.IndexOf(
-                            ((Main)Owner).receipt.Products.Where(p => p.Name == product.Name).FirstOrDefault());
-                        ((Main)Owner).receipt.Products[index] = product;
-                        ((Main)Owner).DGV_Refresh();
-                        var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
-                        oldP.Count = product.Quantity;
-                        oldP.Summa = (decimal)product.Row_Summ;
-                        db.SaveChanges();
-                    }    
-                    Close();
+                        Product product = new Product()
+                        {
+                            Id = OldProduct.Id,
+                            Name = OldProduct.Name,
+                            Quantity = (int)countNUD.Value,
+                            Price = OldProduct.Price,
+                            Discount = double.Parse(discountTB.Text),
+                            NDS = OldProduct.NDS,
+                            Department = (int)departmentNUD.Value,
+                            Type = OldProduct.Type
+                        };
+                        product.RowSummCalculate();
+                        //если идёт изменение, данные меняются на главной форме
+                        //иначе данные добавляются на главную форму
+                        product.Quantity -= OldProduct.Quantity;
+                        if (CountController.Check(product))
+                        {
+                            product.Quantity += OldProduct.Quantity;
+                            int index = ((Main)Owner).receipt.Products.IndexOf(
+                                ((Main)Owner).receipt.Products.Where(p => p.Name == product.Name).FirstOrDefault());
+                            ((Main)Owner).receipt.Products[index] = product;
+                            ((Main)Owner).DGV_Refresh();
+                            var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
+                            oldP.Count = product.Quantity;
+                            oldP.Summa = (decimal)product.Row_Summ;
+                            db.SaveChanges();
+                        }
+                        Close();
+                    }
+                    else
+                        MessageBox.Show("Заполните все данные о товаре!");
                 }
-                else
-                    MessageBox.Show("Заполните все данные о товаре!");
-        }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-}
+        }
         //обработка горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {                

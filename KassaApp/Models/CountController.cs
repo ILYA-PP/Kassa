@@ -10,22 +10,24 @@ namespace KassaApp.Models
 		{
 			try
 			{
-				var db = new KassaDBContext();
-				var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
-				if (prod.Quantity <= productInDB.Quantity)
+				using (var db = new KassaDBContext())
 				{
-					if (productInDB.Type == 1)
+					var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
+					if (prod.Quantity <= productInDB.Quantity)
 					{
-						productInDB.Quantity -= prod.Quantity;
-						db.SaveChanges();
+						if (productInDB.Type == 1)
+						{
+							productInDB.Quantity -= prod.Quantity;
+							db.SaveChanges();
+						}
+						return true;
 					}
-					return true;
-				}
-				else
-				{
-					MessageBox.Show("Недостаточно товара в наличии!" +
-									$"\nТовар: {productInDB.Name}" +
-									$"\nОстаток: {productInDB.Quantity}");
+					else
+					{
+						MessageBox.Show("Недостаточно товара в наличии!" +
+										$"\nТовар: {productInDB.Name}" +
+										$"\nОстаток: {productInDB.Quantity}");
+					}
 				}
 			}
 			catch(Exception ex)
@@ -39,14 +41,16 @@ namespace KassaApp.Models
 		{
 			try
 			{
-				var db = new KassaDBContext();
-				var productInDB = db.Product.Where(p => p.Id == prod.Id).FirstOrDefault();
-				if (productInDB.Type == 1)
+				using (var db = new KassaDBContext())
 				{
-					productInDB.Quantity += prod.Quantity;
-					db.SaveChanges();
+					var productInDB = db.Product.Where(p => p.Id == prod.Id).FirstOrDefault();
+					if (productInDB.Type == 1)
+					{
+						productInDB.Quantity += prod.Quantity;
+						db.SaveChanges();
+					}
+					return true;
 				}
-				return true;
 			}
 			catch (Exception ex)
 			{
@@ -58,13 +62,15 @@ namespace KassaApp.Models
 		{
 			try
 			{
-				var db = new KassaDBContext();
-				foreach (Product p in receipt.Products)
-					Recover(p);
-				if(receipt != null)
+				using (var db = new KassaDBContext())
 				{
-					db.Receipt.Remove(db.Receipt.Where(r => r.Id == receipt.Id).FirstOrDefault());
-					db.SaveChanges();
+					foreach (Product p in receipt.Products)
+						Recover(p);
+					if (receipt != null)
+					{
+						db.Receipt.Remove(db.Receipt.Where(r => r.Id == receipt.Id).FirstOrDefault());
+						db.SaveChanges();
+					}
 				}
 			}
 			catch (Exception ex)
