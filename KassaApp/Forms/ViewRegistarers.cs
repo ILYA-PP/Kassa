@@ -20,7 +20,6 @@ namespace KassaApp.Forms
         private void readOperationRegB_Click(object sender, EventArgs e)
         {
             FiscalRegistrar fr = new FiscalRegistrar();
-            fr.Connect();
             if (fr.CheckConnect() == 0)
             {
                 int i = 1;
@@ -37,7 +36,6 @@ namespace KassaApp.Forms
                     else
                         break;
                 }
-                fr.Disconnect();
             }
             else
                 MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
@@ -46,7 +44,6 @@ namespace KassaApp.Forms
         private void readCashRegB_Click(object sender, EventArgs e)
         {
             FiscalRegistrar fr = new FiscalRegistrar();
-            fr.Connect();
             if (fr.CheckConnect() == 0)
             {
                 int i = 1;
@@ -63,7 +60,6 @@ namespace KassaApp.Forms
                     else
                         break;
                 }
-                fr.Disconnect();
             }
             else
                 MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
@@ -72,11 +68,9 @@ namespace KassaApp.Forms
         private void printOperationRegB_Click(object sender, EventArgs e)
         {
             FiscalRegistrar fr = new FiscalRegistrar();
-            fr.Connect();
             if (fr.CheckConnect() == 0)
             {
                 fr.PrintOperationReg();
-                fr.Disconnect();
             }
             else
                 MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");

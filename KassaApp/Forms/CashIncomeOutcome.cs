@@ -35,21 +35,22 @@ namespace KassaApp.Forms
 
         private void enterB_Click(object sender, EventArgs e)
         {
-            decimal summ = 0;
+            decimal summ = 0, res;
             if(summaTB.Text != "")
             {
                 summ = decimal.Parse(summaTB.Text);
                 if (summ > 0)
                 {
                     FiscalRegistrar fr = new FiscalRegistrar();
-                    fr.Connect();
                     if (fr.CheckConnect() == 0)
                     {
                         if (IsCashIncome)
-                           fr.CashIncome(summ);
+                           res = fr.CashIncome(summ);
                         else
-                           fr.CashOutcome(summ);
-                        fr.Disconnect();
+                           res = fr.CashOutcome(summ);
+                        if (res == 0)
+                            MessageBox.Show("Успешно!");
+                        summaTB.Text = "";
                     }
                     else
                         MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");

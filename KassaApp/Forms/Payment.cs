@@ -65,7 +65,6 @@ namespace KassaApp
                 {
                     terminal.Purchase((double)CurrentReceipt.Summa);
                     FiscalRegistrar Driver = new FiscalRegistrar();
-                    Driver.Connect();
                     if (Driver.CheckConnect() == 0)
                     {
                         messageL.Text = "Печать чеков";
@@ -116,7 +115,6 @@ namespace KassaApp
                 this.Enabled = false;
                 panel1.Visible = true;
                 FiscalRegistrar Driver = new FiscalRegistrar();
-                Driver.Connect();
                 if (Driver.CheckConnect() == 0)
                 {
                     messageL.Text = "Печать чека";

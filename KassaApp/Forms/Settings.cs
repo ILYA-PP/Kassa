@@ -53,12 +53,10 @@ namespace KassaApp
         private void checkConnectB_Click(object sender, EventArgs e)
         {
             FiscalRegistrar fr = new FiscalRegistrar();
-            fr.Connect();
             if (fr.CheckConnect() == 0)
                 MessageBox.Show("Подключено!");
             else
                 MessageBox.Show("Подключение отсутствует!");
-            fr.Disconnect();
         }
 
         private void usePasswordCheckB_CheckedChanged(object sender, EventArgs e)
