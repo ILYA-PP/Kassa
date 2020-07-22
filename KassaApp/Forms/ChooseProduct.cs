@@ -93,7 +93,7 @@ namespace KassaApp.Forms
                                             Count = product.Quantity,
                                             Summa = (decimal)product.Row_Summ,
                                             Date = DateTime.Now,
-                                            Receipt = ((Main)Owner).receipt
+                                            Receipt = db.Receipt.Where(rec => rec.Id == ((Main)Owner).receipt.Id).FirstOrDefault()
                                         };
                                         ((Main)Owner).receipt.Purchases.Add(purchase);
                                         db.Purchase.Add(purchase);

@@ -59,8 +59,20 @@ namespace KassaApp.Models
             prepareCheque();
             Driver.StringForPrinting = s;
             int res = executeAndHandleError(Driver.PrintString, true);
+            res = executeAndHandleError(Driver.WaitForPrinting);
+            //Ожидание печати чека
+            while (res != 0)
+            {
+                if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    executeAndHandleError(Driver.PrintString, true);
+                res = executeAndHandleError(Driver.WaitForPrinting);
+            }
+            //Отрезка чека
             if (res == 0)
-                executeAndHandleError(Driver.CutCheck);
+            {
+                res = executeAndHandleError(Driver.CutCheck, true);
+                return res;
+            }
             return res;
         }
 
@@ -69,7 +81,7 @@ namespace KassaApp.Models
             return executeAndHandleError(Driver.Connect);
         }
         //подключение к фискальному регистратору
-        private void Connect()
+        protected void Connect()
         {
             var driverData = ConfigurationManager.AppSettings;
             try
@@ -200,10 +212,16 @@ namespace KassaApp.Models
                     int res = executeAndHandleError(Driver.FNCloseCheckEx, true);
                     if (res == 0)
                     {
+                        res = executeAndHandleError(Driver.WaitForPrinting);
                         //Ожидание печати чека
-                        executeAndHandleError(Driver.WaitForPrinting);
+                        while (res != 0)
+                        {
+                            if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                executeAndHandleError(Driver.ContinuePrint, true);
+                            res = executeAndHandleError(Driver.WaitForPrinting);
+                        }
                         //Отрезка чека
-                        executeAndHandleError(Driver.CutCheck, true);
+                        res = executeAndHandleError(Driver.CutCheck, true);
                         return res;
                     }
                 }
@@ -212,7 +230,7 @@ namespace KassaApp.Models
             }
             else
                 AddLog("Нет подключения");
-            return 1;
+            return -1;
         }
 
         public void PrintXReport()
