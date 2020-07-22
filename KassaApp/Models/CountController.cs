@@ -37,16 +37,16 @@ namespace KassaApp.Models
 			return false;
 		}
 
-		public static bool Recover(Product prod)
+		public static bool Recover(int id, int count)
 		{
 			try
 			{
 				using (var db = new KassaDBContext())
 				{
-					var productInDB = db.Product.Where(p => p.Id == prod.Id).FirstOrDefault();
+					var productInDB = db.Product.Where(p => p.Id == id).FirstOrDefault();
 					if (productInDB.Type == 1)
 					{
-						productInDB.Quantity += prod.Quantity;
+						productInDB.Quantity += count;
 						db.SaveChanges();
 					}
 					return true;
@@ -65,12 +65,33 @@ namespace KassaApp.Models
 				using (var db = new KassaDBContext())
 				{
 					foreach (Product p in receipt.Products)
-						Recover(p);
+						Recover(p.Id, p.Quantity);
 					if (receipt != null)
 					{
 						db.Receipt.Remove(db.Receipt.Where(r => r.Id == receipt.Id).FirstOrDefault());
 						db.SaveChanges();
 					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+		}
+		public static void ReconciliationAll()
+		{
+			try
+			{
+				using (var db = new KassaDBContext())
+				{
+					var receipts = db.Receipt.Where(r => r.Paid == false);
+					foreach (var r in receipts)
+					{
+						foreach (var p in r.Purchases)
+							Recover(p.ProductId, p.Count);
+						db.Receipt.Remove(r);
+					}
+					db.SaveChanges();
 				}
 			}
 			catch (Exception ex)

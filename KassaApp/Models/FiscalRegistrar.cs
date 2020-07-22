@@ -10,7 +10,7 @@ namespace KassaApp.Models
 {
     class FiscalRegistrar: IDisposable
     {
-        private DrvFR Driver { get; set; }
+        protected DrvFR Driver { get; set; }
         public FiscalRegistrar()
         {
             Connect();
@@ -31,15 +31,15 @@ namespace KassaApp.Models
                     executeAndHandleError(Driver.WaitForPrinting);
                     if(MessageBox.Show("24 часа истеки! Зактыть смену и открыть новую смену?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        GetFiscReport(null, "Z-отчёт (c гашением)");
+                        GetFiscReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
                         //Открытие смены
-                        GetFiscReport(null, "Отчёт об открытии смены");
+                        GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены");
                     } 
                     break;
                 case 4:
                     //Открытие смены
                     if (MessageBox.Show("Смена закрыта! Открыть новую смену?","", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        GetReport(null, "Отчёт об открытии смены"); 
+                        GetReport(Driver.OpenSession, "Отчёт об открытии смены"); 
                     break;
                 case 8:
                     //Отмена чека
@@ -96,7 +96,7 @@ namespace KassaApp.Models
             MessageBox.Show(mes + " ");
         }
         //вывод возникающих ошибок
-        private void CheckResult(int code, string n, bool ViewMessage)
+        protected void CheckResult(int code, string n, bool ViewMessage)
         {
             if(ViewMessage)
                 if (code != 0 )
@@ -105,9 +105,9 @@ namespace KassaApp.Models
                     Console.Write($"Метод {n}: Успешно ");
         }
 
-        private delegate int Func();
+        protected delegate int Func();
         //проверка результата работы метода драйвера ККТ
-        private int executeAndHandleError(Func f, bool ViewMessage = false)
+        protected int executeAndHandleError(Func f, bool ViewMessage = false)
         {
             while (true)
             {
@@ -215,52 +215,19 @@ namespace KassaApp.Models
             return 1;
         }
 
-        private string GetTitle(string name)
-        {
-            if (name != "")
-                name += "\r\n";
-            executeAndHandleError(Driver.GetECRStatus);
-            var znkkt = Driver.SerialNumber;
-            Driver.TableNumber = 2;
-            Driver.RowNumber = Driver.OperatorNumber;
-            Driver.FieldNumber = 2;
-            executeAndHandleError(Driver.ReadTable);
-            executeAndHandleError(Driver.FNGetSerial);
-            executeAndHandleError(Driver.FNGetFiscalizationResult);
-            return $"ЗН ККТ: {znkkt}\r\nИНН: {Driver.INN}\r\nДАТА: {DateTime.Now}\r\nКассир: {Driver.ValueOfFieldString}\r\n{name}РН ККТ: {Driver.KKTRegistrationNumber}\r\nФН: {Driver.SerialNumber}\r\nСМЕНА: {Driver.SessionNumber+1}\r\n";
-        }
-
         public void PrintXReport()
         {
-            string template = $"{GetTitle("СУТОЧНЫЙ ОТЧ. БЕЗ ГАШ.")}\r\nЧЕКОВ ЗА СМЕНУ: {GetOperationRegItem(144).Content}\r\nФД ЗА СМЕНУ: {GetOperationRegItem(193).Content}\r\nЧЕКОВ ПРИХОДА: {GetOperationRegItem(148).Content}\r\n{GetOperationRegItem(144).Content}   = {GetCashRegItem(121).Content}\r\n  НАЛИЧНЫМИ: {GetCashRegItem(193).Content}\r\n  КАРТОЙ: {GetCashRegItem(197).Content}\r\n" +
-                $"ЧЕКОВ РАСХОДА: {GetOperationRegItem(149).Content}\r\n{GetOperationRegItem(145).Content}   = {GetCashRegItem(122).Content}\r\n  НАЛИЧНЫМИ: {GetCashRegItem(194).Content}\r\n  КАРТОЙ: {GetCashRegItem(198).Content}\r\n" +
-                $"ЧЕКОВ ВОЗВРАТА ПРИХОДА: {GetOperationRegItem(150).Content}\r\n{GetOperationRegItem(146).Content}   = {GetCashRegItem(123).Content}\r\n  НАЛИЧНЫМИ: {GetCashRegItem(195).Content}\r\n  КАРТОЙ: {GetCashRegItem(199).Content}\r\n" +
-                $"ЧЕКОВ ВОЗВРАТА РАСХОДА: {GetOperationRegItem(151).Content}\r\n{GetOperationRegItem(147).Content}   = {GetCashRegItem(124).Content}\r\n  НАЛИЧНЫМИ: {GetCashRegItem(196).Content}\r\n  КАРТОЙ: {GetCashRegItem(200).Content}\r\n" +
-                $"ВНЕСЕНИЙ: {GetOperationRegItem(155).Content}\r\n{GetOperationRegItem(153).Content}   = {GetCashRegItem(242).Content}\r\n" +
-                $"ВЫПЛАТ: {GetOperationRegItem(156).Content}\r\n{GetOperationRegItem(154).Content}   = {GetCashRegItem(243).Content}\r\n" +
-                $"ЧЕКОВ КОРРЕКЦИИ ПРИХОДА: {GetOperationRegItem(202).Content}\r\nЧЕКОВ КОРРЕКЦИИ РАСХОДА: {GetOperationRegItem(203).Content}\r\nАНУЛИРОВАННЫХ ЧЕКОВ: {GetOperationRegItem(166).Content}\r\nПРИХОДА: {GetCashRegItem(249).Content}\r\n" +
-                $"РАСХОДА: {GetCashRegItem(250).Content}\r\nВОЗВРАТА ПРИХОДА: {GetCashRegItem(251).Content}\r\nВОЗВРАТА РАСХОДА: {GetCashRegItem(252).Content}\r\n" +
-                $"НАЛ. В КАССЕ: {GetCashRegItem(241).Content}\r\nВЫРУЧКА: {GetCashRegItem(121).Content - GetCashRegItem(122).Content - GetCashRegItem(123).Content + GetCashRegItem(124).Content}\r\n";
+            string template = new ReportTemplates().GetXReport();
             GetReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)", template);
         }
         public void PrintXSectionReport()
         {
-            string template = $"{GetTitle("ОТЧЁТ ПО СЕКЦИЯМ")}\r\nСЕКЦИЯ {1}\r\nПРИХОД: {GetCashRegItem(209).Content}\r\nРАСХОД: {GetCashRegItem(210).Content}\r\nВОЗВРАТ ПРИХОДА: {GetCashRegItem(211).Content}\r\nВОЗВРАТ РАСХОДА: {GetCashRegItem(212).Content}\r\n" +
-                $"ИТОГ ПО СЕКЦИИ\r\nПРИХОД: {0}\r\nРАСХОД: {GetCashRegItem(0).Content}\r\nВОЗВРАТ ПРИХОДА: {0}\r\nВОЗВРАТ РАСХОДА: {0}\r\n" +
-                $"СКИДКИ\r\nПРИХОД: {GetCashRegItem(185).Content}\r\nРАСХОД: {GetCashRegItem(186).Content}\r\nВОЗВРАТ ПРИХОДА: {GetCashRegItem(187).Content}\r\nВОЗВРАТ РАСХОДА: {GetCashRegItem(188).Content}\r\n" +
-                $"НАДБАВКИ\r\nПРИХОД: {GetCashRegItem(189).Content}\r\nРАСХОД: {GetCashRegItem(190).Content}\r\nВОЗВРАТ ПРИХОДА: {GetCashRegItem(191).Content}\r\nВОЗВРАТ РАСХОДА: {GetCashRegItem(192).Content}\r\n" +
-                $"ИТОГО\r\nПРИХОД: {0}\r\nРАСХОД: {0}\r\nВОЗВРАТ ПРИХОДА: {0}\r\nВОЗВРАТ РАСХОДА: {0}\r\n" +
-                $"ВЫРУЧКА: {0}";
+            string template = new ReportTemplates().GetXSectionReport();
             GetReport(Driver.PrintDepartmentReport, "X-отчёт по секциям", template);
         }
         public void PrintXTaxReport()
         {
-            string template = $"{GetTitle("ОТЧЁТ ПО НАЛОГАМ")}\r\nГруппа А:\r\nОборот по налогу: {GetCashRegItem(209).Content}\r\nНалог: {GetCashRegItem(225).Content}\r\n" +
-                $"Группа Б\r\nОборот по налогу: {GetCashRegItem(213).Content}\r\nНалог: {GetCashRegItem(229).Content}\r\n" +
-                $"Группа В\r\nОборот по налогу: {GetCashRegItem(217).Content}\r\nНалог: {GetCashRegItem(233).Content}\r\n" +
-                $"Группа Г\r\nОборот по налогу: {GetCashRegItem(221).Content}\r\nНалог: {GetCashRegItem(237).Content}\r\n" +
-                $"Группа Д\r\nОборот по налогу: {0}\r\nНалог: {0}\r\n" +
-                $"Группа Е\r\nОборот по налогу: {0}\r\nНалог: {0}\r\n";
+            string template = new ReportTemplates().GetXTaxReport();
             GetReport(Driver.PrintTaxReport, "X-отчёт по налогам", template);
         }
         public void PrintZReport()
@@ -269,23 +236,20 @@ namespace KassaApp.Models
         }
         public void PrintOperationReg()
         {
-            string template = $"{GetTitle("ОПЕРАЦИОННЫЕ РЕГИСТРЫ")}\r\nНОМЕР ПРИХОДА: {GetOperationRegItem(148).Content}\r\nНОМЕР РАСХОДА: {GetOperationRegItem(149).Content}\r\nНОМЕР ВОЗВРАТА ПРИХОДА: {GetOperationRegItem(150).Content}\r\nНОМЕР ВОЗВРАТА РАСХОДА: {GetOperationRegItem(151).Content}\r\n" +
-                $"НОМЕР ВНЕСЕНИЯ: {GetOperationRegItem(155).Content}\r\nНОМЕР ВЫПЛАТЫ: {GetOperationRegItem(156).Content}\r\nНОМЕР СУТ. ОТЧ. БЕЗ ГАШ.: {GetOperationRegItem(158).Content}\r\nНОМЕР ТЕХНОЛОГ. ТЕСТА: {GetOperationRegItem(163).Content}\r\n" +
-                $"НОМЕР ОТМЕН. ДОКУМЕНТОВ: {GetOperationRegItem(166).Content}\r\nНОМЕР ОБЩЕГО ГАШЕНИЯ: {GetOperationRegItem(160).Content}\r\nНОМЕР ОТЧЁТА ПО СЕКЦИЯМ: {GetOperationRegItem(165).Content}\r\n" +
-                $"НОМЕР ОТЧЁТА ПО НАЛОГАМ: {GetOperationRegItem(178).Content}\r\nНОМЕР ОТЧЁТА ПО КАССИРАМ: {0}\r\n";
+            string template = new ReportTemplates().GetOperationReg();
             GetReport(Driver.PrintOperationReg, "Операционные регистры", template);
         }
 
         public int CashIncome(decimal summ)
         {
-            string template = $"{GetTitle("")}\r\nВНЕСЕНИЕ: {summ}";
+            string template = new ReportTemplates().GetCashIncomeReport(summ);
             Driver.Summ1 = summ;
             return GetReport(Driver.CashIncome, "Внесение наличных", template);
         }
 
         public int CashOutcome(decimal summ)
         {
-            string template = $"{GetTitle("")}\r\nВЫПЛАТА: {summ}";
+            string template = new ReportTemplates().GetCashOutcomeReport(summ);
             Driver.Summ1 = summ;
             return GetReport(Driver.CashOutcome, "Выдача наличных", template);
         }
@@ -309,7 +273,7 @@ namespace KassaApp.Models
         }
         private void GetFiscReport(Func m, string name, string template = null)
         {
-            if (m == null || executeAndHandleError(m, true) == 0)
+            if (m != null && executeAndHandleError(m, true) == 0)
             {
                 executeAndHandleError(Driver.CutCheck);
                 SaveReport(name, template);
@@ -362,7 +326,7 @@ namespace KassaApp.Models
             }
         }
 
-        public RegistrerItem GetOperationRegItem(int num)
+        public RegistrerItem GetOperRegItem(int num)
         {
             Driver.RegisterNumber = num;
             if (executeAndHandleError(Driver.GetOperationReg) == 0)

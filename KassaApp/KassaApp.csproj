@@ -166,8 +166,8 @@
     <Compile Include="Models\Receipt.cs" />
     <Compile Include="Models\RegistrerItem.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportTemplates.cs" />
     <Compile Include="Models\Terminal.cs" />
-    <Compile Include="Models\TransferDataBetweenForms.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

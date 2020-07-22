@@ -12,14 +12,7 @@ namespace KassaApp
         public Receipt receipt;
         public Main()
         {
-            using (var db = new KassaDBContext())
-            {
-                receipt = new Receipt();
-                receipt = db.Receipt.Add(receipt);
-                db.SaveChanges();
-                InitializeComponent();
-                timer.Start();
-            }
+            InitializeComponent();
         }
         //ограничение вводимых значений в текстбоксы
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
@@ -102,7 +95,7 @@ namespace KassaApp
                         receipt.Products.Remove(product);
                         receipt.CalculateSumm();
                         receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
-                        CountController.Recover(product);
+                        CountController.Recover(product.Id, product.Quantity);
                     }
                 }
             }
@@ -110,11 +103,14 @@ namespace KassaApp
         //изменение значений на форме при добавлении и удалении записей таблицы
         private void rowCount_Changed()
         {
-            receipt.CalculateSumm();
-            if(receipt.Summa != 0)
-                resultL.Text = String.Format("{0:f}", receipt.Summa);
-            else
-                resultL.Text = "0.00";
+            if (receipt != null)
+            {
+                receipt.CalculateSumm();
+                if (receipt.Summa != 0)
+                    resultL.Text = String.Format("{0:f}", receipt.Summa);
+                else
+                    resultL.Text = "0.00";
+            }
         }
         //изменение значений на форме при добавлении записей таблицы
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -169,6 +165,18 @@ namespace KassaApp
             receiptDGV.Rows.Clear();
             foreach (Product p in receipt.Products)
                 Product.RowFromProduct(p, receiptDGV);
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            CountController.ReconciliationAll();
+            using (var db = new KassaDBContext())
+            {
+                receipt = new Receipt();
+                receipt = db.Receipt.Add(receipt);
+                db.SaveChanges();
+                timer.Start();
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ namespace KassaApp.Forms
                     operationRegLB.Items.Clear();
                     while (true)
                     {
-                        ri = fr.GetOperationRegItem(i);
+                        ri = fr.GetOperRegItem(i);
                         if (ri != null)
                         {
                             operationRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
