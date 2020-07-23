@@ -7,6 +7,8 @@ using System.Text;
 
 namespace KassaApp.Models
 {
+    //класс представляющий таблицу БД Report
+    //хранит все печатаемые чеки
     [Table("Report")]
     public partial class Report
     {

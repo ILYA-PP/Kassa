@@ -15,7 +15,7 @@ namespace KassaApp
         {
             InitializeComponent();
         }
-        //обработка горячих клавиш
+        //обработка нажатия горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
@@ -25,21 +25,24 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //обработка кнопки ВВод
+        //обработка кнопки Ввод
         private void enterB_Click(object sender, EventArgs e)
         {
             double discount = 0;
             if (discountDataTB.Text != "")
             {
+                //если выбрано указание процента скидки
                 if (discountProcentRB.Checked)
                 {
                     discount = double.Parse(discountDataTB.Text);
                     if(((Main)Owner).receipt != null)
                     {
+                        //скидка указывается в текущем чеке
                         ((Main)Owner).receipt.Discount = discount;
                         MessageBox.Show("Скидка на чек установлена!");
                     }
                 }
+                //если выбрано указание номера дисконтной карты
                 else if (numberDiscountCardRB.Checked)
                 {
 
@@ -48,12 +51,12 @@ namespace KassaApp
             else
                 MessageBox.Show("Заполните поле!");
         }
-        //закрытие формы
+        //обработка нажатия кнопки Отмена
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
         }
-
+        //обработка изменение выбора способа указания скидки
         private void RB_CheckedChanged(object sender, EventArgs e)
         {
             if (discountProcentRB.Checked)

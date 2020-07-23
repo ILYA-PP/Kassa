@@ -52,60 +52,65 @@ namespace KassaApp
         {
             Close();
         }
-
+        //обработка нажатия кнопки Банковская карта
         private void nonCashB_Click(object sender, EventArgs e)
         {
             try
             {
                 messageL.Text = "Идёт процесс оплаты через терминал";
-                this.Enabled = false;
-                panel1.Visible = true;
-                Terminal terminal = new Terminal();
-                if (terminal.IsEnabled())
+                this.Enabled = false; //блокировка формы
+                panel1.Visible = true; //показать панель сообщений
+                using (var terminal = new Terminal())
                 {
-                    if (terminal.Purchase((double)CurrentReceipt.Summa) == 0)
+                    if (terminal.IsEnabled())
                     {
-                        using (FiscalRegistrar fr = new FiscalRegistrar())
+                        //если оплата через терминал успешна
+                        if (terminal.Purchase((double)CurrentReceipt.Summa) == 0)
                         {
-                            if (fr.CheckConnect() == 0)
+                            using (FiscalRegistrar fr = new FiscalRegistrar())
                             {
-                                messageL.Text = "Печать чеков";
-                                if (terminal.GetCheque() != "" && fr.Print(terminal.GetCheque()) == 0)
+                                if (fr.CheckConnect() == 0)
                                 {
-                                    CurrentReceipt.Payment = 2;
-                                    if (fr.PrintCheque(CurrentReceipt, terminal.GetCardName()) == 0)
+                                    messageL.Text = "Печать чеков";
+                                    //если печать чека терминала успешна
+                                    if (terminal.GetCheque() != "" && fr.Print(terminal.GetCheque()) == 0)
                                     {
-                                        MarkAsPaid();
-                                        Close();
+                                        CurrentReceipt.Payment = 2;
+                                        //печать товарного чека
+                                        if (fr.PrintCheque(CurrentReceipt, terminal.GetCardName()) == 0)
+                                        {
+                                            MarkAsPaid();
+                                            Close();
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
+                                            terminal.CancelTransaction();
+                                        }
                                     }
                                     else
                                     {
-                                        MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
+                                        MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
                                         terminal.CancelTransaction();
                                     }
                                 }
                                 else
-                                {
-                                    MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
-                                    terminal.CancelTransaction();
-                                }
+                                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                             }
-                            else
-                                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                         }
                     }
+                    else
+                        MessageBox.Show("Ошибка! Нет связи с терминалом.");
                 }
-                else
-                    MessageBox.Show("Ошибка! Нет связи с терминалом.");
-                panel1.Visible = false;
-                this.Enabled = true;
+                panel1.Visible = false;//убрать панель сообщений
+                this.Enabled = true;//разблокировать форму
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-
+        //обработка нажатия кнопки Наличные
         private void cashB_Click(object sender, EventArgs e)
         {
             if (decimal.Parse(moneyTB.Text) < CurrentReceipt.Summa)
@@ -116,8 +121,8 @@ namespace KassaApp
             try
             {
                 messageL.Text = "Оплата наличными";
-                this.Enabled = false;
-                panel1.Visible = true;
+                this.Enabled = false; //блокировка формы
+                panel1.Visible = true; //показать панель сообщений
                 using (FiscalRegistrar fr = new FiscalRegistrar())
                 {
                     if (fr.CheckConnect() == 0)
@@ -125,6 +130,7 @@ namespace KassaApp
                         messageL.Text = "Печать чека";
                         CurrentReceipt.Payment = 1;
                         CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
+                        //печать товарного чека
                         if (fr.PrintCheque(CurrentReceipt) == 0)
                         {
                             MarkAsPaid();
@@ -134,15 +140,15 @@ namespace KassaApp
                     else
                         MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 }
-                panel1.Visible = false;
-                this.Enabled = true;
+                panel1.Visible = false;//убрать панель сообщений
+                this.Enabled = true;//разблокировать форму
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-
+        //отметить чек в БД в таблице Receipt, как оплаченый
         private void MarkAsPaid()
         {
             try
@@ -150,10 +156,10 @@ namespace KassaApp
                 using (var db = new KassaDBContext())
                 {
                     var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
-                    rec.Paid = true;
-                    rec.Discount = CurrentReceipt.Discount;
-                    rec.Summa = CurrentReceipt.Summa;
-                    rec.Payment = CurrentReceipt.Payment;
+                    rec.Paid = true; //признак оплаты чека
+                    rec.Discount = CurrentReceipt.Discount; //скидка на чек
+                    rec.Summa = CurrentReceipt.Summa; //сумма по чеку
+                    rec.Payment = CurrentReceipt.Payment; //способ оплаты
                     db.SaveChanges();
                 }
             }
@@ -162,19 +168,20 @@ namespace KassaApp
                 MessageBox.Show(ex.Message);
             }
         }
-
+        //действие при закрытии формы
         private void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
             using (var db = new KassaDBContext())
             {
+                //если в диалоговом окне выбрано Нет
                 if (MessageBox.Show("Продолжить работу с этими позициями?", "", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
                     ((Main)Owner).receipt = new Receipt();
-                    ((Main)Owner).receiptDGV.Rows.Clear();
+                    ((Main)Owner).receiptDGV.Rows.Clear(); //очистка таблицы на главной форме
                     var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id && p.Paid == false).FirstOrDefault();
                     if (r != null)
-                        CountController.Reconciliation(CurrentReceipt);
-                    db.Receipt.Add(((Main)Owner).receipt);
+                        CountController.Reconciliation(CurrentReceipt); //сверка остатков
+                    db.Receipt.Add(((Main)Owner).receipt);//добавление нового чека
                     db.SaveChanges();
                 }
             }

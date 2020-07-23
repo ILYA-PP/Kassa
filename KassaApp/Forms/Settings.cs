@@ -1,12 +1,6 @@
 ﻿using KassaApp.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp
@@ -16,6 +10,7 @@ namespace KassaApp
         public Settings()
         {
             InitializeComponent();
+            //заполнение данных формы текущими настройками
             driverCB.SelectedIndex = 0;
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             try
@@ -32,42 +27,43 @@ namespace KassaApp
                 MessageBox.Show(ex.Message);
             }
         }
-
+        //обработка нажатия кнопки Настройка
         private void registrSettingsB_Click(object sender, EventArgs e)
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (comPortTB.Text != "" && exchangeSpeedTB.Text != "")
             {
-                config.AppSettings.Settings["ComNumber"].Value = comPortTB.Text;
-                config.AppSettings.Settings["BaudRate"].Value = exchangeSpeedTB.Text;
+                config.AppSettings.Settings["ComNumber"].Value = comPortTB.Text; //изменение сом порта
+                config.AppSettings.Settings["BaudRate"].Value = exchangeSpeedTB.Text; // изменение скорости обмена
                 config.Save();
-                ConfigurationManager.RefreshSection("appSettings");
+                ConfigurationManager.RefreshSection("appSettings");//сохранение изменений
             }
         }
-
+        //действие при изменении значений текстовых полей
         public void TB_TextChange(object sender, KeyPressEventArgs e)
         {
+            //формат строк
             GeneralCodeForForms.TextBoxDigitFormat(sender, e);
         }
-
+        //проверка связи с фискальным регистратором
         private void checkConnectB_Click(object sender, EventArgs e)
         {
             using (FiscalRegistrar fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
-                    MessageBox.Show("Подключено!");
+                    MessageBox.Show("Фискальный регистратор подключен!");
                 else
                     MessageBox.Show("Подключение отсутствует!");
             }
         }
-
+        //обработка изменения метки Использовать пароль доступа
         private void usePasswordCheckB_CheckedChanged(object sender, EventArgs e)
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (usePasswordCheckB.Checked)
-                config.AppSettings.Settings["UsedPassword"].Value = "1";
+                config.AppSettings.Settings["UsedPassword"].Value = "1"; //использовать
             else
-                config.AppSettings.Settings["UsedPassword"].Value = "0";
+                config.AppSettings.Settings["UsedPassword"].Value = "0"; //не использовать
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
         }

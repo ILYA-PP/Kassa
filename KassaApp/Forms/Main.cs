@@ -28,13 +28,12 @@ namespace KassaApp
         private void editB_Click(object sender, EventArgs e)
         {
             //Если выбрана строка, то изменение
-            //иначе добавление
             if (receiptDGV.SelectedRows.Count > 0)
                 new EditProduct(receiptDGV.SelectedRows[0]).ShowDialog(this);
             else
                 MessageBox.Show("Строка не выбрана!");
         }
-        //формирование объекта чека и переход на форму оплаты
+        //переход на форму оплаты
         private void paymentB_Click(object sender, EventArgs e)
         {
             if (receipt.Summa == 0)
@@ -47,6 +46,8 @@ namespace KassaApp
         //изменение значений на форме при выборе строки таблицы
         private void receiptDGV_SelectionChanged(object sender, EventArgs e)
         {
+            //если строка выбрана
+            //изменение значений полей Без скидки, Скидка, Итог, Сумма и отдел
             if(receiptDGV.SelectedRows.Count > 0)
             {
                 Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt);
@@ -80,27 +81,34 @@ namespace KassaApp
         //обработка кнопки удаления записи таблицы
         private void deleteB_Click(object sender, EventArgs e)
         {
+            //если строка выбрана
             if (receiptDGV.SelectedRows.Count > 0)
             {
+                //формирование удаляемого продукт из строки
                 Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt);
+                //вывод диалогового окна
                 if (product != null && MessageBox.Show("Вы действительно хотите удалить строку:\n" +
                     $"| {product.Name} | {product.Quantity} | {product.Price} | " +
                     $"{product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     using (var db = new KassaDBContext())
                     {
+                        //удаление из БД из таблицы Purchase
                         var purchase = db.Purchase.Where(p => p.ProductId == product.Id && p.ReceiptId == receipt.Id).FirstOrDefault();
                         db.Purchase.Remove(purchase);
                         db.SaveChanges();
+                        //удаление из состава чека
                         receipt.Products.Remove(product);
                         receipt.CalculateSumm();
+                        //удаление из DataGridView
                         receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
+                        //восстановление остатка
                         CountController.Recover(product.Id, product.Quantity);
                     }
                 }
             }
         }
-        //изменение значений на форме при добавлении и удалении записей таблицы
+        //изменение итога при добавлении и удалении записей таблицы
         private void rowCount_Changed()
         {
             if (receipt != null)
@@ -122,7 +130,7 @@ namespace KassaApp
         {
             rowCount_Changed();
         }
-        //обработка горячих клавиш
+        //обработка нажатия горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
@@ -149,27 +157,30 @@ namespace KassaApp
             if (receiptDGV.SelectedRows.Count > 0)
                 receiptDGV_SelectionChanged(null, null);
         }
-
+        //переход на форму поиска
         private void searchB_Click(object sender, EventArgs e)
         {
             new ChooseProduct().ShowDialog(this);
         }
-
+        //действие при закрытии формы
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //сверка остатков по товарам, добавленным в чек
             CountController.Reconciliation(receipt);
         }
-
+        //обновление данных DataGridView
         public void DGV_Refresh()
         {
             receiptDGV.Rows.Clear();
             foreach (Product p in receipt.Products)
                 Product.RowFromProduct(p, receiptDGV);
         }
-
+        //действие при загрузке формы
         private void Main_Load(object sender, EventArgs e)
         {
+            //сверка остатков по всем товарам
             CountController.ReconciliationAll();
+            //добавление нового чека в БД в таблицу Receipt
             using (var db = new KassaDBContext())
             {
                 receipt = new Receipt();

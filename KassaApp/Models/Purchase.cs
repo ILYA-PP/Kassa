@@ -9,6 +9,8 @@
     using System.Linq;
     using System.Windows.Forms;
 
+    //клас представляет таблицу БД Purchase
+    //продажи конкретного продукта
     [Table("Purchase")]
     public partial class Purchase
     {

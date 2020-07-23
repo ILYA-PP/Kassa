@@ -7,6 +7,8 @@ using System.Text;
 
 namespace KassaApp.Models
 {
+    //класс представляющий таблицу БД Receipt
+    //хранит все пробиваемые чеки
     [Table("Receipt")]
     public partial class Receipt
     {
@@ -28,18 +30,21 @@ namespace KassaApp.Models
         [Column(TypeName = "money")]
         public decimal Summa { get; set; }
         public double Discount { get; set; }
+        //признак оплаты чека
         [Column(TypeName = "bit")]
         public bool Paid { get; set; }
         public int Payment { get; set; }
+        //связанные с чеков продажи
         public virtual ICollection<Purchase> Purchases { get; set; }
         public Receipt()
         {
             Purchases = new List<Purchase>();
             Products = new List<Product>();
         }
+        //продукты в чеке
         [NotMapped]
         public List<Product> Products { get; set; }
-
+        //расчёт суммы по чеку
         public void CalculateSumm()
         {
             Summa = 0;

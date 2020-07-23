@@ -12,7 +12,7 @@ namespace KassaApp.Forms
 {
     public partial class CashIncomeOutcome : Form
     {
-        private bool IsCashIncome;
+        private bool IsCashIncome; //указывает назначение формы, Внесение или же Выплата
         public CashIncomeOutcome(bool operation)
         {
             InitializeComponent();
@@ -32,7 +32,7 @@ namespace KassaApp.Forms
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
+        //обработка нажатия кнопки Ввод
         private void enterB_Click(object sender, EventArgs e)
         {
             decimal summ = 0, res;
@@ -45,6 +45,7 @@ namespace KassaApp.Forms
                     {
                         if (fr.CheckConnect() == 0)
                         {
+                            //Вненение или Выплата, относительно назначения формы
                             if (IsCashIncome)
                                 res = fr.CashIncome(summ);
                             else
@@ -63,7 +64,7 @@ namespace KassaApp.Forms
             else
                 MessageBox.Show("Введите сумму!");
         }
-
+        //обработка нажатия кнопки Отмена
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
@@ -71,6 +72,7 @@ namespace KassaApp.Forms
 
         private void summaTB_KeyPress(object sender, KeyPressEventArgs e)
         {
+            //приведение вводимого текста к числовому формату
             GeneralCodeForForms.TextBoxFormat(sender, e);
         }
     }

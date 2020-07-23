@@ -1,16 +1,15 @@
 ﻿using SBRFSRV;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity.Validation;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
 {
-    class Terminal
+    //класс для работы терминалом через драйвер SBRFSRV
+    class Terminal: IDisposable
     {
-        public static Server Server { get; set; }
+        public Server Server { get; set; }
         private enum Operations
         {
             Purchase = 4000, // Покупка
@@ -21,8 +20,7 @@ namespace KassaApp.Models
         }
         public Terminal()
         {
-            if (Server == null)
-                Server = new Server();
+            Server = new Server();
         }
         //получить имя карты
         public string GetCardName()
@@ -52,7 +50,7 @@ namespace KassaApp.Models
                 return ""; 
             }
         }
-        //проверка, подключен ли пинпад
+        //проверка, подключен ли терминал
         public bool IsEnabled()
         {
             try
@@ -76,7 +74,7 @@ namespace KassaApp.Models
                 int result = Server.NFun((int)Operations.Purchase);
                 if (result == 0)
                 {
-                    MessageBox.Show("Успешно!");
+                    MessageBox.Show("Оплата через терминал: Успешно!");
                     return result;
                 }
                 else
@@ -130,6 +128,7 @@ namespace KassaApp.Models
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
+        //сохранение отчёта по банковским картам
         public void SaveStringReport(string d)
         {
             if (d != "")
@@ -160,6 +159,11 @@ namespace KassaApp.Models
                     }
                 }
             }
+        }
+        //действие при удалении объекта класса
+        public void Dispose()
+        {
+            Server.Clear();
         }
     }
 }

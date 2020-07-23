@@ -5,12 +5,16 @@ using System.Text;
 
 namespace KassaApp.Models
 {
+    //класс содержит шаблоны отчётов для сохранения
     class ReportTemplates:FiscalRegistrar
     {
         public ReportTemplates()
         {
+            //Подключение к ККТ
             Connect();
         }
+        //метод формирует заголовок отчёта
+        //с указанием названия отчёта (name)
         private string GetTitle(string name)
         {
             if (CheckConnect() == 0)
@@ -36,6 +40,7 @@ namespace KassaApp.Models
             }
             return null;
         }
+        //метод формирует и возвращает х отчёт без гашения
         public string GetXReport()
         {
             string title = GetTitle("СУТОЧНЫЙ ОТЧ. БЕЗ ГАШ.");
@@ -68,6 +73,7 @@ namespace KassaApp.Models
                 $"ВЫРУЧКА: {GetCashRegItem(121).Content - GetCashRegItem(122).Content - GetCashRegItem(123).Content + GetCashRegItem(124).Content}\r\n";
             return null;
         }
+        //метод формирует и возвращает х отчёт по секциям
         public string GetXSectionReport()
         {
             int sectionNum = 1;
@@ -116,6 +122,7 @@ namespace KassaApp.Models
             }
             return null;
         }
+        //метод формирует и возвращает х отчётпо налогам
         public string GetXTaxReport()
         {
             string title = GetTitle("ОТЧЁТ ПО НАЛОГАМ");
@@ -144,6 +151,7 @@ namespace KassaApp.Models
             }
             return null;
         }
+        //метод формирует и возвращает операционные регистры
         public string GetOperationReg()
         {
             string title = GetTitle("ОПЕРАЦИОННЫЕ РЕГИСТРЫ");
@@ -167,6 +175,7 @@ namespace KassaApp.Models
             }
             return null;
         }
+        //метод формирует и возвращает отчёт о внесении наличных
         public string GetCashIncomeReport(decimal summ)
         {
             string title = GetTitle("");
@@ -177,7 +186,7 @@ namespace KassaApp.Models
             }
             return null;
         }
-
+        //метод формирует и возвращает отчёт о выдачи наличных
         public string GetCashOutcomeReport(decimal summ)
         {
             string title = GetTitle("");

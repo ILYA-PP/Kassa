@@ -9,6 +9,8 @@ namespace KassaApp
     using System.Linq;
     using System.Windows.Forms;
 
+    //класс представляющий таблицу БД Product
+    //имеющиеся товары
     [Table("Product")]
     public partial class Product
     {
@@ -69,6 +71,7 @@ namespace KassaApp
 
         public int Type { get; set; }
         public int Quantity { get; set; }
+        //метод для формирования объекта класса из строки DataGridView
         public static Product ProductFromRow(DataGridViewRow row, Receipt r)
         {
             try
@@ -95,6 +98,7 @@ namespace KassaApp
                 return null;
             }
         }
+        //метод для формирования строки DataGridView из объекта класса
         public static void RowFromProduct(Product p, DataGridView dgv)
         {
             try
@@ -106,7 +110,7 @@ namespace KassaApp
                 MessageBox.Show(ex.Message);
             }
         }
-
+        //метод для расчёта суммы по позиции
         public void RowSummCalculate()
         {
             Row_Summ = (Price - Math.Round(Price * (decimal)Discount / 100, 2))*Quantity;

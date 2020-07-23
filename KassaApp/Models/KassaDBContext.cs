@@ -6,6 +6,7 @@ namespace KassaApp
     using System.Linq;
     using KassaApp.Models;
 
+    //класс для работы с БД
     public partial class KassaDBContext : DbContext
     {
         public KassaDBContext()
@@ -13,6 +14,7 @@ namespace KassaApp
         {
         }
 
+        //наборы данных представляющие таблицы БД
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Purchase> Purchase { get; set; }
         public virtual DbSet<Receipt> Receipt{ get; set; }
@@ -26,11 +28,9 @@ namespace KassaApp
             modelBuilder.Entity<Purchase>()
                 .Property(e => e.Summa)
                 .HasPrecision(19, 4);
-
             modelBuilder.Entity<Receipt>()
                 .Property(e => e.Summa)
                 .HasPrecision(19, 4);
-
             modelBuilder.Entity<Report>()
                 .Property(e => e.ReportData)
                 .IsFixedLength();

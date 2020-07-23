@@ -8,14 +8,17 @@ using System.Windows.Forms;
 
 namespace KassaApp.Models
 {
+    //класс для работы с драйвером ККТ ШТРИХ-М
     class FiscalRegistrar: IDisposable
     {
-        private int SysAdminPassword = 0;
-        private int OperatorPassword = 0;
+        private int SysAdminPassword = 0; //пароль сис. админа
+        private int OperatorPassword = 0; // пароль текущего пользователя
         protected DrvFR Driver { get; set; }
         public FiscalRegistrar()
         {
-            Connect();
+            //подключение к кККТ при создании объекта класса
+            Connect(); 
+            //получение пароля сис. админа
             if(CheckConnect() == 0)
             {
                 Driver.TableNumber = 2;
@@ -27,6 +30,7 @@ namespace KassaApp.Models
         }
         public void Dispose()
         {
+            //отключение от ККТ при удалении объекта класса
             Disconnect();
         }
         //проверка состояния ККТ перед печатью
@@ -67,13 +71,16 @@ namespace KassaApp.Models
             //Отключение от ККТ
             executeAndHandleError(Driver.Disconnect, true);
         }
+        //метод печати нефискальных документов
+        //s - строка для печати
         public int Print(string s)
         {
             prepareCheque();
             Driver.StringForPrinting = s;
+            //печать документа
             int res = executeAndHandleError(Driver.PrintString, true);
-            res = executeAndHandleError(Driver.WaitForPrinting);
             //Ожидание печати чека
+            res = executeAndHandleError(Driver.WaitForPrinting); 
             while (res != 0)
             {
                 if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -82,6 +89,10 @@ namespace KassaApp.Models
                 }
                 res = executeAndHandleError(Driver.WaitForPrinting);
             }
+            //отступ после документа
+            Driver.StringQuantity = 5;
+            Driver.UseReceiptRibbon = true;
+            res = executeAndHandleError(Driver.FeedDocument);
             //Отрезка чека
             if (res == 0)
             {
@@ -90,7 +101,7 @@ namespace KassaApp.Models
             }
             return res;
         }
-
+        //проверка связи с ККТ
         public int CheckConnect()
         {
             return executeAndHandleError(Driver.Connect);
@@ -101,6 +112,8 @@ namespace KassaApp.Models
             var driverData = ConfigurationManager.AppSettings;
             try
             {
+                //подключение через сом порт
+                //данные для подключения из app.config
                 Driver = new DrvFR()
                 {
                     ConnectionType = int.Parse(driverData["ConnectionType"]),
@@ -148,7 +161,7 @@ namespace KassaApp.Models
                 }
             }
         }
-        //печать чека
+        //печать фискального чека
         public int PrintCheque(Receipt cheque, string cardName = null)
         {
             if (CheckConnect() == 0)
@@ -171,7 +184,7 @@ namespace KassaApp.Models
                     //    executeAndHandleError(Driver.FNSendCustomerEmail);
                     foreach (Product p in cheque.Products)
                     {
-                        //add product
+                        //пробитие позиций
                         Driver.CheckType = 0;
                         Driver.StringForPrinting = p.Name;
                         Driver.Price = (decimal)(p.Price - Math.Round(p.Price * (decimal)p.Discount / 100, 2));
@@ -190,6 +203,7 @@ namespace KassaApp.Models
                         if (executeAndHandleError(Driver.FNOperation, true) != 0)
                             return -1;
                     }
+                    //указание способа оплаты
                     if (cheque.Payment == 1)
                     {
                         Driver.Summ1 = (decimal)cheque.Summa;
@@ -264,46 +278,62 @@ namespace KassaApp.Models
                 AddLog("Нет подключения");
             return -1;
         }
-
+        //печать х отчёта без гашения
         public void PrintXReport()
         {
+            //получение шаблона отчёта
             string template = new ReportTemplates().GetXReport();
+            //печать и сохранение отчёта
             GetReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)", template);
         }
+        //печать х отчёта по секциям
         public void PrintXSectionReport()
         {
+            //получение шаблона отчёта
             string template = new ReportTemplates().GetXSectionReport();
+            //печать и сохранение отчёта
             GetReport(Driver.PrintDepartmentReport, "X-отчёт по секциям", template);
         }
+        //печать х отчёта по налогам
         public void PrintXTaxReport()
         {
+            //получение шаблона отчёта
             string template = new ReportTemplates().GetXTaxReport();
+            //печать и сохранение отчёта
             GetReport(Driver.PrintTaxReport, "X-отчёт по налогам", template);
         }
+        //печать z отчёта с гашением
         public void PrintZReport()
         {
             GetFiscReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
         }
+        //печать операционных регистров
         public void PrintOperationReg()
         {
+            //получение шаблона отчёта
             string template = new ReportTemplates().GetOperationReg();
+            //печать и сохранение отчёта
             GetReport(Driver.PrintOperationReg, "Операционные регистры", template);
         }
-
+        //внесение наличных
         public int CashIncome(decimal summ)
         {
+            //получение шаблона отчёта
             string template = new ReportTemplates().GetCashIncomeReport(summ);
             Driver.Summ1 = summ;
+            //печать и сохранение отчёта
             return GetReport(Driver.CashIncome, "Внесение наличных", template);
         }
-
+        //выдача ниличных
         public int CashOutcome(decimal summ)
         {
+            //получение шаблона отчёта
             string template = new ReportTemplates().GetCashOutcomeReport(summ);
             Driver.Summ1 = summ;
+            //печать и сохранение отчёта
             return GetReport(Driver.CashOutcome, "Выдача наличных", template);
         }
-
+        //проверка состояния ккт и выполнение печати нефискального отчёта
         private int GetReport(Func m, string name, string template = null)
         {
             executeAndHandleError(Driver.GetECRStatus);
@@ -316,28 +346,31 @@ namespace KassaApp.Models
             res = executeAndHandleError(m, true);
             if (m == null || res == 0)
             {
-                executeAndHandleError(Driver.CutCheck);
-                SaveReport(name, template);
+                executeAndHandleError(Driver.CutCheck);//отрезка отчёта
+                SaveReport(name, template);//сохранение отчёта
             }
             return res;
         }
+        //выполнение печати фискального отчёта
         private void GetFiscReport(Func m, string name, string template = null)
         {
             if (m != null && executeAndHandleError(m, true) == 0)
             {
-                executeAndHandleError(Driver.CutCheck);
-                SaveReport(name, template);
+                executeAndHandleError(Driver.CutCheck);//отрезка отчёта
+                SaveReport(name, template);//сохранение отчёта
             }
         }
-
+        //открытие свойств драйвера
         public void OpenProperties()
         {
             executeAndHandleError(Driver.ShowProperties, true);
         }
-
+        //сохранение отчётов в бд
         private void SaveReport(string name, string template = null)
         {
+            //получить статус ккт
             executeAndHandleError(Driver.FNGetStatus);
+            //получить текст отчёта
             if (executeAndHandleError(Driver.FNGetDocumentAsString, true) == 0)
             {
                 try
@@ -345,21 +378,23 @@ namespace KassaApp.Models
                     using (var db = new KassaDBContext())
                     {
                         string d = null;
+                        //сохранение шаблона
+                        //иначе готовый отчёт
                         if (template != null)
                             d = template;
                         else if (Driver.StringForPrinting != null)
                             d = Driver.StringForPrinting;
                         if (d != null)
                         {
-                            byte[] data = Encoding.Default.GetBytes(d);
+                            byte[] data = Encoding.Default.GetBytes(d);//перевод отчёта в байты
                             Report report = new Report()
                             {
                                 Name = name,
                                 ReportData = data,
                                 Date = DateTime.Now
                             };
-                            db.Report.Add(report);
-                            db.SaveChanges();
+                            db.Report.Add(report);//добавление отчёта
+                            db.SaveChanges();//сохранение отчёта
                         }
                     }
                 }
@@ -375,7 +410,7 @@ namespace KassaApp.Models
                 }
             }
         }
-
+        //получить строку операционного регистра
         public RegistrerItem GetOperRegItem(int num)
         {
             Driver.RegisterNumber = num;
@@ -388,6 +423,7 @@ namespace KassaApp.Models
                 };
             return null;
         }
+        //получить строку денежного регистра
         public RegistrerItem GetCashRegItem(int num)
         {
             Driver.RegisterNumber = num;

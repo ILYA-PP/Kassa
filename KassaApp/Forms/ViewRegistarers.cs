@@ -1,11 +1,5 @@
 ﻿using KassaApp.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp.Forms
@@ -16,7 +10,7 @@ namespace KassaApp.Forms
         {
             InitializeComponent();
         }
-
+        //обработка нажатия кнопки Прочитать операционные регистры
         private void readOperationRegB_Click(object sender, EventArgs e)
         {
             using (FiscalRegistrar fr = new FiscalRegistrar())
@@ -24,13 +18,15 @@ namespace KassaApp.Forms
                 if (fr.CheckConnect() == 0)
                 {
                     int i = 1;
-                    RegistrerItem ri;
+                    RegistrerItem ri; //объект строки регистра
                     operationRegLB.Items.Clear();
+                    //читать регистры пока не прочитаны все
                     while (true)
                     {
                         ri = fr.GetOperRegItem(i);
                         if (ri != null)
                         {
+                            //добавление записи в поле на форме
                             operationRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
                             i++;
                         }
@@ -42,7 +38,7 @@ namespace KassaApp.Forms
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
         }
-
+        //обработка нажатия кнопки Прочитать денежные регистры
         private void readCashRegB_Click(object sender, EventArgs e)
         {
             using (FiscalRegistrar fr = new FiscalRegistrar())
@@ -50,13 +46,15 @@ namespace KassaApp.Forms
                 if (fr.CheckConnect() == 0)
                 {
                     int i = 1;
-                    RegistrerItem ri;
+                    RegistrerItem ri;//объект строки регистра
                     cashRegLB.Items.Clear();
+                    //читать регистры пока не прочитаны все
                     while (true)
                     {
                         ri = fr.GetCashRegItem(i);
                         if (ri != null)
                         {
+                            //добавление записи в поле на форме
                             cashRegLB.Items.Add($"{ri.Number}. {ri.Name} : {ri.Content}");
                             i++;
                         }
@@ -68,14 +66,14 @@ namespace KassaApp.Forms
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
         }
-
+        //обработка нажатия кнопки Печать операционных регистров
         private void printOperationRegB_Click(object sender, EventArgs e)
         {
             using (FiscalRegistrar fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
                 {
-                    fr.PrintOperationReg();
+                    fr.PrintOperationReg(); //Печать операционных регистров
                 }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");

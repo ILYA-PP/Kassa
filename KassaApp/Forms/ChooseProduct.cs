@@ -12,21 +12,25 @@ namespace KassaApp.Forms
             InitializeComponent();
             ViewResult(null);
         }
-
+        //обработка ввода текста в строку Поиска
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
             using (var db = new KassaDBContext())
             {
+                //получение продуктов название которых
+                //содержит введённый в поисковую строку текст
                 var products = db.Product.Where(p => p.Name.Contains(searchTB.Text));
                 ViewResult(products);
             }
         }
-
+        //вывод данных о товарах на форму
         private void ViewResult(IQueryable<Product> prod)
         {
             using (var db = new KassaDBContext())
             {
                 productsDGV.Rows.Clear();
+                //если в метод не переданы данные для вывода
+                //то выводится информация о всех товарах
                 if (prod == null)
                     foreach (Product p in db.Product)
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
@@ -37,6 +41,7 @@ namespace KassaApp.Forms
                             p.Discount, p.NDS, p.Row_Summ);
             }
         }
+        //обработка нажатия горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
@@ -46,7 +51,7 @@ namespace KassaApp.Forms
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
+        //обработка нажатия кнопки Ввод
         private void enterB_Click(object sender, EventArgs e)
         {
             try
@@ -55,26 +60,33 @@ namespace KassaApp.Forms
                 {
                     Product product;
                     Purchase purchase;
+                    //если продукт выбран
                     if (productsDGV.SelectedRows.Count > 0)
                         foreach (DataGridViewRow r in productsDGV.SelectedRows)
                         {
+                            //формирование продукта из строки DataGridView
                             product = Product.ProductFromRow(r, null);
                             if (product != null)
                             {
                                 product.Quantity = (int)countNUD.Value;
                                 product.RowSummCalculate();
+                                //если количество не превышает остаток
                                 if (CountController.Check(product))
                                 {
                                     bool added = false;
+                                    //перебор содержимого состава чека на форме Main
                                     foreach (Product p in ((Main)Owner).receipt.Products)
                                     {
+                                        //если товар уже добавлен в чек новая позиция не создаётся
                                         if (p.Name == product.Name)
                                         {
                                             if (p.Type == 1)
                                             {
+                                                //обновляется запись в БД в таблице Purchase
                                                 var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
                                                 oldP.Count += product.Quantity;
                                                 oldP.Summa += (decimal)product.Row_Summ;
+                                                //к существующей позиции добавляется количество и сумма
                                                 p.Quantity += product.Quantity;
                                                 p.Row_Summ += product.Row_Summ;
                                                 ((Main)Owner).DGV_Refresh();
@@ -83,10 +95,13 @@ namespace KassaApp.Forms
                                             added = true;
                                         }
                                     }
+                                    //если товар не добавлен
                                     if (!added)
                                     {
+                                        //создаётся новая позиция в чеке
                                         ((Main)Owner).receipt.Products.Add(product);
                                         ((Main)Owner).DGV_Refresh();
+                                        //данные добавляются в БД в таблицу Purchase
                                         purchase = new Purchase()
                                         {
                                             ProductId = product.Id,
@@ -99,6 +114,7 @@ namespace KassaApp.Forms
                                         db.Purchase.Add(purchase);
                                         db.SaveChanges();
                                     }
+                                    //обновление данных формы
                                     ViewResult(null);
                                     //Close();
                                 }
@@ -114,6 +130,7 @@ namespace KassaApp.Forms
             }
                                
         }
+        //обработка нажатия кнопки Отмена
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();

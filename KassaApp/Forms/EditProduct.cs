@@ -7,7 +7,7 @@ namespace KassaApp
 {
     public partial class EditProduct : Form
     {
-        private Product OldProduct;
+        private Product OldProduct; //переданная строка для изменения
         public EditProduct(DataGridViewRow row)
         {
             InitializeComponent();
@@ -16,7 +16,7 @@ namespace KassaApp
             {
                 if(OldProduct != null)
                 {
-                    //установка полученных данных для изменения
+                    //установка полученных данных в поля формы
                     receiptDGV.Visible = true;
                     countNUD.Value = OldProduct.Quantity;
                     discountTB.Text = String.Format("{0:f}", OldProduct.Discount);
@@ -34,7 +34,7 @@ namespace KassaApp
         {
             GeneralCodeForForms.TextBoxFormat(sender, e);
         }
-        //обработка кнопки Ввод
+        //обработка нажатия кнопки Ввод
         private void addProductB_Click(object sender, EventArgs e)
         {
             try
@@ -43,6 +43,7 @@ namespace KassaApp
                 {
                     if (countNUD.Value != 0 && discountTB.Text != "")
                     {
+                        //создание продукта с изменёнными данными
                         Product product = new Product()
                         {
                             Id = OldProduct.Id,
@@ -55,16 +56,17 @@ namespace KassaApp
                             Type = OldProduct.Type
                         };
                         product.RowSummCalculate();
-                        //если идёт изменение, данные меняются на главной форме
-                        //иначе данные добавляются на главную форму
                         product.Quantity -= OldProduct.Quantity;
+                        //если изменённое количесвто не превышает остаток
                         if (CountController.Check(product))
                         {
                             product.Quantity += OldProduct.Quantity;
+                            //изменение данных на форме Main
                             int index = ((Main)Owner).receipt.Products.IndexOf(
                                 ((Main)Owner).receipt.Products.Where(p => p.Name == product.Name).FirstOrDefault());
                             ((Main)Owner).receipt.Products[index] = product;
                             ((Main)Owner).DGV_Refresh();
+                            //обновление данных в БД в таблице Purchase
                             var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
                             oldP.Count = product.Quantity;
                             oldP.Summa = (decimal)product.Row_Summ;
@@ -81,7 +83,7 @@ namespace KassaApp
                 MessageBox.Show(ex.Message);
             }
         }
-        //обработка горячих клавиш
+        //обработка нажатия горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {                
             switch (keyData)
@@ -92,7 +94,7 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //закрытие формы
+        //обработка нажатия кнопки Отмена
         private void cancelB_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -112,6 +114,8 @@ namespace KassaApp
         {
             departmentNUD.Focus();
         }
+        //изменение данных в DataGridView
+        //после изменения значений текстовых полей
         private void textBoxs_TextChange(object sender, EventArgs e)
         {
             if (receiptDGV.Rows.Count > 0)
@@ -121,6 +125,7 @@ namespace KassaApp
                 receiptDGV.Rows[0].Cells["sumCol"].Value = Math.Round((double)countNUD.Value * (double)OldProduct.Price
                     - (double)countNUD.Value * (double)OldProduct.Price * double.Parse(discountTB.Text) / 100, 2);
             }
+            //ввод значения если текстовое поле пустое
             if (sender.GetType() == typeof(TextBox) && ((TextBox)sender).Text.Length == 0)
                 ((TextBox)sender).Text = "0.00";
         }
