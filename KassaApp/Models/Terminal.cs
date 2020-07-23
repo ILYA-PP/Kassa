@@ -24,6 +24,20 @@ namespace KassaApp.Models
             if (Server == null)
                 Server = new Server();
         }
+        //получить имя карты
+        public string GetCardName()
+        {
+            try
+            {
+                string cardName = Server.GParamString("CardName");
+                return cardName;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return "";
+            }
+        }
         //получить чек операции
         public string GetCheque()
         {
@@ -53,7 +67,7 @@ namespace KassaApp.Models
             return false;
         }
         //операция покупки
-        public void Purchase(double sum)
+        public int Purchase(double sum)
         {
             try
             {
@@ -63,11 +77,13 @@ namespace KassaApp.Models
                 if (result == 0)
                 {
                     MessageBox.Show("Успешно!");
+                    return result;
                 }
                 else
                     MessageBox.Show($"Операция НЕ выполнена. Код ошибки: {result}");
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
+            return -1;
         }
         //отмена транзакции
         public void CancelTransaction()

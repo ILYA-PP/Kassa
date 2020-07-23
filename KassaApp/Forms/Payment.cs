@@ -63,34 +63,36 @@ namespace KassaApp
                 Terminal terminal = new Terminal();
                 if (terminal.IsEnabled())
                 {
-                    terminal.Purchase((double)CurrentReceipt.Summa);
-                    using (FiscalRegistrar fr = new FiscalRegistrar())
+                    if (terminal.Purchase((double)CurrentReceipt.Summa) == 0)
                     {
-                        if (fr.CheckConnect() == 0)
+                        using (FiscalRegistrar fr = new FiscalRegistrar())
                         {
-                            messageL.Text = "Печать чеков";
-                            if (fr.Print(terminal.GetCheque()) == 0)
+                            if (fr.CheckConnect() == 0)
                             {
-                                CurrentReceipt.Payment = 2;
-                                if (fr.PrintCheque(CurrentReceipt) == 0)
+                                messageL.Text = "Печать чеков";
+                                if (terminal.GetCheque() != "" && fr.Print(terminal.GetCheque()) == 0)
                                 {
-                                    MarkAsPaid();
-                                    Close();
+                                    CurrentReceipt.Payment = 2;
+                                    if (fr.PrintCheque(CurrentReceipt, terminal.GetCardName()) == 0)
+                                    {
+                                        MarkAsPaid();
+                                        Close();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
+                                        terminal.CancelTransaction();
+                                    }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
+                                    MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
                                     terminal.CancelTransaction();
                                 }
                             }
                             else
-                            {
-                                MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
-                                terminal.CancelTransaction();
-                            }
+                                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                         }
-                        else
-                            MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                     }
                 }
                 else

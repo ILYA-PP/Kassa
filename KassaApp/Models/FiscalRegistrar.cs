@@ -10,10 +10,20 @@ namespace KassaApp.Models
 {
     class FiscalRegistrar: IDisposable
     {
+        private int SysAdminPassword = 0;
+        private int OperatorPassword = 0;
         protected DrvFR Driver { get; set; }
         public FiscalRegistrar()
         {
             Connect();
+            if(CheckConnect() == 0)
+            {
+                Driver.TableNumber = 2;
+                Driver.RowNumber = 30;
+                Driver.FieldNumber = 1;
+                executeAndHandleError(Driver.ReadTable);
+                SysAdminPassword = Driver.ValueOfFieldInteger;
+            }
         }
         public void Dispose()
         {
@@ -39,12 +49,15 @@ namespace KassaApp.Models
                 case 4:
                     //Открытие смены
                     if (MessageBox.Show("Смена закрыта! Открыть новую смену?","", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        GetReport(Driver.OpenSession, "Отчёт об открытии смены"); 
+                        GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены"); 
                     break;
                 case 8:
                     //Отмена чека
+                    OperatorPassword = Driver.Password;
+                    Driver.Password = SysAdminPassword;
                     if (MessageBox.Show("Открыт другой чек! Отменить чек?","", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         executeAndHandleError(Driver.SysAdminCancelCheck, true);
+                    Driver.Password = OperatorPassword;
                     break;
             }
             executeAndHandleError(Driver.WaitForPrinting);
@@ -64,7 +77,9 @@ namespace KassaApp.Models
             while (res != 0)
             {
                 if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
                     executeAndHandleError(Driver.PrintString, true);
+                }
                 res = executeAndHandleError(Driver.WaitForPrinting);
             }
             //Отрезка чека
@@ -95,7 +110,6 @@ namespace KassaApp.Models
                     Password = int.Parse(driverData["Password"])
                 };
                 executeAndHandleError(Driver.Connect);
-                Driver.WaitForPrintingDelay = 20;
             }
             catch (Exception ex)
             {
@@ -135,7 +149,7 @@ namespace KassaApp.Models
             }
         }
         //печать чека
-        public int PrintCheque(Receipt cheque)
+        public int PrintCheque(Receipt cheque, string cardName = null)
         {
             if (CheckConnect() == 0)
             {
@@ -180,14 +194,32 @@ namespace KassaApp.Models
                     {
                         Driver.Summ1 = (decimal)cheque.Summa;
                         Driver.Summ2 = 0;
+                        Driver.Summ3 = 0;
+                        Driver.Summ4 = 0;
                     }
                     else if (cheque.Payment == 2)
                     {
-                        Driver.Summ2 = (decimal)cheque.Summa;
+                        switch (cardName)
+                        {
+                            case "МИР": 
+                                Driver.Summ2 = cheque.Summa; 
+                                Driver.Summ3 = 0;
+                                Driver.Summ4 = 0; break;
+                            case "Visa": 
+                                Driver.Summ3 = cheque.Summa; 
+                                Driver.Summ2 = 0;
+                                Driver.Summ4 = 0; break;
+                            case "Mastercard": 
+                                Driver.Summ4 = cheque.Summa; 
+                                Driver.Summ3 = 0;
+                                Driver.Summ2 = 0; break;
+                            default:
+                                Driver.Summ2 = cheque.Summa;
+                                Driver.Summ3 = 0;
+                                Driver.Summ4 = 0; break;
+                        }
                         Driver.Summ1 = 0;
                     }
-                    Driver.Summ3 = 0;
-                    Driver.Summ4 = 0;
                     Driver.Summ5 = 0;
                     Driver.Summ6 = 0;
                     Driver.Summ7 = 0;
