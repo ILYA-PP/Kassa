@@ -28,6 +28,12 @@ namespace KassaApp
         //переход на форму настройки связи
         private void настройкаСвязиToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //проверка пароля
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
             new Settings().Show();
         }
         //обработка нажатия кнопки отчет по банковским картам
@@ -69,9 +75,7 @@ namespace KassaApp
             using (FiscalRegistrar fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
-                {
                     fr.PrintZReport();
-                }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
@@ -87,9 +91,7 @@ namespace KassaApp
             using (FiscalRegistrar fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
-                {
                     fr.PrintXTaxReport();
-                }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
@@ -105,9 +107,7 @@ namespace KassaApp
             using (FiscalRegistrar fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
-                {
                     fr.PrintXSectionReport();
-                }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
@@ -123,9 +123,7 @@ namespace KassaApp
             using (FiscalRegistrar fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
-                {
                     fr.PrintXReport();
-                }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
@@ -134,11 +132,11 @@ namespace KassaApp
         private bool CheckPassword()
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var usePass = config.AppSettings.Settings["UsedPassword"].Value;
             //если установлена галочка Использовать пароль доступа
-            if (config.AppSettings.Settings["UsedPassword"].Value == "1"
-                && config.AppSettings.Settings["Password"].Value == passwordTB.Text)
-                    return true;
-            if (config.AppSettings.Settings["UsedPassword"].Value == "0")
+            if (usePass == "1" && usePass == passwordTB.Text)
+                return true;
+            if (usePass == "0")
                 return true;
             return false;
         }

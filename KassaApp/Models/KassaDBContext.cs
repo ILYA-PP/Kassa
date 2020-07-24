@@ -1,10 +1,7 @@
 namespace KassaApp
 {
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
     using KassaApp.Models;
+    using System.Data.Entity;
 
     //класс для работы с БД
     public partial class KassaDBContext : DbContext

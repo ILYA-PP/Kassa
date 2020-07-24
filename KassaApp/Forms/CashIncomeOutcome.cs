@@ -1,11 +1,5 @@
 ﻿using KassaApp.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp.Forms
@@ -35,7 +29,7 @@ namespace KassaApp.Forms
         //обработка нажатия кнопки Ввод
         private void enterB_Click(object sender, EventArgs e)
         {
-            decimal summ = 0, res;
+            decimal summ, res;
             if(summaTB.Text != "")
             {
                 summ = decimal.Parse(summaTB.Text);

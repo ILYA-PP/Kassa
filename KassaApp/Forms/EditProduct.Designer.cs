@@ -64,7 +64,6 @@
             this.discountTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.discountTB.TextChanged += new System.EventHandler(this.textBoxs_TextChange);
             this.discountTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyDigit_KeyPress);
-            this.discountTB.Leave += new System.EventHandler(this.textBoxs_Leave);
             // 
             // label8
             // 
@@ -131,7 +130,6 @@
             this.countB.TabIndex = 33;
             this.countB.Text = "[*] Количество";
             this.countB.UseVisualStyleBackColor = true;
-            this.countB.Click += new System.EventHandler(this.countB_Click);
             // 
             // discountB
             // 
@@ -142,7 +140,6 @@
             this.discountB.TabIndex = 34;
             this.discountB.Text = "[F10] Скидка";
             this.discountB.UseVisualStyleBackColor = true;
-            this.discountB.Click += new System.EventHandler(this.discountB_Click);
             // 
             // departmentB
             // 
@@ -153,7 +150,6 @@
             this.departmentB.TabIndex = 39;
             this.departmentB.Text = "[F9] Отдел";
             this.departmentB.UseVisualStyleBackColor = true;
-            this.departmentB.Click += new System.EventHandler(this.departmentB_Click);
             // 
             // departmentNUD
             // 

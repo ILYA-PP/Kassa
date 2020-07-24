@@ -1,11 +1,6 @@
 ﻿using KassaApp.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp
@@ -65,9 +60,9 @@ namespace KassaApp
                     if (terminal.IsEnabled())
                     {
                         //если оплата через терминал успешна
-                        if (terminal.Purchase((double)CurrentReceipt.Summa) == 0)
+                        if (terminal.Purchase(CurrentReceipt.Summa) == 0)
                         {
-                            using (FiscalRegistrar fr = new FiscalRegistrar())
+                            using (var fr = new FiscalRegistrar())
                             {
                                 if (fr.CheckConnect() == 0)
                                 {

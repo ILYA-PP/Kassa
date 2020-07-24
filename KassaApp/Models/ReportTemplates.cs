@@ -23,14 +23,14 @@ namespace KassaApp.Models
             {
                 if (name != "")
                     name += "\r\n";
-                executeAndHandleError(Driver.GetECRStatus);
+                ExecuteAndHandleError(Driver.GetECRStatus);
                 var znkkt = Driver.SerialNumber;
                 Driver.TableNumber = 2;
                 Driver.RowNumber = Driver.OperatorNumber;
                 Driver.FieldNumber = 2;
-                executeAndHandleError(Driver.ReadTable);
-                executeAndHandleError(Driver.FNGetSerial);
-                executeAndHandleError(Driver.FNGetFiscalizationResult);
+                ExecuteAndHandleError(Driver.ReadTable);
+                ExecuteAndHandleError(Driver.FNGetSerial);
+                ExecuteAndHandleError(Driver.FNGetFiscalizationResult);
                 return $"ЗН ККТ: {znkkt}\r\n" +
                     $"ИНН: {Driver.INN}\r\n" +
                     $"ДАТА: {DateTime.Now}\r\n" +

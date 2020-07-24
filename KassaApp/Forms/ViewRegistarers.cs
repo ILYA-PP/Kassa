@@ -13,7 +13,7 @@ namespace KassaApp.Forms
         //обработка нажатия кнопки Прочитать операционные регистры
         private void readOperationRegB_Click(object sender, EventArgs e)
         {
-            using (FiscalRegistrar fr = new FiscalRegistrar())
+            using (var fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
                 {
@@ -72,9 +72,7 @@ namespace KassaApp.Forms
             using (FiscalRegistrar fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
-                {
                     fr.PrintOperationReg(); //Печать операционных регистров
-                }
                 else
                     MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }

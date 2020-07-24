@@ -65,7 +65,7 @@ namespace KassaApp.Models
             return false;
         }
         //операция покупки
-        public int Purchase(double sum)
+        public int Purchase(decimal sum)
         {
             try
             {
@@ -151,12 +151,8 @@ namespace KassaApp.Models
                 catch (DbEntityValidationException dbEx)
                 {
                     foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
                         foreach (var validationError in validationErrors.ValidationErrors)
-                        {
                             MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
-                        }
-                    }
                 }
             }
         }

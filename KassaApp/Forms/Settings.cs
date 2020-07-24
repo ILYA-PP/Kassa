@@ -42,13 +42,13 @@ namespace KassaApp
         //действие при изменении значений текстовых полей
         public void TB_TextChange(object sender, KeyPressEventArgs e)
         {
-            //формат строк
+            //формат строк, только целые числа
             GeneralCodeForForms.TextBoxDigitFormat(sender, e);
         }
         //проверка связи с фискальным регистратором
         private void checkConnectB_Click(object sender, EventArgs e)
         {
-            using (FiscalRegistrar fr = new FiscalRegistrar())
+            using (var fr = new FiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
                     MessageBox.Show("Фискальный регистратор подключен!");

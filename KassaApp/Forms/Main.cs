@@ -1,7 +1,6 @@
 ﻿using KassaApp.Forms;
 using KassaApp.Models;
 using System;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -13,11 +12,6 @@ namespace KassaApp
         public Main()
         {
             InitializeComponent();
-        }
-        //ограничение вводимых значений в текстбоксы
-        private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            GeneralCodeForForms.TextBoxFormat(sender, e);
         }
         //переход на форму скидки на чек
         private void discountOnReceiptB_Click(object sender, EventArgs e)
@@ -88,6 +82,7 @@ namespace KassaApp
                         db.Purchase.Remove(purchase);
                         db.SaveChanges();
                         //удаление из состава чека
+                        receipt.Purchases.Remove(purchase);
                         receipt.Products.Remove(product);
                         receipt.CalculateSumm();
                         //удаление из DataGridView
@@ -104,17 +99,17 @@ namespace KassaApp
             if (receipt != null)
             {
                 receipt.CalculateSumm();
-                if (receipt.Summa != 0)
+                if (receipt.Summa == 0)
                 {
-                    resultL.Text = String.Format("{0:f}", receipt.DiscountedSum);
-                    discountTB.Text = String.Format("{0:f}", receipt.DiscountSum);
-                    nonDiscountTB.Text = String.Format("{0:f}", receipt.Summa);
+                    resultL.Text = "0,00";
+                    discountTB.Text = "0,00";
+                    nonDiscountTB.Text = "0,00";
                 }
                 else
                 {
-                    resultL.Text = "0.00";
-                    discountTB.Text = "0.00";
-                    nonDiscountTB.Text = "0.00";
+                    resultL.Text = string.Format("{0:f}", receipt.DiscountedSum);
+                    discountTB.Text = string.Format("{0:f}", receipt.DiscountSum);
+                    nonDiscountTB.Text = string.Format("{0:f}", receipt.Summa);
                 }
             }
         }

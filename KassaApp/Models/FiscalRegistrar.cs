@@ -2,7 +2,6 @@
 using System;
 using System.Configuration;
 using System.Data.Entity.Validation;
-using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
 
@@ -16,7 +15,7 @@ namespace KassaApp.Models
         protected DrvFR Driver { get; set; }
         public FiscalRegistrar()
         {
-            //подключение к кККТ при создании объекта класса
+            //подключение к ККТ при создании объекта класса
             Connect(); 
             //получение пароля сис. админа
             if(CheckConnect() == 0)
@@ -24,7 +23,7 @@ namespace KassaApp.Models
                 Driver.TableNumber = 2;
                 Driver.RowNumber = 30;
                 Driver.FieldNumber = 1;
-                executeAndHandleError(Driver.ReadTable);
+                ExecuteAndHandleError(Driver.ReadTable);
                 SysAdminPassword = Driver.ValueOfFieldInteger;
             }
         }
@@ -33,78 +32,15 @@ namespace KassaApp.Models
             //отключение от ККТ при удалении объекта класса
             Disconnect();
         }
-        //проверка состояния ККТ перед печатью
-        public void prepareCheque()
-        {
-            executeAndHandleError(Driver.WaitForPrinting);
-            executeAndHandleError(Driver.GetECRStatus);
-            switch (Driver.ECRMode)
-            {
-                case 3:
-                    //Снятие Z-отчёта
-                    executeAndHandleError(Driver.WaitForPrinting);
-                    if(MessageBox.Show("24 часа истеки! Зактыть смену и открыть новую смену?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        GetFiscReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
-                        //Открытие смены
-                        GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены");
-                    } 
-                    break;
-                case 4:
-                    //Открытие смены
-                    MessageBox.Show("Смена закрыта! Открытие новой смены");
-                    GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены"); 
-                    break;
-                case 8:
-                    //Отмена чека
-                    OperatorPassword = Driver.Password;
-                    Driver.Password = SysAdminPassword;
-                    if (MessageBox.Show("Открыт другой чек! Отменить чек?","", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        executeAndHandleError(Driver.SysAdminCancelCheck, true);
-                    Driver.Password = OperatorPassword;
-                    break;
-            }
-            executeAndHandleError(Driver.WaitForPrinting);
-        }
         protected void Disconnect()
         {
             //Отключение от ККТ
-            executeAndHandleError(Driver.Disconnect, true);
-        }
-        //метод печати нефискальных документов
-        //s - строка для печати
-        public int Print(string s)
-        {
-            prepareCheque();
-            Driver.StringForPrinting = s;
-            //печать документа
-            int res = executeAndHandleError(Driver.PrintString, true);
-            //Ожидание печати чека
-            res = executeAndHandleError(Driver.WaitForPrinting); 
-            while (res != 0)
-            {
-                if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    executeAndHandleError(Driver.PrintString, true);
-                }
-                res = executeAndHandleError(Driver.WaitForPrinting);
-            }
-            //отступ после документа
-            Driver.StringQuantity = 5;
-            Driver.UseReceiptRibbon = true;
-            res = executeAndHandleError(Driver.FeedDocument);
-            //Отрезка чека
-            if (res == 0)
-            {
-                res = executeAndHandleError(Driver.CutCheck, true);
-                return res;
-            }
-            return res;
+            ExecuteAndHandleError(Driver.Disconnect, true);
         }
         //проверка связи с ККТ
         public int CheckConnect()
         {
-            return executeAndHandleError(Driver.Connect);
+            return ExecuteAndHandleError(Driver.Connect);
         }
         //подключение к фискальному регистратору
         protected void Connect()
@@ -122,7 +58,7 @@ namespace KassaApp.Models
                     Timeout = int.Parse(driverData["Timeout"]),
                     Password = int.Parse(driverData["Password"])
                 };
-                executeAndHandleError(Driver.Connect);
+                ExecuteAndHandleError(Driver.Connect);
             }
             catch (Exception ex)
             {
@@ -137,8 +73,8 @@ namespace KassaApp.Models
         //вывод возникающих ошибок
         protected void CheckResult(int code, string n, bool ViewMessage)
         {
-            if(ViewMessage)
-                if (code != 0 )
+            if (ViewMessage)
+                if (code != 0)
                     MessageBox.Show($"Ошибка: {Driver.ResultCodeDescription} Код: {code} ");
                 else
                     Console.Write($"Метод {n}: Успешно ");
@@ -146,7 +82,7 @@ namespace KassaApp.Models
 
         protected delegate int Func();
         //проверка результата работы метода драйвера ККТ
-        protected int executeAndHandleError(Func f, bool ViewMessage = false)
+        protected int ExecuteAndHandleError(Func f, bool ViewMessage = false)
         {
             while (true)
             {
@@ -161,19 +97,81 @@ namespace KassaApp.Models
                 }
             }
         }
+        //проверка состояния ККТ перед печатью
+        public void PrepareCheque()
+        {
+            ExecuteAndHandleError(Driver.WaitForPrinting);
+            ExecuteAndHandleError(Driver.GetECRStatus);
+            switch (Driver.ECRMode)
+            {
+                case 3:
+                    //Снятие Z-отчёта
+                    ExecuteAndHandleError(Driver.WaitForPrinting);
+                    if(MessageBox.Show("24 часа истеки! Зактыть смену и открыть новую смену?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        GetFiscReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
+                        //Открытие смены
+                        GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены");
+                    } 
+                    break;
+                case 4:
+                    //Открытие смены
+                    MessageBox.Show("Смена закрыта! Открытие новой смены");
+                    GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены"); 
+                    break;
+                case 8:
+                    //Отмена чека
+                    OperatorPassword = Driver.Password;
+                    Driver.Password = SysAdminPassword;
+                    if (MessageBox.Show("Открыт другой чек! Отменить чек?","", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        ExecuteAndHandleError(Driver.SysAdminCancelCheck, true);
+                    Driver.Password = OperatorPassword;
+                    break;
+            }
+            ExecuteAndHandleError(Driver.WaitForPrinting);
+        }
+        //метод печати нефискальных документов
+        //s - строка для печати
+        public int Print(string s)
+        {
+            PrepareCheque();
+            Driver.StringForPrinting = s;
+            //печать документа
+            int res = ExecuteAndHandleError(Driver.PrintString, true);
+            //Ожидание печати чека
+            res = ExecuteAndHandleError(Driver.WaitForPrinting); 
+            while (res != 0)
+            {
+                if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    ExecuteAndHandleError(Driver.PrintString, true);
+
+                res = ExecuteAndHandleError(Driver.WaitForPrinting);
+            }
+            //отступ после документа
+            Driver.StringQuantity = 5;
+            Driver.UseReceiptRibbon = true;
+            ExecuteAndHandleError(Driver.FeedDocument, true);
+            //Отрезка чека
+            if (res == 0)
+            {
+                res = ExecuteAndHandleError(Driver.CutCheck, true);
+                return res;
+            }
+            return res;
+        }
         //печать фискального чека
         public int PrintCheque(Receipt cheque, string cardName = null)
         {
             if (CheckConnect() == 0)
             {
-                prepareCheque();
+                PrepareCheque();
                 Driver.GetECRStatus();
                 int state = Driver.ECRMode;
                 if (state == 2 || state == 4 || state == 7 || state == 9)
                 {
                     Driver.CheckType = 0;
                     //Открытие чека
-                    if (executeAndHandleError(Driver.OpenCheck, true) != 0)
+                    if (ExecuteAndHandleError(Driver.OpenCheck, true) != 0)
                         return -1;
                     //if (cheque.Phone != null)
                     //    Driver.CustomerEmail = cheque.Phone;
@@ -181,7 +179,7 @@ namespace KassaApp.Models
                     //    Driver.CustomerEmail = cheque.Email;
                     ////Передача данных покупателя
                     //if(cheque.Phone != null || cheque.Email != null)
-                    //    executeAndHandleError(Driver.FNSendCustomerEmail);
+                    //    ExecuteAndHandleError(Driver.FNSendCustomerEmail);
                     foreach (Product p in cheque.Products)
                     {
                         //пробитие позиций
@@ -200,14 +198,14 @@ namespace KassaApp.Models
                             Driver.Tax1 = 1;
                         else if (p.NDS == 18)
                             Driver.Tax1 = 2;
-                        if (executeAndHandleError(Driver.FNOperation, true) != 0)
+                        if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                             return -1;
                     }
                     Driver.StringForPrinting = "";
                     //указание способа оплаты
                     if (cheque.Payment == 1)
                     {
-                        Driver.Summ1 = (decimal)cheque.Summa;
+                        Driver.Summ1 = cheque.Summa;
                         Driver.Summ2 = 0;
                         Driver.Summ3 = 0;
                         Driver.Summ4 = 0;
@@ -256,19 +254,20 @@ namespace KassaApp.Models
                     Driver.TaxType = 1;
                     Driver.DiscountOnCheck = cheque.Discount/100;
                     //Закрытие чека
-                    int res = executeAndHandleError(Driver.FNCloseCheckEx, true);
+                    int res = ExecuteAndHandleError(Driver.FNCloseCheckEx, true);
                     if (res == 0)
                     {
-                        res = executeAndHandleError(Driver.WaitForPrinting);
+                        res = ExecuteAndHandleError(Driver.WaitForPrinting);
                         //Ожидание печати чека
                         while (res != 0)
                         {
                             if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                executeAndHandleError(Driver.ContinuePrint, true);
-                            res = executeAndHandleError(Driver.WaitForPrinting);
+                                ExecuteAndHandleError(Driver.ContinuePrint, true);
+
+                            res = ExecuteAndHandleError(Driver.WaitForPrinting);
                         }
                         //Отрезка чека
-                        res = executeAndHandleError(Driver.CutCheck, true);
+                        res = ExecuteAndHandleError(Driver.CutCheck, true);
                         return res;
                     }
                 }
@@ -337,17 +336,17 @@ namespace KassaApp.Models
         //проверка состояния ккт и выполнение печати нефискального отчёта
         private int GetReport(Func m, string name, string template = null)
         {
-            executeAndHandleError(Driver.GetECRStatus);
+            ExecuteAndHandleError(Driver.GetECRStatus);
             int state = Driver.ECRMode, res = 0;
             if (state == 3 || state == 4 || state == 8)
             {
                 MessageBox.Show("Закройте текущую смену и/или откройте новую!");
                 return -1;
             }
-            res = executeAndHandleError(m, true);
+            res = ExecuteAndHandleError(m, true);
             if (m == null || res == 0)
             {
-                executeAndHandleError(Driver.CutCheck);//отрезка отчёта
+                ExecuteAndHandleError(Driver.CutCheck);//отрезка отчёта
                 SaveReport(name, template);//сохранение отчёта
             }
             return res;
@@ -355,24 +354,19 @@ namespace KassaApp.Models
         //выполнение печати фискального отчёта
         private void GetFiscReport(Func m, string name, string template = null)
         {
-            if (m != null && executeAndHandleError(m, true) == 0)
+            if (m != null && ExecuteAndHandleError(m, true) == 0)
             {
-                executeAndHandleError(Driver.CutCheck);//отрезка отчёта
+                ExecuteAndHandleError(Driver.CutCheck);//отрезка отчёта
                 SaveReport(name, template);//сохранение отчёта
             }
-        }
-        //открытие свойств драйвера
-        public void OpenProperties()
-        {
-            executeAndHandleError(Driver.ShowProperties, true);
         }
         //сохранение отчётов в бд
         private void SaveReport(string name, string template = null)
         {
             //получить статус ккт
-            executeAndHandleError(Driver.FNGetStatus);
+            ExecuteAndHandleError(Driver.FNGetStatus);
             //получить текст отчёта
-            if (executeAndHandleError(Driver.FNGetDocumentAsString, true) == 0)
+            if (template != null || ExecuteAndHandleError(Driver.FNGetDocumentAsString, true) == 0)
             {
                 try
                 {
@@ -402,12 +396,8 @@ namespace KassaApp.Models
                 catch (DbEntityValidationException dbEx)
                 {
                     foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
                         foreach (var validationError in validationErrors.ValidationErrors)
-                        {
                             MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
-                        }
-                    }
                 }
             }
         }
@@ -415,7 +405,7 @@ namespace KassaApp.Models
         public RegistrerItem GetOperRegItem(int num)
         {
             Driver.RegisterNumber = num;
-            if (executeAndHandleError(Driver.GetOperationReg) == 0)
+            if (ExecuteAndHandleError(Driver.GetOperationReg) == 0)
                 return new RegistrerItem()
                 {
                     Number = num,
@@ -428,7 +418,7 @@ namespace KassaApp.Models
         public RegistrerItem GetCashRegItem(int num)
         {
             Driver.RegisterNumber = num;
-            if (executeAndHandleError(Driver.GetCashReg) == 0)
+            if (ExecuteAndHandleError(Driver.GetCashReg) == 0)
                 return new RegistrerItem()
                 {
                     Number = num,
@@ -437,6 +427,5 @@ namespace KassaApp.Models
                 };
             return null;
         }
-
     }
 }

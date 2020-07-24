@@ -18,7 +18,7 @@ namespace KassaApp.Models
 					//если количество выбранного товара меньше либо равно остатку
 					if (prod.Quantity <= productInDB.Quantity)
 					{
-						if (productInDB.Type == 1)
+						if (productInDB.Type == 1)//услуги не отслеживаются, только товары
 						{
 							//вычесть количество из остатков в бд
 							productInDB.Quantity -= prod.Quantity;

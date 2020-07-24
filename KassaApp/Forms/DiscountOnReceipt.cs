@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp
@@ -28,7 +22,7 @@ namespace KassaApp
         //обработка кнопки Ввод
         private void enterB_Click(object sender, EventArgs e)
         {
-            double discount = 0;
+            double discount;
             if (discountDataTB.Text != "")
             {
                 //если выбрано указание процента скидки
@@ -39,8 +33,8 @@ namespace KassaApp
                     {
                         //скидка указывается в текущем чеке
                         ((Main)Owner).receipt.Discount = discount;
-                        MessageBox.Show("Скидка на чек установлена!");
                         ((Main)Owner).DGV_Refresh();
+                        MessageBox.Show("Скидка на чек установлена!");
                         Close();
                     }
                 }

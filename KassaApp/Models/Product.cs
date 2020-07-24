@@ -2,10 +2,8 @@ namespace KassaApp
 {
     using KassaApp.Models;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
     using System.Linq;
     using System.Windows.Forms;
 
@@ -77,6 +75,7 @@ namespace KassaApp
             try
             {
                 Product product;
+                //если продукт уже есть в составе чека
                 if (r != null)
                     product = r.Products.Where(p => p.Name == row.Cells["nameCol"].Value.ToString()).FirstOrDefault();
                 else
@@ -113,7 +112,7 @@ namespace KassaApp
         //метод для расчёта суммы по позиции
         public void RowSummCalculate()
         {
-            Row_Summ = (Price - Math.Round(Price * (decimal)Discount / 100, 2))*Quantity;
+            Row_Summ = (Price - Math.Round(Price * (decimal)Discount / 100, 2)) * Quantity;
         }
     }
 }

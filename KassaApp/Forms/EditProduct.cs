@@ -19,7 +19,7 @@ namespace KassaApp
                     //установка полученных данных в поля формы
                     receiptDGV.Visible = true;
                     countNUD.Value = OldProduct.Quantity;
-                    discountTB.Text = String.Format("{0:f}", OldProduct.Discount);
+                    discountTB.Text = string.Format("{0:f}", OldProduct.Discount);
                     receiptDGV.Rows.Add(OldProduct.Name, OldProduct.Quantity,
                         OldProduct.Price, OldProduct.Discount, OldProduct.NDS, OldProduct.Row_Summ);
                 }
@@ -97,7 +97,7 @@ namespace KassaApp
         //обработка нажатия кнопки Отмена
         private void cancelB_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         //обработчики кнопок установки фокуса на текстбоксы
         private void discountB_Click(object sender, EventArgs e)
@@ -128,11 +128,6 @@ namespace KassaApp
             //ввод значения если текстовое поле пустое
             if (sender.GetType() == typeof(TextBox) && ((TextBox)sender).Text.Length == 0)
                 ((TextBox)sender).Text = "0.00";
-        }
-
-        private void textBoxs_Leave(object sender, EventArgs e)
-        {
-            ((TextBox)sender).Text = String.Format("{0:f}", double.Parse(((TextBox)sender).Text));
         }
     }
 }

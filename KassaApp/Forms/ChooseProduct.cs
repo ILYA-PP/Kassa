@@ -80,12 +80,12 @@ namespace KassaApp.Forms
                                         //если товар уже добавлен в чек новая позиция не создаётся
                                         if (p.Name == product.Name)
                                         {
-                                            if (p.Type == 1)
+                                            if (p.Type == 1)//учитываются только товары, без услуг
                                             {
                                                 //обновляется запись в БД в таблице Purchase
                                                 var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
                                                 oldP.Count += product.Quantity;
-                                                oldP.Summa += (decimal)product.Row_Summ;
+                                                oldP.Summa += product.Row_Summ;
                                                 //к существующей позиции добавляется количество и сумма
                                                 p.Quantity += product.Quantity;
                                                 p.Row_Summ += product.Row_Summ;
@@ -106,7 +106,7 @@ namespace KassaApp.Forms
                                         {
                                             ProductId = product.Id,
                                             Count = product.Quantity,
-                                            Summa = (decimal)product.Row_Summ,
+                                            Summa = product.Row_Summ,
                                             Date = DateTime.Now,
                                             Receipt = db.Receipt.Where(rec => rec.Id == ((Main)Owner).receipt.Id).FirstOrDefault()
                                         };
@@ -116,7 +116,7 @@ namespace KassaApp.Forms
                                     }
                                     //обновление данных формы
                                     ViewResult(null);
-                                    //Close();
+                                    Close();
                                 }
                             }
                         }
