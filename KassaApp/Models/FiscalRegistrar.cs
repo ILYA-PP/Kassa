@@ -52,8 +52,8 @@ namespace KassaApp.Models
                     break;
                 case 4:
                     //Открытие смены
-                    if (MessageBox.Show("Смена закрыта! Открыть новую смену?","", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены"); 
+                    MessageBox.Show("Смена закрыта! Открытие новой смены");
+                    GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены"); 
                     break;
                 case 8:
                     //Отмена чека
@@ -66,7 +66,7 @@ namespace KassaApp.Models
             }
             executeAndHandleError(Driver.WaitForPrinting);
         }
-        private void Disconnect()
+        protected void Disconnect()
         {
             //Отключение от ККТ
             executeAndHandleError(Driver.Disconnect, true);
@@ -203,6 +203,7 @@ namespace KassaApp.Models
                         if (executeAndHandleError(Driver.FNOperation, true) != 0)
                             return -1;
                     }
+                    Driver.StringForPrinting = "";
                     //указание способа оплаты
                     if (cheque.Payment == 1)
                     {
@@ -253,7 +254,7 @@ namespace KassaApp.Models
                     Driver.TaxValue5 = 0;
                     Driver.TaxValue6 = 0;
                     Driver.TaxType = 1;
-                    Driver.DiscountOnCheck = cheque.Discount;
+                    Driver.DiscountOnCheck = cheque.Discount/100;
                     //Закрытие чека
                     int res = executeAndHandleError(Driver.FNCloseCheckEx, true);
                     if (res == 0)

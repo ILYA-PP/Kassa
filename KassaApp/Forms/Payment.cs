@@ -84,6 +84,7 @@ namespace KassaApp
                                         }
                                         else
                                         {
+                                            //????????????????????????
                                             MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
                                             terminal.CancelTransaction();
                                         }
@@ -113,6 +114,7 @@ namespace KassaApp
         //обработка нажатия кнопки Наличные
         private void cashB_Click(object sender, EventArgs e)
         {
+            decimal tempSum = 0;//сохранение суммы по чеку
             if (decimal.Parse(moneyTB.Text) < CurrentReceipt.Summa)
             {
                 MessageBox.Show("Вносимая сумма не может быть меньше суммы по чеку!");
@@ -129,10 +131,13 @@ namespace KassaApp
                     {
                         messageL.Text = "Печать чека";
                         CurrentReceipt.Payment = 1;
+                        tempSum = CurrentReceipt.Summa;
+                        //замена суммы по чеку на сумму вносимых наличных
                         CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
                         //печать товарного чека
                         if (fr.PrintCheque(CurrentReceipt) == 0)
                         {
+                            CurrentReceipt.Summa = tempSum;
                             MarkAsPaid();
                             Close();
                         }

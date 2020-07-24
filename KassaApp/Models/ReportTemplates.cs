@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace KassaApp.Models
 {
@@ -12,6 +9,11 @@ namespace KassaApp.Models
         {
             //Подключение к ККТ
             Connect();
+        }
+        ~ReportTemplates()
+        {
+            //отключение от ККТ
+            Disconnect();
         }
         //метод формирует заголовок отчёта
         //с указанием названия отчёта (name)
@@ -128,7 +130,7 @@ namespace KassaApp.Models
             string title = GetTitle("ОТЧЁТ ПО НАЛОГАМ");
             if (title != null)
             {
-                string template = $"{title}\r\n" +
+                return $"{title}\r\n" +
                 $"Группа А:\r\n" +
                     $"Оборот по налогу: {GetCashRegItem(209).Content}\r\n" +
                     $"Налог: {GetCashRegItem(225).Content}\r\n" +
@@ -147,7 +149,6 @@ namespace KassaApp.Models
                 $"Группа Е\r\n" +
                     $"Оборот по налогу: {0}\r\n" +
                     $"Налог: {0}\r\n";
-                return template;
             }
             return null;
         }
@@ -157,7 +158,7 @@ namespace KassaApp.Models
             string title = GetTitle("ОПЕРАЦИОННЫЕ РЕГИСТРЫ");
             if (title != null)
             {
-                string template = $"{title}\r\n" +
+                return $"{title}\r\n" +
                 $"НОМЕР ПРИХОДА: {GetOperRegItem(148).Content}\r\n" +
                 $"НОМЕР РАСХОДА: {GetOperRegItem(149).Content}\r\n" +
                 $"НОМЕР ВОЗВРАТА ПРИХОДА: {GetOperRegItem(150).Content}\r\n" +
@@ -171,7 +172,6 @@ namespace KassaApp.Models
                 $"НОМЕР ОТЧЁТА ПО СЕКЦИЯМ: {GetOperRegItem(165).Content}\r\n" +
                 $"НОМЕР ОТЧЁТА ПО НАЛОГАМ: {GetOperRegItem(178).Content}\r\n" +
                 $"НОМЕР ОТЧЁТА ПО КАССИРАМ: {0}\r\n";
-                return template;
             }
             return null;
         }
@@ -180,10 +180,8 @@ namespace KassaApp.Models
         {
             string title = GetTitle("");
             if (title != null)
-            {
-                string template = $"{title}\r\nВНЕСЕНИЕ: {summ}";
-                return template;
-            }
+                return $"{title}\r\nВНЕСЕНИЕ: {summ}";
+
             return null;
         }
         //метод формирует и возвращает отчёт о выдачи наличных
@@ -191,10 +189,8 @@ namespace KassaApp.Models
         {
             string title = GetTitle("");
             if (title != null)
-            {
-                string template = $"{title}\r\nВЫПЛАТА: {summ}";
-                return template;
-            }
+                return $"{title}\r\nВЫПЛАТА: {summ}";
+
             return null;
         }
     }

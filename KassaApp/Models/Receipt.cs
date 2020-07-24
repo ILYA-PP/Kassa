@@ -12,6 +12,10 @@ namespace KassaApp.Models
     [Table("Receipt")]
     public partial class Receipt
     {
+        [NotMapped]
+        public decimal DiscountSum { get; set; }
+        [NotMapped]
+        public decimal DiscountedSum { get; set; }
         private string phone;
         public int Id { get; set; }
         [StringLength(12)]
@@ -50,7 +54,9 @@ namespace KassaApp.Models
             Summa = 0;
             if (Products != null)
                 foreach (var p in Products)
-                    Summa += (decimal)p.Row_Summ;
+                    Summa += p.Row_Summ;
+            DiscountSum = Math.Round(Summa * (decimal)Discount / 100, 2);
+            DiscountedSum = Summa - DiscountSum;
         }
 
     }

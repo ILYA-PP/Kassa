@@ -55,22 +55,12 @@ namespace KassaApp
                 {
                     nameL.Text = product.Name;
                     summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}";
-                    if (product.Quantity * product.Price != 0)
-                        nonDiscountTB.Text = String.Format("{0:f}", product.Quantity * product.Price);
-                    else
-                        nonDiscountTB.Text = $"0.00";
-                    if (product.Discount != 0)
-                        discountTB.Text = String.Format("{0:f}", product.Quantity * product.Price - (decimal)product.Row_Summ);
-                    else
-                        discountTB.Text = $"0.00";
                 } 
             }
             else
             {
                 nameL.Text = "";
                 summL.Text = "";
-                nonDiscountTB.Text = $"0.00";
-                discountTB.Text = $"0.00";
             }
         }
         //вывод времени
@@ -115,9 +105,17 @@ namespace KassaApp
             {
                 receipt.CalculateSumm();
                 if (receipt.Summa != 0)
-                    resultL.Text = String.Format("{0:f}", receipt.Summa);
+                {
+                    resultL.Text = String.Format("{0:f}", receipt.DiscountedSum);
+                    discountTB.Text = String.Format("{0:f}", receipt.DiscountSum);
+                    nonDiscountTB.Text = String.Format("{0:f}", receipt.Summa);
+                }
                 else
+                {
                     resultL.Text = "0.00";
+                    discountTB.Text = "0.00";
+                    nonDiscountTB.Text = "0.00";
+                }
             }
         }
         //изменение значений на форме при добавлении записей таблицы

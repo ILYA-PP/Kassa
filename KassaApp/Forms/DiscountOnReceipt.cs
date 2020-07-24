@@ -40,12 +40,14 @@ namespace KassaApp
                         //скидка указывается в текущем чеке
                         ((Main)Owner).receipt.Discount = discount;
                         MessageBox.Show("Скидка на чек установлена!");
+                        ((Main)Owner).DGV_Refresh();
+                        Close();
                     }
                 }
                 //если выбрано указание номера дисконтной карты
                 else if (numberDiscountCardRB.Checked)
                 {
-
+                    MessageBox.Show("Функционал находится в разработке");
                 }
             }
             else
