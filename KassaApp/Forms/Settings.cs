@@ -48,7 +48,7 @@ namespace KassaApp
         //проверка связи с фискальным регистратором
         private void checkConnectB_Click(object sender, EventArgs e)
         {
-            using (var fr = new FiscalRegistrar())
+            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
             {
                 if (fr.CheckConnect() == 0)
                     MessageBox.Show("Фискальный регистратор подключен!");

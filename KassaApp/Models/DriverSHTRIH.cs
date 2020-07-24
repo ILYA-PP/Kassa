@@ -8,12 +8,12 @@ using System.Windows.Forms;
 namespace KassaApp.Models
 {
     //класс для работы с драйвером ККТ ШТРИХ-М
-    class FiscalRegistrar: IDisposable
+    class DriverSHTRIH: IFiscalRegistrar
     {
         private int SysAdminPassword = 0; //пароль сис. админа
         private int OperatorPassword = 0; // пароль текущего пользователя
         protected DrvFR Driver { get; set; }
-        public FiscalRegistrar()
+        public DriverSHTRIH()
         {
             //подключение к ККТ при создании объекта класса
             Connect(); 
@@ -98,7 +98,7 @@ namespace KassaApp.Models
             }
         }
         //проверка состояния ККТ перед печатью
-        public void PrepareCheque()
+        private void PrepareCheque()
         {
             ExecuteAndHandleError(Driver.WaitForPrinting);
             ExecuteAndHandleError(Driver.GetECRStatus);
@@ -109,15 +109,15 @@ namespace KassaApp.Models
                     ExecuteAndHandleError(Driver.WaitForPrinting);
                     if(MessageBox.Show("24 часа истеки! Зактыть смену и открыть новую смену?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        GetFiscReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
+                        GetReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
                         //Открытие смены
-                        GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены");
+                        GetReport(Driver.OpenSession, "Отчёт об открытии смены");
                     } 
                     break;
                 case 4:
                     //Открытие смены
                     MessageBox.Show("Смена закрыта! Открытие новой смены");
-                    GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены"); 
+                    GetReport(Driver.OpenSession, "Отчёт об открытии смены"); 
                     break;
                 case 8:
                     //Отмена чека
@@ -305,7 +305,7 @@ namespace KassaApp.Models
         //печать z отчёта с гашением
         public void PrintZReport()
         {
-            GetFiscReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
+            GetReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
         }
         //печать операционных регистров
         public void PrintOperationReg()
@@ -344,7 +344,7 @@ namespace KassaApp.Models
                 return -1;
             }
             res = ExecuteAndHandleError(m, true);
-            if (m == null || res == 0)
+            if (m != null && res == 0)
             {
                 ExecuteAndHandleError(Driver.CutCheck);//отрезка отчёта
                 SaveReport(name, template);//сохранение отчёта

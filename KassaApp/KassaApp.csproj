@@ -158,16 +158,19 @@
     <Compile Include="Forms\ViewReports.Designer.cs">
       <DependentUpon>ViewReports.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\CurrentHardware.cs" />
+    <Compile Include="Models\IFiscalRegistrar.cs" />
+    <Compile Include="Models\ITerminal.cs" />
     <Compile Include="Models\KassaDBContext.cs" />
     <Compile Include="Models\CountController.cs" />
-    <Compile Include="Models\FiscalRegistrar.cs" />
+    <Compile Include="Models\DriverSHTRIH.cs" />
     <Compile Include="Models\GeneralCodeForForms.cs" />
     <Compile Include="Models\Purchase.cs" />
     <Compile Include="Models\Receipt.cs" />
     <Compile Include="Models\RegistrerItem.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportTemplates.cs" />
-    <Compile Include="Models\Terminal.cs" />
+    <Compile Include="Models\PaxTerminal.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

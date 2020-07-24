@@ -44,14 +44,14 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            using (var terminal = new Terminal())
+            using (ITerminal terminal = CurrentHardware.Terminal)
             {
                 //проверка связи с терминалом
                 if (terminal.IsEnabled())
                 {
                     //формирование отчета
                     terminal.CloseDay();
-                    using (FiscalRegistrar fr = new FiscalRegistrar())
+                    using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
                     {
                         //проверка связи с фискальным регистратором
                         if (fr.CheckConnect() == 0)
@@ -72,7 +72,7 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            using (FiscalRegistrar fr = new FiscalRegistrar())
+            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintZReport();
@@ -88,7 +88,7 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            using (FiscalRegistrar fr = new FiscalRegistrar())
+            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintXTaxReport();
@@ -104,7 +104,7 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            using (FiscalRegistrar fr = new FiscalRegistrar())
+            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintXSectionReport();
@@ -120,7 +120,7 @@ namespace KassaApp
                 MessageBox.Show("Неверный пароль!");
                 return;
             }
-            using (FiscalRegistrar fr = new FiscalRegistrar())
+            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintXReport();

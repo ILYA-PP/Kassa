@@ -7,9 +7,9 @@ using System.Windows.Forms;
 namespace KassaApp.Models
 {
     //класс для работы терминалом через драйвер SBRFSRV
-    class Terminal: IDisposable
+    class PaxTerminal: ITerminal
     {
-        public Server Server { get; set; }
+        private Server Server { get; set; }
         private enum Operations
         {
             Purchase = 4000, // Покупка
@@ -18,7 +18,7 @@ namespace KassaApp.Models
             Cancel = 6004, // Отмена транзакции
             Total = 6000 // Итоги дня 
         }
-        public Terminal()
+        public PaxTerminal()
         {
             Server = new Server();
         }

@@ -35,7 +35,7 @@ namespace KassaApp.Forms
                 summ = decimal.Parse(summaTB.Text);
                 if (summ > 0)
                 {
-                    using (FiscalRegistrar fr = new FiscalRegistrar())
+                    using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
                     {
                         if (fr.CheckConnect() == 0)
                         {

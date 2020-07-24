@@ -3,7 +3,7 @@
 namespace KassaApp.Models
 {
     //класс содержит шаблоны отчётов для сохранения
-    class ReportTemplates:FiscalRegistrar
+    class ReportTemplates:DriverSHTRIH
     {
         public ReportTemplates()
         {

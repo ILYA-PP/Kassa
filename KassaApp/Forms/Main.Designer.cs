@@ -215,20 +215,24 @@
             // nameL
             // 
             this.nameL.AutoSize = true;
-            this.nameL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.nameL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nameL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameL.Location = new System.Drawing.Point(3, 0);
             this.nameL.Name = "nameL";
-            this.nameL.Size = new System.Drawing.Size(0, 16);
+            this.nameL.Size = new System.Drawing.Size(308, 30);
             this.nameL.TabIndex = 24;
+            this.nameL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // summL
             // 
             this.summL.AutoSize = true;
-            this.summL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.summL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.summL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.summL.Location = new System.Drawing.Point(3, 30);
             this.summL.Name = "summL";
-            this.summL.Size = new System.Drawing.Size(0, 16);
+            this.summL.Size = new System.Drawing.Size(308, 30);
             this.summL.TabIndex = 25;
+            this.summL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // additDataL
             // 
@@ -373,7 +377,7 @@
             // 
             this.departmentL.AutoSize = true;
             this.departmentL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.departmentL.Location = new System.Drawing.Point(180, 30);
+            this.departmentL.Location = new System.Drawing.Point(317, 30);
             this.departmentL.Name = "departmentL";
             this.departmentL.Size = new System.Drawing.Size(0, 16);
             this.departmentL.TabIndex = 39;
@@ -461,8 +465,8 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 3;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.41367F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.87719F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.68513F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.34534F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel8, 0, 0);
@@ -520,8 +524,8 @@
             // tableLayoutPanel8
             // 
             this.tableLayoutPanel8.ColumnCount = 2;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.79816F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.20184F));
             this.tableLayoutPanel8.Controls.Add(this.departmentL, 1, 1);
             this.tableLayoutPanel8.Controls.Add(this.nameL, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.summL, 0, 1);
@@ -533,7 +537,7 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(354, 90);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(545, 90);
             this.tableLayoutPanel8.TabIndex = 1;
             // 
             // tableLayoutPanel9
