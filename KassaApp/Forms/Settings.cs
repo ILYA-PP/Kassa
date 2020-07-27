@@ -30,13 +30,21 @@ namespace KassaApp
         //обработка нажатия кнопки Настройка
         private void registrSettingsB_Click(object sender, EventArgs e)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            if (comPortTB.Text != "" && exchangeSpeedTB.Text != "")
+            try
             {
-                config.AppSettings.Settings["ComNumber"].Value = comPortTB.Text; //изменение сом порта
-                config.AppSettings.Settings["BaudRate"].Value = exchangeSpeedTB.Text; // изменение скорости обмена
-                config.Save();
-                ConfigurationManager.RefreshSection("appSettings");//сохранение изменений
+                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                if (comPortTB.Text != "" && exchangeSpeedTB.Text != "")
+                {
+                    config.AppSettings.Settings["ComNumber"].Value = comPortTB.Text; //изменение сом порта
+                    config.AppSettings.Settings["BaudRate"].Value = exchangeSpeedTB.Text; // изменение скорости обмена
+                    config.Save();
+                    ConfigurationManager.RefreshSection("appSettings");//сохранение изменений
+                    MessageBox.Show("Настройки сохранены!");
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         //действие при изменении значений текстовых полей
@@ -48,7 +56,7 @@ namespace KassaApp
         //проверка связи с фискальным регистратором
         private void checkConnectB_Click(object sender, EventArgs e)
         {
-            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
+            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
                     MessageBox.Show("Фискальный регистратор подключен!");

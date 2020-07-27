@@ -35,7 +35,7 @@ namespace KassaApp.Forms
                 summ = decimal.Parse(summaTB.Text);
                 if (summ > 0)
                 {
-                    using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
+                    using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                     {
                         if (fr.CheckConnect() == 0)
                         {
@@ -45,8 +45,8 @@ namespace KassaApp.Forms
                             else
                                 res = fr.CashOutcome(summ);
                             if (res == 0)
-                                MessageBox.Show("Успешно!");
-                            summaTB.Text = "";
+                                MessageBox.Show("Успешно! Отчёт сохранён");
+                            Close();
                         }
                         else
                             MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");

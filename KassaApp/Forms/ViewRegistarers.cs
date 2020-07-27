@@ -13,7 +13,7 @@ namespace KassaApp.Forms
         //обработка нажатия кнопки Прочитать операционные регистры
         private void readOperationRegB_Click(object sender, EventArgs e)
         {
-            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
+            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
                 {
@@ -41,7 +41,7 @@ namespace KassaApp.Forms
         //обработка нажатия кнопки Прочитать денежные регистры
         private void readCashRegB_Click(object sender, EventArgs e)
         {
-            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
+            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
                 {
@@ -69,7 +69,7 @@ namespace KassaApp.Forms
         //обработка нажатия кнопки Печать операционных регистров
         private void printOperationRegB_Click(object sender, EventArgs e)
         {
-            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
+            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintOperationReg(); //Печать операционных регистров

@@ -7,14 +7,15 @@ namespace KassaApp.Models
         int CheckConnect();
         int Print(string s);
         int PrintCheque(Receipt cheque, string cardName = null);
-        void PrintXReport();
-        void PrintXSectionReport();
-        void PrintXTaxReport();
-        void PrintZReport();
-        void PrintOperationReg();
+        int PrintXReport();
+        int PrintXSectionReport();
+        int PrintXTaxReport();
+        int PrintZReport();
+        int PrintOperationReg();
         int CashIncome(decimal summ);
         int CashOutcome(decimal summ);
         RegistrerItem GetOperRegItem(int num);
         RegistrerItem GetCashRegItem(int num);
+        string GetTitle(string name);
     }
 }

@@ -55,14 +55,14 @@ namespace KassaApp
                 messageL.Text = "Идёт процесс оплаты через терминал";
                 this.Enabled = false; //блокировка формы
                 panel1.Visible = true; //показать панель сообщений
-                using (ITerminal terminal = CurrentHardware.Terminal)
+                using (ITerminal terminal = CurrentHardware.GetTerminal())
                 {
                     if (terminal.IsEnabled())
                     {
                         //если оплата через терминал успешна
                         if (terminal.Purchase(CurrentReceipt.Summa) == 0)
                         {
-                            using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
+                            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                             {
                                 if (fr.CheckConnect() == 0)
                                 {
@@ -120,7 +120,7 @@ namespace KassaApp
                 messageL.Text = "Оплата наличными";
                 this.Enabled = false; //блокировка формы
                 panel1.Visible = true; //показать панель сообщений
-                using (IFiscalRegistrar fr = CurrentHardware.FiscalRegistrar)
+                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                 {
                     if (fr.CheckConnect() == 0)
                     {

@@ -4,7 +4,13 @@ namespace KassaApp.Models
 {
     class CurrentHardware
     {
-        public static ITerminal Terminal = new PaxTerminal();
-        public static IFiscalRegistrar FiscalRegistrar = new DriverSHTRIH();
+        public static ITerminal GetTerminal()
+        {
+            return new PaxTerminal();
+        }
+        public static IFiscalRegistrar GetFiscalRegistrar()
+        {
+            return new DriverSHTRIH();
+        }
     }
 }
