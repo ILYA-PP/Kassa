@@ -36,6 +36,8 @@ namespace KassaApp.Models
         [Column(TypeName = "bit")]
         public bool Paid { get; set; }
         public int Payment { get; set; }
+        [StringLength(11)]
+        public string DiscountCard { get; set; }
         //связанные с чеков продажи
         public virtual ICollection<Purchase> Purchases { get; set; }
         public Receipt()

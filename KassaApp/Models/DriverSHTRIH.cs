@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Data.Entity.Validation;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -159,11 +160,56 @@ namespace KassaApp.Models
             }
             return res;
         }
+
+        private void StringFormatForPrint(string s, int align = 0)
+        {
+            //alignment 0 - left, 1 - center, 2 - right
+            foreach (var str in s.Split('\n'))
+            {
+                if (str.Length < 36)
+                {
+                    var p = new string(' ', (36 - str.Length) / 2);
+                    switch (align)
+                    {
+                        case 0: Driver.StringForPrinting = str + p + p; break;
+                        case 1: Driver.StringForPrinting = p + str + p; break;
+                        case 2: Driver.StringForPrinting = p + p + str; break;
+                    }
+                }
+                else
+                    Driver.StringForPrinting = str;
+                ExecuteAndHandleError(Driver.PrintString, true);
+            }                
+        }
         //печать фискального чека
         public int PrintCheque(Receipt cheque, string cardName = null)
         {
+            decimal sum = 0;
             if (CheckConnect() == 0)
             {
+                string dkData = $"~~~~~~~~~~~~~~Дисконт~~~~~~~~~~~~~~~\n" +
+                                    $"ДК: {cheque.DiscountCard}                     \n" +
+                                    $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                                    $"Cash Back программа\n" +
+                                    $"Баланс был: {0}\n" +
+                                    $"Списано: {0}\n" +
+                                    $"Доступно: {0}\n" +
+                                    $"В том числе промо баллы: {0}\n" +
+                                    $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+                if(cheque.DiscountCard != null)
+                    StringFormatForPrint(dkData, 1);
+                    
+                string payment = (cheque.Payment == 1) ? "наличные" : "пласт. карта";
+                decimal cardSum = ((cheque.Payment == 2) ? cheque.Summa : 0),
+                cashSum = ((cheque.Payment == 1) ? cheque.Summa : 0);
+                string result = $"Вид оплаты: {payment}\n" +
+                                $"Сумма по карте: {cardSum.ToString().Replace(",", ".")}\n" +
+                                $"Сумма наличных: {cashSum.ToString().Replace(",", ".")}\n" +
+                                $"Сдача: {cashSum - sum}\n" +
+                                $"Сумма прописью:\n" +
+                                $"{0}\n";
+                StringFormatForPrint(result);
+                ExecuteAndHandleError(Driver.PrintString, true);
                 PrepareCheque();
                 Driver.GetECRStatus();
                 int state = Driver.ECRMode;
@@ -185,8 +231,10 @@ namespace KassaApp.Models
                         //пробитие позиций
                         Driver.CheckType = 0;
                         Driver.StringForPrinting = p.Name;
-                        Driver.Price = (decimal)(p.Price - Math.Round(p.Price * (decimal)p.Discount / 100, 2));
+                        Driver.Price = p.Price - Math.Round(p.Price * (decimal)p.Discount / 100, 2);
                         Driver.Quantity = p.Quantity;
+                        sum += (decimal)Driver.Quantity * Driver.Price;
+                        //Driver.DiscountValue = Math.Round(p.Price * (decimal)p.Discount / 100, 2);
                         Driver.Department = p.Department;
                         Driver.PaymentTypeSign = 4;
                         if (p.Type == 1)
@@ -198,10 +246,15 @@ namespace KassaApp.Models
                             Driver.Tax1 = 1;
                         else if (p.NDS == 18)
                             Driver.Tax1 = 2;
+                        else if (p.NDS == 0)
+                            Driver.Tax1 = 4;
                         if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                             return -1;
                     }
-                    Driver.StringForPrinting = "";
+                    //дополнительные данные чека
+
+
+
                     //указание способа оплаты
                     if (cheque.Payment == 1)
                     {
@@ -443,7 +496,7 @@ namespace KassaApp.Models
                 template = $"{title}\r\nВЫПЛАТА: {summ}";
             Driver.Summ1 = summ;
             //печать и сохранение отчёта
-            return GetReport(Driver.CashOutcome, "Выдача наличных", template);
+            return GetReport(Driver.CashOutcome, "Выплата наличных", template);
         }
         //проверка состояния ккт и выполнение печати нефискального отчёта
         private int GetReport(Func m, string name, string template = null)
@@ -501,7 +554,7 @@ namespace KassaApp.Models
                             };
                             db.Report.Add(report);//добавление отчёта
                             db.SaveChanges();//сохранение отчёта
-                            MessageBox.Show("Отчёт сохранён!");
+                            MessageBox.Show($"Отчёт \"{name}\" сохранён!");
                         }
                     }
                 }

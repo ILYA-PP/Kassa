@@ -75,5 +75,16 @@ namespace KassaApp
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
         }
+
+        private void checkTermlConnectB_Click(object sender, EventArgs e)
+        {
+            using (ITerminal terminal = CurrentHardware.GetTerminal())
+            {
+                if (terminal.IsEnabled())
+                    MessageBox.Show("Терминал подключен!");
+                else
+                    MessageBox.Show("Подключение отсутствует!");
+            }
+        }
     }
 }

@@ -32,14 +32,17 @@
             this.driverCB = new System.Windows.Forms.ComboBox();
             this.usePasswordCheckB = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkConnectB = new System.Windows.Forms.Button();
+            this.checkFRConnectB = new System.Windows.Forms.Button();
             this.registrSettingsB = new System.Windows.Forms.Button();
             this.comPortTB = new System.Windows.Forms.TextBox();
             this.exchangeSpeedTB = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.paySrvSettingsB = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkTermlConnectB = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -78,7 +81,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.checkConnectB);
+            this.groupBox1.Controls.Add(this.checkFRConnectB);
             this.groupBox1.Controls.Add(this.registrSettingsB);
             this.groupBox1.Controls.Add(this.comPortTB);
             this.groupBox1.Controls.Add(this.exchangeSpeedTB);
@@ -92,16 +95,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Регистратор";
             // 
-            // checkConnectB
+            // checkFRConnectB
             // 
-            this.checkConnectB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.checkConnectB.Location = new System.Drawing.Point(10, 93);
-            this.checkConnectB.Name = "checkConnectB";
-            this.checkConnectB.Size = new System.Drawing.Size(382, 28);
-            this.checkConnectB.TabIndex = 12;
-            this.checkConnectB.Text = "Проверка связи";
-            this.checkConnectB.UseVisualStyleBackColor = true;
-            this.checkConnectB.Click += new System.EventHandler(this.checkConnectB_Click);
+            this.checkFRConnectB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkFRConnectB.Location = new System.Drawing.Point(10, 93);
+            this.checkFRConnectB.Name = "checkFRConnectB";
+            this.checkFRConnectB.Size = new System.Drawing.Size(382, 28);
+            this.checkFRConnectB.TabIndex = 12;
+            this.checkFRConnectB.Text = "Проверка связи";
+            this.checkFRConnectB.UseVisualStyleBackColor = true;
+            this.checkFRConnectB.Click += new System.EventHandler(this.checkConnectB_Click);
             // 
             // registrSettingsB
             // 
@@ -160,11 +163,34 @@
             this.paySrvSettingsB.Text = "Настройка СО (сервера оплат)";
             this.paySrvSettingsB.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkTermlConnectB);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.groupBox2.Location = new System.Drawing.Point(12, 211);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(398, 75);
+            this.groupBox2.TabIndex = 12;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Терминал";
+            // 
+            // checkTermlConnectB
+            // 
+            this.checkTermlConnectB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.checkTermlConnectB.Location = new System.Drawing.Point(6, 37);
+            this.checkTermlConnectB.Name = "checkTermlConnectB";
+            this.checkTermlConnectB.Size = new System.Drawing.Size(382, 28);
+            this.checkTermlConnectB.TabIndex = 12;
+            this.checkTermlConnectB.Text = "Проверка связи";
+            this.checkTermlConnectB.UseVisualStyleBackColor = true;
+            this.checkTermlConnectB.Click += new System.EventHandler(this.checkTermlConnectB_Click);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(422, 481);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.paySrvSettingsB);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.usePasswordCheckB);
@@ -178,6 +204,7 @@
             this.Text = "Настройки";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -194,6 +221,8 @@
         private System.Windows.Forms.TextBox comPortTB;
         private System.Windows.Forms.TextBox exchangeSpeedTB;
         private System.Windows.Forms.Button paySrvSettingsB;
-        private System.Windows.Forms.Button checkConnectB;
+        private System.Windows.Forms.Button checkFRConnectB;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button checkTermlConnectB;
     }
 }

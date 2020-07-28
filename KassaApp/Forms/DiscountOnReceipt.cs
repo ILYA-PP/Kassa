@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KassaApp.Models;
+using System;
 using System.Windows.Forms;
 
 namespace KassaApp
@@ -22,17 +23,15 @@ namespace KassaApp
         //обработка кнопки Ввод
         private void enterB_Click(object sender, EventArgs e)
         {
-            double discount;
             if (discountDataTB.Text != "")
             {
                 //если выбрано указание процента скидки
                 if (discountProcentRB.Checked)
                 {
-                    discount = double.Parse(discountDataTB.Text);
                     if(((Main)Owner).receipt != null)
                     {
                         //скидка указывается в текущем чеке
-                        ((Main)Owner).receipt.Discount = discount;
+                        ((Main)Owner).receipt.Discount = double.Parse(discountDataTB.Text);
                         ((Main)Owner).DGV_Refresh();
                         MessageBox.Show("Скидка на чек установлена!");
                         Close();
@@ -41,7 +40,10 @@ namespace KassaApp
                 //если выбрано указание номера дисконтной карты
                 else if (numberDiscountCardRB.Checked)
                 {
-                    MessageBox.Show("Функционал находится в разработке");
+                    ((Main)Owner).receipt.DiscountCard = discountDataTB.Text;
+                    ((Main)Owner).DGV_Refresh();
+                    MessageBox.Show("Дисконтная карта установлена!");
+                    Close();
                 }
             }
             else
@@ -59,6 +61,15 @@ namespace KassaApp
                 operationL.Text = "Процент:";
             else if(numberDiscountCardRB.Checked)
                 operationL.Text = "ДК:";
+            discountDataTB.Text = "";
+        }
+
+        private void discountDataTB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(discountProcentRB.Checked)
+                GeneralCodeForForms.TextBoxFormat(sender, e);
+            else
+                GeneralCodeForForms.TextBoxDigitFormat(sender, e);
         }
     }
 }

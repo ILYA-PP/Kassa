@@ -159,7 +159,8 @@ namespace KassaApp
                     rec.Paid = true; //признак оплаты чека
                     rec.Discount = CurrentReceipt.Discount; //скидка на чек
                     rec.Summa = CurrentReceipt.Summa; //сумма по чеку
-                    rec.Payment = CurrentReceipt.Payment; //способ оплаты
+                    rec.Payment = CurrentReceipt.Payment;//способ оплаты
+                    rec.DiscountCard = CurrentReceipt.DiscountCard;//дк
                     db.SaveChanges();
                 }
             }

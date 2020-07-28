@@ -53,6 +53,7 @@
             this.discountDataTB.Name = "discountDataTB";
             this.discountDataTB.Size = new System.Drawing.Size(310, 26);
             this.discountDataTB.TabIndex = 1;
+            this.discountDataTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.discountDataTB_KeyPress);
             // 
             // discountProcentRB
             // 

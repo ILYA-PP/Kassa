@@ -19,6 +19,9 @@ namespace KassaApp
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            Database.SetInitializer<KassaDBContext>(null);
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Product>()
                 .Property(e => e.Price)
                 .HasPrecision(19, 4);

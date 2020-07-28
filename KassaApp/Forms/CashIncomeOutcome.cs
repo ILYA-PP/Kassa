@@ -44,8 +44,6 @@ namespace KassaApp.Forms
                                 res = fr.CashIncome(summ);
                             else
                                 res = fr.CashOutcome(summ);
-                            if (res == 0)
-                                MessageBox.Show("Успешно! Отчёт сохранён");
                             Close();
                         }
                         else
