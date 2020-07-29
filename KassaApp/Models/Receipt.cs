@@ -56,7 +56,7 @@ namespace KassaApp.Models
                 foreach (var p in Products)
                     Summa += p.Row_Summ;
             DiscountSum = Math.Round(Summa * (decimal)Discount / 100, 2);
-            DiscountedSum = Summa - DiscountSum;
+            Summa -= DiscountSum;
         }
 
     }

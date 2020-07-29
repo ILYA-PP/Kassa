@@ -2,7 +2,6 @@
 using System;
 using System.Configuration;
 using System.Data.Entity.Validation;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -163,7 +162,20 @@ namespace KassaApp.Models
 
         private void StringFormatForPrint(string s, int align = 0)
         {
-            //alignment 0 - left, 1 - center, 2 - right
+            //alignment 0 - left, 1 - center, 2 - right, 
+            //3 - пробелы внутри строки
+            if(align == 3)
+            {
+                if(s.Length < 36)
+                {
+                    var strMas = s.Split('\n');
+                    var p = new string(' ', 36 - strMas[0].Length - strMas[1].Length);
+                    s = strMas[0] + p + strMas[1];
+                }
+                Driver.StringForPrinting = s;
+                ExecuteAndHandleError(Driver.PrintString, true);
+                return;
+            }
             foreach (var str in s.Split('\n'))
             {
                 if (str.Length < 36)
@@ -182,34 +194,12 @@ namespace KassaApp.Models
             }                
         }
         //печать фискального чека
-        public int PrintCheque(Receipt cheque, string cardName = null)
+        public int PrintReceipt(Receipt receipt, string cardName = null)
         {
-            decimal sum = 0;
             if (CheckConnect() == 0)
             {
-                string dkData = $"~~~~~~~~~~~~~~Дисконт~~~~~~~~~~~~~~~\n" +
-                                    $"ДК: {cheque.DiscountCard}                     \n" +
-                                    $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                                    $"Cash Back программа\n" +
-                                    $"Баланс был: {0}\n" +
-                                    $"Списано: {0}\n" +
-                                    $"Доступно: {0}\n" +
-                                    $"В том числе промо баллы: {0}\n" +
-                                    $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-                if(cheque.DiscountCard != null)
-                    StringFormatForPrint(dkData, 1);
-                    
-                string payment = (cheque.Payment == 1) ? "наличные" : "пласт. карта";
-                decimal cardSum = ((cheque.Payment == 2) ? cheque.Summa : 0),
-                cashSum = ((cheque.Payment == 1) ? cheque.Summa : 0);
-                string result = $"Вид оплаты: {payment}\n" +
-                                $"Сумма по карте: {cardSum.ToString().Replace(",", ".")}\n" +
-                                $"Сумма наличных: {cashSum.ToString().Replace(",", ".")}\n" +
-                                $"Сдача: {cashSum - sum}\n" +
-                                $"Сумма прописью:\n" +
-                                $"{0}\n";
-                StringFormatForPrint(result);
-                ExecuteAndHandleError(Driver.PrintString, true);
+                decimal sum = 0;
+                decimal discountOnProduct = 0, discountOnReceipt = 0, amountDiscount = 0;
                 PrepareCheque();
                 Driver.GetECRStatus();
                 int state = Driver.ECRMode;
@@ -219,29 +209,34 @@ namespace KassaApp.Models
                     //Открытие чека
                     if (ExecuteAndHandleError(Driver.OpenCheck, true) != 0)
                         return -1;
-                    //if (cheque.Phone != null)
-                    //    Driver.CustomerEmail = cheque.Phone;
-                    //else if (cheque.Email != null)
-                    //    Driver.CustomerEmail = cheque.Email;
+                    //if (receipt.Phone != null)
+                    //    Driver.CustomerEmail = receipt.Phone;
+                    //else if (receipt.Email != null)
+                    //    Driver.CustomerEmail = receipt.Email;
                     ////Передача данных покупателя
-                    //if(cheque.Phone != null || cheque.Email != null)
+                    //if(receipt.Phone != null || receipt.Email != null)
                     //    ExecuteAndHandleError(Driver.FNSendCustomerEmail);
-                    foreach (Product p in cheque.Products)
+                    foreach (Product p in receipt.Products)
                     {
                         //пробитие позиций
                         Driver.CheckType = 0;
                         Driver.StringForPrinting = p.Name;
-                        Driver.Price = p.Price - Math.Round(p.Price * (decimal)p.Discount / 100, 2);
+                        discountOnProduct = p.Quantity * Math.Round(p.Price * (decimal)p.Discount / 100, 2);
+                        Driver.Price = p.Price - discountOnProduct;
+                        if (receipt.Discount > 0)
+                        {
+                            discountOnReceipt = Driver.Price * (decimal)receipt.Discount / 100;
+                            discountOnProduct += discountOnReceipt;
+                            Driver.Price -= discountOnReceipt; 
+                        }
                         Driver.Quantity = p.Quantity;
                         sum += (decimal)Driver.Quantity * Driver.Price;
-                        //Driver.DiscountValue = Math.Round(p.Price * (decimal)p.Discount / 100, 2);
                         Driver.Department = p.Department;
                         Driver.PaymentTypeSign = 4;
                         if (p.Type == 1)
                             Driver.PaymentItemSign = 1;
                         else if (p.Type == 2)
                             Driver.PaymentItemSign = 4;
-                        Driver.Tax1 = 0;
                         if (p.NDS == 20)
                             Driver.Tax1 = 1;
                         else if (p.NDS == 18)
@@ -250,37 +245,42 @@ namespace KassaApp.Models
                             Driver.Tax1 = 4;
                         if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                             return -1;
+                        if(discountOnProduct > 0)
+                            StringFormatForPrint($"В том числе скидка\n={string.Format("{0:f}", discountOnProduct).Replace(",", ".")}", 3);
+                        amountDiscount += discountOnProduct;
+                        if(p.BarCode != null && p.BarCode != "")
+                            StringFormatForPrint($"ШК: {p.BarCode}");
+                        
                     }
-                    //дополнительные данные чека
-
-
-
+                    StringFormatForPrint($"Всего\n={string.Format("{0:f}", sum).Replace(",", ".")}",3);
+                    if(amountDiscount > 0)
+                        StringFormatForPrint($"Всего скидка\n={string.Format("{0:f}", amountDiscount).Replace(",", ".")}", 3);
                     //указание способа оплаты
-                    if (cheque.Payment == 1)
+                    if (receipt.Payment == 1)
                     {
-                        Driver.Summ1 = cheque.Summa;
+                        Driver.Summ1 = receipt.Summa;
                         Driver.Summ2 = 0;
                         Driver.Summ3 = 0;
                         Driver.Summ4 = 0;
                     }
-                    else if (cheque.Payment == 2)
+                    else if (receipt.Payment == 2)
                     {
                         switch (cardName)
                         {
                             case "МИР": 
-                                Driver.Summ2 = cheque.Summa; 
+                                Driver.Summ2 = receipt.Summa; 
                                 Driver.Summ3 = 0;
                                 Driver.Summ4 = 0; break;
                             case "Visa": 
-                                Driver.Summ3 = cheque.Summa; 
+                                Driver.Summ3 = receipt.Summa; 
                                 Driver.Summ2 = 0;
                                 Driver.Summ4 = 0; break;
                             case "Mastercard": 
-                                Driver.Summ4 = cheque.Summa; 
+                                Driver.Summ4 = receipt.Summa; 
                                 Driver.Summ3 = 0;
                                 Driver.Summ2 = 0; break;
                             default:
-                                Driver.Summ2 = cheque.Summa;
+                                Driver.Summ2 = receipt.Summa;
                                 Driver.Summ3 = 0;
                                 Driver.Summ4 = 0; break;
                         }
@@ -305,7 +305,32 @@ namespace KassaApp.Models
                     Driver.TaxValue5 = 0;
                     Driver.TaxValue6 = 0;
                     Driver.TaxType = 1;
-                    Driver.DiscountOnCheck = cheque.Discount/100;
+                    //дополнительные данные чека
+                    string dkData = $"~~~~~~~~~~~~~~Дисконт~~~~~~~~~~~~~~~\n" +
+                                    $"ДК: {receipt.DiscountCard}                     \n" +
+                                    $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                                    $"Cash Back программа\n" +
+                                    $"Баланс был: {0}\n" +
+                                    $"Списано: {0}\n" +
+                                    $"Доступно: {0}\n" +
+                                    $"В том числе промо баллы: {0}\n" +
+                                    $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+                    if (receipt.DiscountCard != null)
+                        StringFormatForPrint(dkData, 1);
+
+                    string payment = (receipt.Payment == 1) ? "наличные" : "пласт. карта";
+                    decimal cardSum = ((receipt.Payment == 2) ? receipt.Summa : 0),
+                    cashSum = ((receipt.Payment == 1) ? receipt.Summa : 0);
+                    string change = receipt.Payment == 1 ? string.Format("{0:f}", cashSum - sum).Replace(",", ".") : "0.00";
+                    string result = $"Вид оплаты: {payment}\n" +
+                                    $"Сумма по карте: {string.Format("{0:f}", cardSum).Replace(",", ".")}\n" +
+                                    $"Сумма наличных: {string.Format("{0:f}", cashSum).Replace(",", ".")}\n" +
+                                    $"Сдача: {change}\n" +
+                                    $"Сумма прописью:\n" +
+                                    $"{RusCurrency.Str((double)receipt.Summa)}";
+                    StringFormatForPrint(result);
+                    Driver.DiscountOnCheck = receipt.Discount/100;
+                    Driver.StringForPrinting = "";
                     //Закрытие чека
                     int res = ExecuteAndHandleError(Driver.FNCloseCheckEx, true);
                     if (res == 0)

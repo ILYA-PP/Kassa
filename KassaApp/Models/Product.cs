@@ -69,6 +69,8 @@ namespace KassaApp
 
         public int Type { get; set; }
         public int Quantity { get; set; }
+        [StringLength(100)]
+        public string BarCode { get; set; }
         //метод для формирования объекта класса из строки DataGridView
         public static Product ProductFromRow(DataGridViewRow row, Receipt r)
         {

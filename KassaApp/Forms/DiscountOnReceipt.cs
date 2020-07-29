@@ -28,22 +28,36 @@ namespace KassaApp
                 //если выбрано указание процента скидки
                 if (discountProcentRB.Checked)
                 {
-                    if(((Main)Owner).receipt != null)
+                    if (double.Parse(discountDataTB.Text) <= 99.99)
                     {
-                        //скидка указывается в текущем чеке
-                        ((Main)Owner).receipt.Discount = double.Parse(discountDataTB.Text);
-                        ((Main)Owner).DGV_Refresh();
-                        MessageBox.Show("Скидка на чек установлена!");
-                        Close();
+                        if (((Main)Owner).receipt != null)
+                        {
+                            //скидка указывается в текущем чеке     
+                            ((Main)Owner).receipt.Discount = double.Parse(discountDataTB.Text);
+                            ((Main)Owner).receipt.CalculateSumm();
+                            ((Main)Owner).DGV_Refresh();
+                            MessageBox.Show("Скидка на чек установлена!");
+                            Close();
+                        }
                     }
+                    else
+                        MessageBox.Show("Скидка не может превышать 99.99%");
                 }
                 //если выбрано указание номера дисконтной карты
                 else if (numberDiscountCardRB.Checked)
                 {
-                    ((Main)Owner).receipt.DiscountCard = discountDataTB.Text;
-                    ((Main)Owner).DGV_Refresh();
-                    MessageBox.Show("Дисконтная карта установлена!");
-                    Close();
+                    if (discountDataTB.Text.Length == 11)
+                    {
+                        if (((Main)Owner).receipt != null)
+                        {
+                            ((Main)Owner).receipt.DiscountCard = discountDataTB.Text;
+                            ((Main)Owner).DGV_Refresh();
+                            MessageBox.Show("Дисконтная карта установлена!");
+                            Close();
+                        }
+                    }
+                    else
+                        MessageBox.Show("Номер дисконтной карты должен состоять из 11 символов!");
                 }
             }
             else

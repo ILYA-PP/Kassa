@@ -72,7 +72,7 @@ namespace KassaApp
                                     {
                                         CurrentReceipt.Payment = 2;
                                         //печать товарного чека
-                                        if (fr.PrintCheque(CurrentReceipt, terminal.GetCardName()) == 0)
+                                        if (fr.PrintReceipt(CurrentReceipt, terminal.GetCardName()) == 0)
                                         {
                                             MarkAsPaid();
                                             Close();
@@ -130,7 +130,7 @@ namespace KassaApp
                         //замена суммы по чеку на сумму вносимых наличных
                         CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
                         //печать товарного чека
-                        if (fr.PrintCheque(CurrentReceipt) == 0)
+                        if (fr.PrintReceipt(CurrentReceipt) == 0)
                         {
                             CurrentReceipt.Summa = tempSum;
                             MarkAsPaid();

@@ -165,6 +165,7 @@
     <Compile Include="Models\CountController.cs" />
     <Compile Include="Models\DriverSHTRIH.cs" />
     <Compile Include="Models\GeneralCodeForForms.cs" />
+    <Compile Include="Models\MoneyAsString.cs" />
     <Compile Include="Models\Purchase.cs" />
     <Compile Include="Models\Receipt.cs" />
     <Compile Include="Models\RegistrerItem.cs" />

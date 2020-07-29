@@ -107,9 +107,9 @@ namespace KassaApp
                 }
                 else
                 {
-                    resultL.Text = string.Format("{0:f}", receipt.DiscountedSum);
+                    resultL.Text = string.Format("{0:f}", receipt.Summa);
                     discountTB.Text = string.Format("{0:f}", receipt.DiscountSum);
-                    nonDiscountTB.Text = string.Format("{0:f}", receipt.Summa);
+                    nonDiscountTB.Text = string.Format("{0:f}", receipt.Summa + receipt.DiscountSum);
                 }
             }
         }

@@ -6,7 +6,7 @@ namespace KassaApp.Models
     {
         int CheckConnect();
         int Print(string s);
-        int PrintCheque(Receipt cheque, string cardName = null);
+        int PrintReceipt(Receipt cheque, string cardName = null);
         int PrintXReport();
         int PrintXSectionReport();
         int PrintXTaxReport();
