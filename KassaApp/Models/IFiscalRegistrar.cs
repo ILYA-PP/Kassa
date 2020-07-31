@@ -11,6 +11,7 @@ namespace KassaApp.Models
         int PrintXSectionReport();
         int PrintXTaxReport();
         int PrintZReport();
+        int PrintOpenSessionReport();
         int PrintOperationReg();
         int CashIncome(decimal summ);
         int CashOutcome(decimal summ);

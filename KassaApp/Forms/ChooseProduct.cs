@@ -1,5 +1,6 @@
 ﻿using KassaApp.Models;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -33,12 +34,20 @@ namespace KassaApp.Forms
                 //то выводится информация о всех товарах
                 if (prod == null)
                     foreach (Product p in db.Product)
+                    {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
+                        if (p.ShelfLife != new DateTime(1901,1,1) && p.ShelfLife < DateTime.Now)
+                            productsDGV.Rows[productsDGV.Rows.Count-1].DefaultCellStyle.BackColor = Color.Red;
+                    }
                 else
                     foreach (Product p in prod)
+                    {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
+                        if (p.ShelfLife != new DateTime(1901, 1, 1) && p.ShelfLife < DateTime.Now)
+                            productsDGV.Rows[productsDGV.Rows.Count-1].DefaultCellStyle.BackColor = Color.Red;
+                    }
             }
         }
         //обработка нажатия горячих клавиш
@@ -134,6 +143,12 @@ namespace KassaApp.Forms
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void productsDGV_SelectionChanged(object sender, EventArgs e)
+        {
+            if (productsDGV.CurrentRow != null)
+                productsDGV.CurrentRow.Selected = true;
         }
     }
 }

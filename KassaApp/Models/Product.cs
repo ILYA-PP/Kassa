@@ -71,6 +71,7 @@ namespace KassaApp
         public int Quantity { get; set; }
         [StringLength(100)]
         public string BarCode { get; set; }
+        public DateTime ShelfLife { get; set; }
         //метод для формирования объекта класса из строки DataGridView
         public static Product ProductFromRow(DataGridViewRow row, Receipt r)
         {
@@ -115,6 +116,22 @@ namespace KassaApp
         public void RowSummCalculate()
         {
             Row_Summ = (Price - Math.Round(Price * (decimal)Discount / 100, 2)) * Quantity;
+        }
+
+        public int GetBalance()
+        {
+            try
+            {
+                using (var db = new KassaDBContext())
+                {
+                    return db.Product.Where(p => p.Id == Id).FirstOrDefault().Quantity;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return -1;
         }
     }
 }

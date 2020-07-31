@@ -48,14 +48,18 @@ namespace KassaApp
                 if(product != null)
                 {
                     nameL.Text = product.Name;
-                    summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}";
+                    summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}  Отд: {product.Department}";
+                    additDataL.Text = $"Ост: {product.GetBalance()}  СГ: {product.ShelfLife:dd:MM:yyyy}  ШК: {product.BarCode}";
                 } 
             }
             else
             {
                 nameL.Text = "";
                 summL.Text = "";
+                additDataL.Text = "";
             }
+            if(receiptDGV.CurrentRow != null)
+                receiptDGV.CurrentRow.Selected = true;
         }
         //вывод времени
         private void timer_Tick(object sender, EventArgs e)

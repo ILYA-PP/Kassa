@@ -29,15 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.receiptDGV = new System.Windows.Forms.DataGridView();
-            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discountOnReceiptB = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nonDiscountTB = new System.Windows.Forms.TextBox();
@@ -57,9 +51,7 @@
             this.editB = new System.Windows.Forms.Button();
             this.reserveB = new System.Windows.Forms.Button();
             this.additInfoB = new System.Windows.Forms.Button();
-            this.departmentL = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.resultL = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -70,6 +62,14 @@
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
+            this.resultL = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -80,6 +80,7 @@
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
+            this.tableLayoutPanel10.SuspendLayout();
             this.SuspendLayout();
             // 
             // receiptDGV
@@ -87,14 +88,14 @@
             this.receiptDGV.AllowUserToAddRows = false;
             this.receiptDGV.AllowUserToDeleteRows = false;
             this.receiptDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -107,56 +108,20 @@
             this.receiptDGV.Location = new System.Drawing.Point(3, 190);
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.receiptDGV.Size = new System.Drawing.Size(1083, 295);
             this.receiptDGV.TabIndex = 9;
             this.receiptDGV.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.receiptDGV_CellValueChanged);
             this.receiptDGV.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.receiptDGV_RowsAdded);
             this.receiptDGV.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.receiptDGV_RowsRemoved);
             this.receiptDGV.SelectionChanged += new System.EventHandler(this.receiptDGV_SelectionChanged);
-            // 
-            // nameCol
-            // 
-            this.nameCol.HeaderText = "Наименование";
-            this.nameCol.Name = "nameCol";
-            this.nameCol.ReadOnly = true;
-            // 
-            // countCol
-            // 
-            this.countCol.HeaderText = "Количество";
-            this.countCol.Name = "countCol";
-            this.countCol.ReadOnly = true;
-            // 
-            // priceCol
-            // 
-            this.priceCol.HeaderText = "Цена";
-            this.priceCol.Name = "priceCol";
-            this.priceCol.ReadOnly = true;
-            // 
-            // discountCol
-            // 
-            this.discountCol.HeaderText = "Скидка";
-            this.discountCol.Name = "discountCol";
-            this.discountCol.ReadOnly = true;
-            // 
-            // ndsCol
-            // 
-            this.ndsCol.HeaderText = "НДС";
-            this.ndsCol.Name = "ndsCol";
-            this.ndsCol.ReadOnly = true;
-            // 
-            // sumCol
-            // 
-            this.sumCol.HeaderText = "Сумма";
-            this.sumCol.Name = "sumCol";
-            this.sumCol.ReadOnly = true;
             // 
             // discountOnReceiptB
             // 
@@ -219,7 +184,7 @@
             this.nameL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameL.Location = new System.Drawing.Point(3, 0);
             this.nameL.Name = "nameL";
-            this.nameL.Size = new System.Drawing.Size(308, 30);
+            this.nameL.Size = new System.Drawing.Size(539, 29);
             this.nameL.TabIndex = 24;
             this.nameL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -228,20 +193,22 @@
             this.summL.AutoSize = true;
             this.summL.Dock = System.Windows.Forms.DockStyle.Fill;
             this.summL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.summL.Location = new System.Drawing.Point(3, 30);
+            this.summL.Location = new System.Drawing.Point(3, 29);
             this.summL.Name = "summL";
-            this.summL.Size = new System.Drawing.Size(308, 30);
+            this.summL.Size = new System.Drawing.Size(539, 29);
             this.summL.TabIndex = 25;
             this.summL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // additDataL
             // 
             this.additDataL.AutoSize = true;
-            this.additDataL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.additDataL.Location = new System.Drawing.Point(3, 60);
+            this.additDataL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.additDataL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.additDataL.Location = new System.Drawing.Point(3, 58);
             this.additDataL.Name = "additDataL";
-            this.additDataL.Size = new System.Drawing.Size(0, 16);
+            this.additDataL.Size = new System.Drawing.Size(539, 32);
             this.additDataL.TabIndex = 26;
+            this.additDataL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // shtrihB
             // 
@@ -258,6 +225,7 @@
             // nameB
             // 
             this.nameB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nameB.Enabled = false;
             this.nameB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameB.Location = new System.Drawing.Point(123, 3);
             this.nameB.Name = "nameB";
@@ -269,6 +237,7 @@
             // priceB
             // 
             this.priceB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.priceB.Enabled = false;
             this.priceB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.priceB.Location = new System.Drawing.Point(243, 3);
             this.priceB.Name = "priceB";
@@ -373,24 +342,15 @@
             this.additInfoB.Text = "[F8] Доп.инф.";
             this.additInfoB.UseVisualStyleBackColor = true;
             // 
-            // departmentL
-            // 
-            this.departmentL.AutoSize = true;
-            this.departmentL.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.departmentL.Location = new System.Drawing.Point(317, 30);
-            this.departmentL.Name = "departmentL";
-            this.departmentL.Size = new System.Drawing.Size(0, 16);
-            this.departmentL.TabIndex = 39;
-            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.resultL, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.receiptDGV, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel9, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel10, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -402,18 +362,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.602649F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1089, 654);
             this.tableLayoutPanel1.TabIndex = 40;
-            // 
-            // resultL
-            // 
-            this.resultL.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.resultL.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resultL.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.resultL.Location = new System.Drawing.Point(3, 0);
-            this.resultL.Name = "resultL";
-            this.resultL.Size = new System.Drawing.Size(1083, 129);
-            this.resultL.TabIndex = 13;
-            this.resultL.Text = "0.00";
-            this.resultL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tableLayoutPanel2
             // 
@@ -523,10 +471,8 @@
             // 
             // tableLayoutPanel8
             // 
-            this.tableLayoutPanel8.ColumnCount = 2;
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 57.79816F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.20184F));
-            this.tableLayoutPanel8.Controls.Add(this.departmentL, 1, 1);
+            this.tableLayoutPanel8.ColumnCount = 1;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.Controls.Add(this.nameL, 0, 0);
             this.tableLayoutPanel8.Controls.Add(this.summL, 0, 1);
             this.tableLayoutPanel8.Controls.Add(this.additDataL, 0, 2);
@@ -537,6 +483,7 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(545, 90);
             this.tableLayoutPanel8.TabIndex = 1;
             // 
@@ -573,6 +520,69 @@
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // nameCol
+            // 
+            this.nameCol.HeaderText = "Наименование";
+            this.nameCol.Name = "nameCol";
+            this.nameCol.ReadOnly = true;
+            // 
+            // countCol
+            // 
+            this.countCol.HeaderText = "Количество";
+            this.countCol.Name = "countCol";
+            this.countCol.ReadOnly = true;
+            // 
+            // priceCol
+            // 
+            this.priceCol.HeaderText = "Цена";
+            this.priceCol.Name = "priceCol";
+            this.priceCol.ReadOnly = true;
+            // 
+            // discountCol
+            // 
+            this.discountCol.HeaderText = "Скидка";
+            this.discountCol.Name = "discountCol";
+            this.discountCol.ReadOnly = true;
+            // 
+            // ndsCol
+            // 
+            this.ndsCol.HeaderText = "НДС";
+            this.ndsCol.Name = "ndsCol";
+            this.ndsCol.ReadOnly = true;
+            this.ndsCol.Visible = false;
+            // 
+            // sumCol
+            // 
+            this.sumCol.HeaderText = "Сумма";
+            this.sumCol.Name = "sumCol";
+            this.sumCol.ReadOnly = true;
+            // 
+            // tableLayoutPanel10
+            // 
+            this.tableLayoutPanel10.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel10.ColumnCount = 2;
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.85965F));
+            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.14035F));
+            this.tableLayoutPanel10.Controls.Add(this.resultL, 1, 0);
+            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
+            this.tableLayoutPanel10.RowCount = 1;
+            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1083, 123);
+            this.tableLayoutPanel10.TabIndex = 17;
+            // 
+            // resultL
+            // 
+            this.resultL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultL.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.resultL.Location = new System.Drawing.Point(478, 1);
+            this.resultL.Name = "resultL";
+            this.resultL.Size = new System.Drawing.Size(601, 121);
+            this.resultL.TabIndex = 14;
+            this.resultL.Text = "0.00";
+            this.resultL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -603,6 +613,7 @@
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel10.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -627,9 +638,7 @@
         private System.Windows.Forms.Button editB;
         private System.Windows.Forms.Button reserveB;
         private System.Windows.Forms.Button additInfoB;
-        private System.Windows.Forms.Label departmentL;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label resultL;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
@@ -647,5 +656,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
+        private System.Windows.Forms.Label resultL;
     }
 }

@@ -329,7 +329,7 @@ namespace KassaApp.Models
                 StringFormatForPrint(result);
                 Driver.StringForPrinting = "";
                 //Закрытие чека
-                return GetFiscReport(Driver.FNCloseCheckEx, "Кассовый чек");
+                return GetReport(Driver.FNCloseCheckEx, "Кассовый чек");
                
             }
             else
@@ -368,7 +368,7 @@ namespace KassaApp.Models
                     $"НАЛ. В КАССЕ: {GetCashRegItem(241).Content}\r\n" +
                     $"ВЫРУЧКА: {GetCashRegItem(121).Content - GetCashRegItem(122).Content - GetCashRegItem(123).Content + GetCashRegItem(124).Content}\r\n";
             //печать и сохранение отчёта
-            return GetFiscReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)", template);
+            return GetReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)", template);
         }
         //печать х отчёта по секциям
         public int PrintXSectionReport()
@@ -450,12 +450,12 @@ namespace KassaApp.Models
         }
         public int PrintOpenSessionReport()
         {
-            return GetFiscReport(Driver.OpenSession, "Отчёт об открытии смены");
+            return GetReport(Driver.OpenSession, "Отчёт об открытии смены");
         }
         //печать z отчёта с гашением
         public int PrintZReport()
         {
-            return GetFiscReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
+            return GetReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
         }
         //печать операционных регистров
         public int PrintOperationReg()
@@ -510,32 +510,7 @@ namespace KassaApp.Models
         //проверка состояния ккт и выполнение печати нефискального отчёта
         private int GetReport(Func m, string name, string template = null)
         {
-            ExecuteAndHandleError(Driver.GetECRStatus);
-            int state = Driver.ECRMode, res = 0;
-            if (state == 3 || state == 4 || state == 8)
-                PrepareReceipt();
-            res = ExecuteAndHandleError(m, true);
-            if (m != null && res == 0)
-            {
-                res = ExecuteAndHandleError(Driver.WaitForPrinting);
-                //Ожидание печати чека
-                while (res != 0)
-                {
-                    if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        ExecuteAndHandleError(Driver.ContinuePrint, true);
-
-                    res = ExecuteAndHandleError(Driver.WaitForPrinting);
-                }
-                //Отрезка чека
-                res = ExecuteAndHandleError(Driver.CutCheck, true);//отрезка отчёта
-                SaveReport(name, template);//сохранение отчёта
-            }
-            return res;
-        }
-        //выполнение печати фискального отчёта
-        private int GetFiscReport(Func m, string name, string template = null)
-        {
-            var res = ExecuteAndHandleError(m, true);
+            int res = ExecuteAndHandleError(m, true);
             if (m != null && res == 0)
             {
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
