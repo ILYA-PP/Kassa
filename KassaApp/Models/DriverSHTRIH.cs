@@ -68,16 +68,14 @@ namespace KassaApp.Models
         //вывод, возвращаемых фискальником сообщений
         private void AddLog(string mes)
         {
-            MessageBox.Show(mes + " ");
+            MessageBox.Show(mes);
         }
         //вывод возникающих ошибок
         protected void CheckResult(int code, string n, bool ViewMessage)
         {
             if (ViewMessage)
                 if (code != 0)
-                    MessageBox.Show($"Ошибка: {Driver.ResultCodeDescription} Код: {code} ");
-                else
-                    Console.Write($"Метод {n}: Успешно ");
+                    AddLog($"Код: {code}\nОшибка: {Driver.ResultCodeDescription}");
         }
 
         protected delegate int Func();
@@ -154,6 +152,7 @@ namespace KassaApp.Models
             //Отрезка чека
             if (res == 0)
             {
+                SaveReport("Чек терминала", s);
                 res = ExecuteAndHandleError(Driver.CutCheck, true);
                 return res;
             }
