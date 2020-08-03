@@ -137,11 +137,11 @@ namespace KassaApp
                 case Keys.F3: ; break;
                 case Keys.F4:; break;
                 case Keys.F5:; break;
-                case Keys.F6: searchB_Click(null,null); break;
-                case Keys.F9: editB_Click(null, null); break;
-                case Keys.Delete: deleteB_Click(null, null); break;
+                case Keys.F6: if (!searchB.Focused) searchB_Click(null,null); break;
+                case Keys.F9: if (!editB.Focused) editB_Click(null, null); break;
+                case Keys.Delete: if (!deleteB.Focused) deleteB_Click(null, null); break;
                 case Keys.F11:; break;
-                case Keys.F12: paymentB_Click(null, null); break;
+                case Keys.F12: if (!paymentB.Focused) paymentB_Click(null, null); break;
                 case Keys.F8:; break;
                 case Keys.Insert:; break;
             }

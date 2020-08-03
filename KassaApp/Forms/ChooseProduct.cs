@@ -12,6 +12,7 @@ namespace KassaApp.Forms
         {
             InitializeComponent();
             ViewResult(null);
+            ActiveControl = productsDGV;
         }
         //обработка ввода текста в строку Поиска
         private void searchTB_TextChanged(object sender, EventArgs e)
@@ -55,8 +56,8 @@ namespace KassaApp.Forms
         {
             switch (keyData)
             {
-                case Keys.Escape: cancelB_Click(null, null); break;
-                case Keys.Enter: enterB_Click(null, null); break;
+                case Keys.Escape: if(!cancelB.Focused) cancelB_Click(null, null); break;
+                case Keys.Enter: if (!enterB.Focused) enterB_Click(null, null); break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }

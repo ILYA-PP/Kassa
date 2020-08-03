@@ -33,6 +33,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.searchTB = new System.Windows.Forms.TextBox();
             this.productsDGV = new System.Windows.Forms.DataGridView();
+            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cancelB = new System.Windows.Forms.Button();
             this.enterB = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -41,12 +47,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.countNUD = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.productsDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -111,8 +111,49 @@
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.productsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.productsDGV.Size = new System.Drawing.Size(794, 358);
-            this.productsDGV.TabIndex = 41;
+            this.productsDGV.TabIndex = 0;
             this.productsDGV.SelectionChanged += new System.EventHandler(this.productsDGV_SelectionChanged);
+            // 
+            // nameCol
+            // 
+            this.nameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.nameCol.HeaderText = "Наименование";
+            this.nameCol.Name = "nameCol";
+            this.nameCol.ReadOnly = true;
+            this.nameCol.Width = 147;
+            // 
+            // countCol
+            // 
+            this.countCol.HeaderText = "Количество";
+            this.countCol.Name = "countCol";
+            this.countCol.ReadOnly = true;
+            // 
+            // priceCol
+            // 
+            this.priceCol.HeaderText = "Цена";
+            this.priceCol.Name = "priceCol";
+            this.priceCol.ReadOnly = true;
+            // 
+            // discountCol
+            // 
+            this.discountCol.HeaderText = "Скидка";
+            this.discountCol.Name = "discountCol";
+            this.discountCol.ReadOnly = true;
+            this.discountCol.Visible = false;
+            // 
+            // ndsCol
+            // 
+            this.ndsCol.HeaderText = "НДС";
+            this.ndsCol.Name = "ndsCol";
+            this.ndsCol.ReadOnly = true;
+            this.ndsCol.Visible = false;
+            // 
+            // sumCol
+            // 
+            this.sumCol.HeaderText = "Сумма";
+            this.sumCol.Name = "sumCol";
+            this.sumCol.ReadOnly = true;
+            this.sumCol.Visible = false;
             // 
             // cancelB
             // 
@@ -242,52 +283,12 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(794, 29);
             this.tableLayoutPanel4.TabIndex = 43;
             // 
-            // nameCol
-            // 
-            this.nameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.nameCol.HeaderText = "Наименование";
-            this.nameCol.Name = "nameCol";
-            this.nameCol.ReadOnly = true;
-            this.nameCol.Width = 147;
-            // 
-            // countCol
-            // 
-            this.countCol.HeaderText = "Количество";
-            this.countCol.Name = "countCol";
-            this.countCol.ReadOnly = true;
-            // 
-            // priceCol
-            // 
-            this.priceCol.HeaderText = "Цена";
-            this.priceCol.Name = "priceCol";
-            this.priceCol.ReadOnly = true;
-            // 
-            // discountCol
-            // 
-            this.discountCol.HeaderText = "Скидка";
-            this.discountCol.Name = "discountCol";
-            this.discountCol.ReadOnly = true;
-            this.discountCol.Visible = false;
-            // 
-            // ndsCol
-            // 
-            this.ndsCol.HeaderText = "НДС";
-            this.ndsCol.Name = "ndsCol";
-            this.ndsCol.ReadOnly = true;
-            this.ndsCol.Visible = false;
-            // 
-            // sumCol
-            // 
-            this.sumCol.HeaderText = "Сумма";
-            this.sumCol.Name = "sumCol";
-            this.sumCol.ReadOnly = true;
-            this.sumCol.Visible = false;
-            // 
             // ChooseProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.CancelButton = this.cancelB;
             this.ClientSize = new System.Drawing.Size(800, 494);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;

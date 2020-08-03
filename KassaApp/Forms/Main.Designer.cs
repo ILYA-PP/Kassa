@@ -29,9 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.receiptDGV = new System.Windows.Forms.DataGridView();
+            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discountOnReceiptB = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nonDiscountTB = new System.Windows.Forms.TextBox();
@@ -61,15 +67,9 @@
             this.timeTB = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.resultL = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -88,14 +88,14 @@
             this.receiptDGV.AllowUserToAddRows = false;
             this.receiptDGV.AllowUserToDeleteRows = false;
             this.receiptDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -105,23 +105,60 @@
             this.ndsCol,
             this.sumCol});
             this.receiptDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.receiptDGV.Location = new System.Drawing.Point(3, 190);
+            this.receiptDGV.Location = new System.Drawing.Point(3, 192);
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle14;
-            this.receiptDGV.Size = new System.Drawing.Size(1083, 295);
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            this.receiptDGV.Size = new System.Drawing.Size(1083, 298);
             this.receiptDGV.TabIndex = 9;
             this.receiptDGV.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.receiptDGV_CellValueChanged);
             this.receiptDGV.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.receiptDGV_RowsAdded);
             this.receiptDGV.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.receiptDGV_RowsRemoved);
             this.receiptDGV.SelectionChanged += new System.EventHandler(this.receiptDGV_SelectionChanged);
+            // 
+            // nameCol
+            // 
+            this.nameCol.HeaderText = "Наименование";
+            this.nameCol.Name = "nameCol";
+            this.nameCol.ReadOnly = true;
+            // 
+            // countCol
+            // 
+            this.countCol.HeaderText = "Количество";
+            this.countCol.Name = "countCol";
+            this.countCol.ReadOnly = true;
+            // 
+            // priceCol
+            // 
+            this.priceCol.HeaderText = "Цена";
+            this.priceCol.Name = "priceCol";
+            this.priceCol.ReadOnly = true;
+            // 
+            // discountCol
+            // 
+            this.discountCol.HeaderText = "Скидка";
+            this.discountCol.Name = "discountCol";
+            this.discountCol.ReadOnly = true;
+            // 
+            // ndsCol
+            // 
+            this.ndsCol.HeaderText = "НДС";
+            this.ndsCol.Name = "ndsCol";
+            this.ndsCol.ReadOnly = true;
+            this.ndsCol.Visible = false;
+            // 
+            // sumCol
+            // 
+            this.sumCol.HeaderText = "Сумма";
+            this.sumCol.Name = "sumCol";
+            this.sumCol.ReadOnly = true;
             // 
             // discountOnReceiptB
             // 
@@ -206,7 +243,7 @@
             this.additDataL.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.additDataL.Location = new System.Drawing.Point(3, 58);
             this.additDataL.Name = "additDataL";
-            this.additDataL.Size = new System.Drawing.Size(539, 32);
+            this.additDataL.Size = new System.Drawing.Size(539, 30);
             this.additDataL.TabIndex = 26;
             this.additDataL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -355,11 +392,11 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.940397F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 46.35762F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.72848F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.602649F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.56112F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.87335F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 61.56553F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1089, 654);
             this.tableLayoutPanel1.TabIndex = 40;
             // 
@@ -373,7 +410,7 @@
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.discountOnReceiptB, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 132);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 134);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
@@ -413,23 +450,23 @@
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 3;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.87719F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.68513F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.34534F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.92421F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.70979F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.36599F));
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel8, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 491);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 496);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(1083, 96);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(1083, 94);
             this.tableLayoutPanel5.TabIndex = 15;
             // 
             // tableLayoutPanel6
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel7, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.timeTB, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -437,9 +474,9 @@
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.66667F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.33333F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(243, 96);
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(243, 94);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
             // tableLayoutPanel7
@@ -454,7 +491,7 @@
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 61F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(243, 61);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
@@ -484,7 +521,7 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(545, 90);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(545, 88);
             this.tableLayoutPanel8.TabIndex = 1;
             // 
             // tableLayoutPanel9
@@ -509,53 +546,12 @@
             this.tableLayoutPanel9.Controls.Add(this.boxB, 7, 0);
             this.tableLayoutPanel9.Controls.Add(this.deleteB, 6, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 593);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 596);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1083, 58);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1083, 55);
             this.tableLayoutPanel9.TabIndex = 16;
-            // 
-            // timer
-            // 
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // nameCol
-            // 
-            this.nameCol.HeaderText = "Наименование";
-            this.nameCol.Name = "nameCol";
-            this.nameCol.ReadOnly = true;
-            // 
-            // countCol
-            // 
-            this.countCol.HeaderText = "Количество";
-            this.countCol.Name = "countCol";
-            this.countCol.ReadOnly = true;
-            // 
-            // priceCol
-            // 
-            this.priceCol.HeaderText = "Цена";
-            this.priceCol.Name = "priceCol";
-            this.priceCol.ReadOnly = true;
-            // 
-            // discountCol
-            // 
-            this.discountCol.HeaderText = "Скидка";
-            this.discountCol.Name = "discountCol";
-            this.discountCol.ReadOnly = true;
-            // 
-            // ndsCol
-            // 
-            this.ndsCol.HeaderText = "НДС";
-            this.ndsCol.Name = "ndsCol";
-            this.ndsCol.ReadOnly = true;
-            this.ndsCol.Visible = false;
-            // 
-            // sumCol
-            // 
-            this.sumCol.HeaderText = "Сумма";
-            this.sumCol.Name = "sumCol";
-            this.sumCol.ReadOnly = true;
             // 
             // tableLayoutPanel10
             // 
@@ -569,7 +565,7 @@
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(1083, 123);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1083, 125);
             this.tableLayoutPanel10.TabIndex = 17;
             // 
             // resultL
@@ -578,10 +574,14 @@
             this.resultL.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.resultL.Location = new System.Drawing.Point(478, 1);
             this.resultL.Name = "resultL";
-            this.resultL.Size = new System.Drawing.Size(601, 121);
+            this.resultL.Size = new System.Drawing.Size(601, 123);
             this.resultL.TabIndex = 14;
             this.resultL.Text = "0.00";
             this.resultL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // timer
+            // 
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // Main
             // 
@@ -590,10 +590,11 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1089, 654);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Main";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.Text = "Главная";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

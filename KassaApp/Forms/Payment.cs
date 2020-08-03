@@ -34,11 +34,11 @@ namespace KassaApp
             switch (keyData)
             {
                 case Keys.F5:; break;
-                case Keys.Escape: cancelB_Click(null, null); break;
+                case Keys.Escape: if (!cancelB.Focused) cancelB_Click(null, null); break;
                 case Keys.F6:; break;
                 case Keys.F1:; break;
-                case Keys.Enter: cashB_Click(null, null); break;
-                case Keys.Multiply: nonCashB_Click(null, null); break;
+                case Keys.Enter: if (!cashB.Focused) cashB_Click(null, null); break;
+                case Keys.Multiply: if (!nonCashB.Focused) nonCashB_Click(null, null); break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }

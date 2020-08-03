@@ -88,9 +88,9 @@ namespace KassaApp
         {                
             switch (keyData)
             {
-                case Keys.F10: discountB_Click(null, null); break;
-                case Keys.F9: departmentB_Click(null, null); break;
-                case Keys.Multiply: countB_Click(null, null); break;
+                case Keys.F10: if (!discountB.Focused) discountB_Click(null, null); break;
+                case Keys.F9: if (!departmentB.Focused) departmentB_Click(null, null); break;
+                case Keys.Multiply: if (!countB.Focused) countB_Click(null, null); break;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
