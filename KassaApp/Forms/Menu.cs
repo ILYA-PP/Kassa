@@ -46,22 +46,24 @@ namespace KassaApp
             }
             using (ITerminal terminal = CurrentHardware.GetTerminal())
             {
-                //проверка связи с терминалом
-                if (terminal.IsEnabled())
+                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                 {
-                    //формирование отчета
-                    terminal.CloseDay();
-                    using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+                    //проверка связи с терминалом
+                    if (terminal.IsEnabled())
                     {
                         //проверка связи с фискальным регистратором
                         if (fr.CheckConnect() == 0)
-                            fr.Print(terminal.GetCheque());//печать чека терминала
+                        {
+                            //формирование отчета
+                            terminal.CloseDay();
+                            fr.Print(terminal.GetReceipt());//печать чека терминала
+                        }                           
                         else
                             MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                     }
+                    else
+                        MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
                 }
-                else
-                    MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
             }
         }
         //обработка нажатия кнопки z-отчёт с Гашением

@@ -71,11 +71,10 @@ namespace KassaApp.Models
             MessageBox.Show(mes);
         }
         //вывод возникающих ошибок
-        protected void CheckResult(int code, string n, bool ViewMessage)
+        protected void CheckResult(int code, bool ViewMessage)
         {
-            if (ViewMessage)
-                if (code != 0)
-                    AddLog($"Код: {code}\nОшибка: {Driver.ResultCodeDescription}");
+            if (ViewMessage && code != 0)
+                AddLog($"Код: {code}\nОшибка: {Driver.ResultCodeDescription}");
         }
 
         protected delegate int Func();
@@ -90,7 +89,7 @@ namespace KassaApp.Models
                     case 0x50:
                         continue;
                     default:
-                        CheckResult(ret, f.Method.Name, ViewMessage);
+                        CheckResult(ret, ViewMessage);
                         return ret;
                 }
             }
@@ -130,12 +129,22 @@ namespace KassaApp.Models
         }
         //метод печати нефискальных документов
         //s - строка для печати
-        public int Print(string s)
+        public int Print(string s, bool Save = true)
         {
             PrepareReceipt();
-            Driver.StringForPrinting = s;
             //печать документа
-            int res = StringFormatForPrint(s, 1);
+            if (s == null)
+                return -1;
+            int res = 0;
+            var mas = s.Replace("~S", "^").Split('^');
+            if(mas.Length > 1)
+            {
+                for(int i = 0; i<=1;i++)
+                    res = Print(mas[i], i != 0 ? false : true);
+                return res;
+            }
+            else
+                res = StringFormatForPrint(s, 1);
             //Ожидание печати чека
             res = ExecuteAndHandleError(Driver.WaitForPrinting); 
             while (res != 0)
@@ -146,14 +155,15 @@ namespace KassaApp.Models
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
             }
             //отступ после документа
-            Driver.StringQuantity = 5;
+            Driver.StringQuantity = 2;
             Driver.UseReceiptRibbon = true;
             ExecuteAndHandleError(Driver.FeedDocument, true);
             //Отрезка чека
             if (res == 0)
             {
-                SaveReport("Чек терминала", s);
                 res = ExecuteAndHandleError(Driver.CutCheck, true);
+                if (Save)
+                    SaveReport("Чек терминала", s);
                 return res;
             }
             return res;
@@ -258,6 +268,8 @@ namespace KassaApp.Models
                 if(amountDiscount > 0 && receipt.Discount > 0)
                     StringFormatForPrint($"Всего скидка\n={string.Format("{0:f}", amountDiscount).Replace(",", ".")}", 3);
                 //указание способа оплаты
+                if (cardName == null)
+                    cardName = "";
                 if (receipt.Payment == 1)
                 {
                     Driver.Summ1 = receipt.Summa;

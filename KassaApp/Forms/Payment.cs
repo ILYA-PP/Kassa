@@ -57,23 +57,27 @@ namespace KassaApp
                 panel1.Visible = true; //показать панель сообщений
                 using (ITerminal terminal = CurrentHardware.GetTerminal())
                 {
-                    if (terminal.IsEnabled())
+                    using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                     {
-                        //если оплата через терминал успешна
-                        if (terminal.Purchase(CurrentReceipt.Summa) == 0)
+                        if (terminal.IsEnabled())
                         {
-                            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+                            if (fr.CheckConnect() == 0)
                             {
-                                if (fr.CheckConnect() == 0)
-                                {
-                                    messageL.Text = "Печать чеков";
+                                //если оплата через терминал успешна
+                                if (terminal.Purchase(CurrentReceipt.Summa) == 0)
+                                {                                
+                                    messageL.Text = "Оплата успешно!";
+                                    terminal.Unconfirmed();
                                     //если печать чека терминала успешна
-                                    if (terminal.GetCheque() != "" && fr.Print(terminal.GetCheque()) == 0)
+                                    if (terminal.GetReceipt() != null && fr.Print(terminal.GetReceipt()) == 0)
                                     {
+                                        messageL.Text = "Печать чеков";
                                         CurrentReceipt.Payment = 2;
                                         //печать товарного чека
-                                        if (fr.PrintReceipt(CurrentReceipt, terminal.GetCardName()) == 0)
+                                        if (fr.PrintReceipt(CurrentReceipt, null) == 0)
                                         {
+                                            messageL.Text = "Успешно";
+                                            terminal.Confirmed();
                                             MarkAsPaid();
                                             Close();
                                         }
@@ -88,15 +92,15 @@ namespace KassaApp
                                     {
                                         MessageBox.Show("Чек терминала не напечатан! Отмена операции.");
                                         terminal.CancelTransaction();
-                                    }
+                                    }                                
                                 }
-                                else
-                                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                             }
+                            else
+                                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                         }
+                        else
+                            MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
                     }
-                    else
-                        MessageBox.Show("Ошибка! Нет связи с терминалом.");
                 }
                 panel1.Visible = false;//убрать панель сообщений
                 this.Enabled = true;//разблокировать форму
@@ -132,6 +136,7 @@ namespace KassaApp
                         //печать товарного чека
                         if (fr.PrintReceipt(CurrentReceipt) == 0)
                         {
+                            messageL.Text = "Успешно";
                             CurrentReceipt.Summa = tempSum;
                             MarkAsPaid();
                             Close();

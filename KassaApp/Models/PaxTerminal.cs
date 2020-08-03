@@ -10,13 +10,17 @@ namespace KassaApp.Models
     class PaxTerminal: ITerminal
     {
         private Server Server { get; set; }
+        public string ReceiptStr { get; set; }
+        public string CardName { get; set; }
         private enum Operations
         {
             Purchase = 4000, // Покупка
             PinPadEnabled = 13, //статус пинпада
             Return = 4002, // Возврат покупки
             Cancel = 6004, // Отмена транзакции
-            Total = 6000 // Итоги дня 
+            Total = 6000,// Итоги дня 
+            UnconfirmedTransaction = 6003,//"Неподверждённая" транзакция
+            ConfirmedTransaction = 6001//"Подверждённая" транзакция
         }
         public PaxTerminal()
         {
@@ -25,30 +29,12 @@ namespace KassaApp.Models
         //получить имя карты
         public string GetCardName()
         {
-            try
-            {
-                string cardName = Server.GParamString("CardName");
-                return cardName;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return "";
-            }
+            return CardName;
         }
         //получить чек операции
-        public string GetCheque()
+        public string GetReceipt()
         {
-            try
-            {
-                string cheque = Server.GParamString("Cheque");
-                return cheque;
-            }
-            catch (Exception ex) 
-            {
-                MessageBox.Show(ex.Message);
-                return ""; 
-            }
+            return ReceiptStr;
         }
         //проверка, подключен ли терминал
         public bool IsEnabled()
@@ -74,7 +60,8 @@ namespace KassaApp.Models
                 int result = Server.NFun((int)Operations.Purchase);
                 if (result == 0)
                 {
-                    MessageBox.Show("Оплата через терминал: Успешно!");
+                    ReceiptStr = Server.GParamString("Cheque");
+                    CardName = Server.GParamString("CardName");
                     return result;
                 }
                 else
@@ -94,6 +81,28 @@ namespace KassaApp.Models
                     MessageBox.Show($"Операция НЕ отменена. Код ошибки: {result}");
                 else
                     MessageBox.Show("Операция отменена");
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+        //отмена транзакции
+        public void Confirmed()
+        {
+            try
+            {
+                int result = Server.NFun((int)Operations.ConfirmedTransaction);
+                if (result != 0)
+                    MessageBox.Show($"Транзакция не переведена в режим \"Подтверждённая\". Код ошибки: {result}");
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+        //отмена транзакции
+        public void Unconfirmed()
+        {
+            try
+            {
+                int result = Server.NFun((int)Operations.UnconfirmedTransaction);
+                if (result != 0)
+                    MessageBox.Show($"Транзакция не переведена в режим \"Неподтверждённая\". Код ошибки: {result}");
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
@@ -119,11 +128,11 @@ namespace KassaApp.Models
                 Server.Clear();
                 int result = Server.NFun((int)Operations.Total);
                 if (result != 0)
-                    MessageBox.Show($"День НЕ закрыт. Код ошибки: {result}");
+                    MessageBox.Show($"День терминала НЕ закрыт. Код ошибки: {result}");
                 else
                 {
-                    MessageBox.Show("День закрыт");
-                    SaveStringReport(GetCheque());
+                    MessageBox.Show("День терминала закрыт");
+                    SaveStringReport(GetReceipt());
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
