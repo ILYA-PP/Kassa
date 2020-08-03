@@ -135,7 +135,7 @@ namespace KassaApp.Models
             PrepareReceipt();
             Driver.StringForPrinting = s;
             //печать документа
-            int res = ExecuteAndHandleError(Driver.PrintString, true);
+            int res = StringFormatForPrint(s, 1);
             //Ожидание печати чека
             res = ExecuteAndHandleError(Driver.WaitForPrinting); 
             while (res != 0)
@@ -160,38 +160,43 @@ namespace KassaApp.Models
         }
         //метод формирует и печатает строку
         //с заданным выравниванием
-        private void StringFormatForPrint(string s, int align = 0)
+        private int StringFormatForPrint(string s, int align = 0)
         {
             //alignment 0 - left, 1 - center, 2 - right, 
             //3 - пробелы внутри строки
-            if(align == 3)
+            int res = 0;
+            if (align == 3)
             {
-                if(s.Length < 36)
+                if (s.Length < 36)
                 {
                     var strMas = s.Split('\n');
                     var p = new string(' ', 36 - strMas[0].Length - strMas[1].Length);
                     s = strMas[0] + p + strMas[1];
                 }
                 Driver.StringForPrinting = s;
-                ExecuteAndHandleError(Driver.PrintString, true);
-                return;
+                res = ExecuteAndHandleError(Driver.PrintString, true);
+                return res;
             }
-            foreach (var str in s.Split('\n'))
+            else
             {
-                if (str.Length < 36)
+                foreach (var str in s.Split('\n'))
                 {
-                    var p = new string(' ', (36 - str.Length) / 2);
-                    switch (align)
+                    if (str.Length < 36)
                     {
-                        case 0: Driver.StringForPrinting = str + p + p; break;
-                        case 1: Driver.StringForPrinting = p + str + p; break;
-                        case 2: Driver.StringForPrinting = p + p + str; break;
+                        var p = new string(' ', (36 - str.Length) / 2);
+                        switch (align)
+                        {
+                            case 0: Driver.StringForPrinting = str + p + p; break;
+                            case 1: Driver.StringForPrinting = p + str + p; break;
+                            case 2: Driver.StringForPrinting = p + p + str; break;
+                        }
                     }
+                    else
+                        Driver.StringForPrinting = str;
+                    res = ExecuteAndHandleError(Driver.PrintString, true);
                 }
-                else
-                    Driver.StringForPrinting = str;
-                ExecuteAndHandleError(Driver.PrintString, true);
-            }                
+                return res;
+            }
         }
         //печать фискального чека
         public int PrintReceipt(Receipt receipt, string cardName = null)
