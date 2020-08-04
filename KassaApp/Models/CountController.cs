@@ -8,20 +8,20 @@ namespace KassaApp.Models
 	class CountController
 	{
 		//проверка хватает ли товара
-		public static bool Check(Product prod)
+		public static bool Check(Product product)
 		{
 			try
 			{
 				using (var db = new KassaDBContext())
 				{
-					var productInDB = db.Product.Where(p => p.Name == prod.Name).FirstOrDefault();
+					var productInDB = db.Product.Where(p => p.Name == product.Name).FirstOrDefault();
 					//если количество выбранного товара меньше либо равно остатку
-					if (prod.Quantity <= productInDB.Quantity)
+					if (product.Quantity <= productInDB.Quantity)
 					{
 						if (productInDB.Type == 1)//услуги не отслеживаются, только товары
 						{
 							//вычесть количество из остатков в бд
-							productInDB.Quantity -= prod.Quantity;
+							productInDB.Quantity -= product.Quantity;
 							db.SaveChanges();
 						}
 						return true;

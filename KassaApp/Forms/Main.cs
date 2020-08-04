@@ -49,7 +49,7 @@ namespace KassaApp
                 {
                     nameL.Text = product.Name;
                     summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}  Отд: {product.Department}";
-                    additDataL.Text = $"Ост: {product.GetBalance()}  СГ: {product.ShelfLife:dd:MM:yyyy}  ШК: {product.BarCode}";
+                    additDataL.Text = $"Ост: {product.GetBalance()}  СГ: {product.ShelfLife:dd.MM.yyyy}  ШК: {product.BarCode}";
                 } 
             }
             else

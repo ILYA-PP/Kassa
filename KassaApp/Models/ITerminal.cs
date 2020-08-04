@@ -6,6 +6,7 @@ namespace KassaApp.Models
     {
         string GetCardName();
         string GetReceipt();
+        string GetReceiptName();
         bool IsEnabled();
         int Purchase(decimal sum);
         void CancelTransaction();
@@ -13,6 +14,6 @@ namespace KassaApp.Models
         void Confirmed();
         void Return();
         void CloseDay();
-        void SaveStringReport(string d);
+        void GetXReport();
     }
 }

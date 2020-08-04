@@ -6,7 +6,7 @@ using System.Windows.Forms;
 namespace KassaApp.Models
 {
     //класс содержит методы, используемые на нескольких формах
-    class GeneralCodeForForms
+    class TextFormat
     {
         //формат текста для чисел с плавающей точкой
         public static void TextBoxFormat(object sender, KeyPressEventArgs e)

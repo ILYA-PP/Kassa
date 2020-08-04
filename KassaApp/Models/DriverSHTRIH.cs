@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Data.Entity.Validation;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
@@ -40,7 +41,7 @@ namespace KassaApp.Models
         //проверка связи с ККТ
         public int CheckConnect()
         {
-            return ExecuteAndHandleError(Driver.Connect);
+            return ExecuteAndHandleError(Driver.Connect, true);
         }
         //подключение к фискальному регистратору
         protected void Connect()
@@ -66,9 +67,9 @@ namespace KassaApp.Models
             }
         }
         //вывод, возвращаемых фискальником сообщений
-        private void AddLog(string mes)
+        private void AddLog(string message)
         {
-            MessageBox.Show(mes);
+            MessageBox.Show(message);
         }
         //вывод возникающих ошибок
         protected void CheckResult(int code, bool ViewMessage)
@@ -79,11 +80,11 @@ namespace KassaApp.Models
 
         protected delegate int Func();
         //проверка результата работы метода драйвера ККТ
-        protected int ExecuteAndHandleError(Func f, bool ViewMessage = false)
+        protected int ExecuteAndHandleError(Func function, bool ViewMessage = false)
         {
             while (true)
             {
-                var ret = f();
+                var ret = function();
                 switch (ret)
                 {
                     case 0x50:
@@ -128,82 +129,92 @@ namespace KassaApp.Models
             ExecuteAndHandleError(Driver.WaitForPrinting);
         }
         //метод печати нефискальных документов
-        //s - строка для печати
-        public int Print(string s, bool Save = true)
+        //stringForPrint - строка для печати
+        public int Print(string receiptStr, string receiptName, bool Save = true)
         {
             PrepareReceipt();
             //печать документа
-            if (s == null)
+            if (receiptStr == null)
                 return -1;
             int res = 0;
-            var mas = s.Replace("~S", "^").Split('^');
-            if(mas.Length > 1)
+            var mas = receiptStr.Replace("~S", "^").Split('^');
+            if(mas.Length > 2)
             {
                 for(int i = 0; i<=1;i++)
-                    res = Print(mas[i], i != 0 ? false : true);
+                    res = Print(mas[i], receiptName, i != 0 ? false : true);
                 return res;
             }
             else
-                res = StringFormatForPrint(s, 1);
+            {
+                receiptStr.Replace("~S","");
+                Driver.StringForPrinting = StringFormatForPrint(receiptStr, 1);
+                res = ExecuteAndHandleError(Driver.PrintString);
+                Thread.Sleep(3000);
+            }
             //Ожидание печати чека
             res = ExecuteAndHandleError(Driver.WaitForPrinting); 
             while (res != 0)
             {
                 if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     ExecuteAndHandleError(Driver.PrintString, true);
+                else
+                    break;
 
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
             }
-            //отступ после документа
-            Driver.StringQuantity = 2;
-            Driver.UseReceiptRibbon = true;
-            ExecuteAndHandleError(Driver.FeedDocument, true);
             //Отрезка чека
             if (res == 0)
             {
+                //отступ после документа
+                Driver.StringQuantity = 2;
+                Driver.UseReceiptRibbon = true;
+                ExecuteAndHandleError(Driver.FeedDocument, true);
                 res = ExecuteAndHandleError(Driver.CutCheck, true);
-                if (Save)
-                    SaveReport("Чек терминала", s);
                 return res;
             }
+            //сохранение отчёта
+            if (Save)
+                SaveReport(receiptName, receiptStr);
             return res;
         }
         //метод формирует и печатает строку
         //с заданным выравниванием
-        private int StringFormatForPrint(string s, int align = 0)
+        private string StringFormatForPrint(string stringForPrint, int align = 0)
         {
             //alignment 0 - left, 1 - center, 2 - right, 
             //3 - пробелы внутри строки
-            int res = 0;
+            string r = "", l = "";
+            string res = "";
             if (align == 3)
             {
-                if (s.Length < 36)
+                if (stringForPrint.Length < 36)
                 {
-                    var strMas = s.Split('\n');
-                    var p = new string(' ', 36 - strMas[0].Length - strMas[1].Length);
-                    s = strMas[0] + p + strMas[1];
+                    var strMas = stringForPrint.Split('\n');
+                    l = new string(' ', 36 - strMas[0].Length - strMas[1].Length);
+                    stringForPrint = strMas[0] + l + strMas[1];
                 }
-                Driver.StringForPrinting = s;
-                res = ExecuteAndHandleError(Driver.PrintString, true);
-                return res;
+                return stringForPrint;
             }
             else
             {
-                foreach (var str in s.Split('\n'))
+                foreach (var str in stringForPrint.Split('\n'))
                 {
                     if (str.Length < 36)
                     {
-                        var p = new string(' ', (36 - str.Length) / 2);
+                        l = new string(' ', (36 - str.Length) / 2);
+                        if ((36 - str.Length) % 2 == 1)
+                            r = l + " ";
+                        else
+                            r = l;
                         switch (align)
                         {
-                            case 0: Driver.StringForPrinting = str + p + p; break;
-                            case 1: Driver.StringForPrinting = p + str + p; break;
-                            case 2: Driver.StringForPrinting = p + p + str; break;
+                            case 0: res += str + r + l; break;
+                            case 1: res += l + str + r; break;
+                            case 2: res += l + r + str; break;
                         }
                     }
                     else
-                        Driver.StringForPrinting = str;
-                    res = ExecuteAndHandleError(Driver.PrintString, true);
+                        res += str;
                 }
                 return res;
             }
@@ -259,14 +270,24 @@ namespace KassaApp.Models
                     if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                         return -1;
                     if(discountOnProduct > 0)
-                        StringFormatForPrint($"В том числе скидка\n={string.Format("{0:f}", discountOnProduct).Replace(",", ".")}", 3);
+                    {
+                        Driver.StringForPrinting = StringFormatForPrint($"В том числе скидка\n={string.Format("{0:function}", discountOnProduct).Replace(",", ".")}", 3);
+                        ExecuteAndHandleError(Driver.PrintString);
+                    }    
                     amountDiscount += discountOnProduct;
-                    if(p.BarCode != null && p.BarCode != "")
-                        StringFormatForPrint($"ШК: {p.BarCode}");                       
+                    if (p.BarCode != null && p.BarCode != "")
+                    {
+                        Driver.StringForPrinting = StringFormatForPrint($"ШК: {p.BarCode}");
+                        ExecuteAndHandleError(Driver.PrintString);
+                    }
                 }
-                StringFormatForPrint($"Всего\n={string.Format("{0:f}", sum).Replace(",", ".")}",3);
-                if(amountDiscount > 0 && receipt.Discount > 0)
-                    StringFormatForPrint($"Всего скидка\n={string.Format("{0:f}", amountDiscount).Replace(",", ".")}", 3);
+                Driver.StringForPrinting = StringFormatForPrint($"Всего\n={string.Format("{0:function}", sum).Replace(",", ".")}",3);
+                ExecuteAndHandleError(Driver.PrintString);
+                if (amountDiscount > 0 && receipt.Discount > 0)
+                {
+                    Driver.StringForPrinting = StringFormatForPrint($"Всего скидка\n={string.Format("{0:function}", amountDiscount).Replace(",", ".")}", 3);
+                    ExecuteAndHandleError(Driver.PrintString);
+                }
                 //указание способа оплаты
                 if (cardName == null)
                     cardName = "";
@@ -330,26 +351,28 @@ namespace KassaApp.Models
                                 $"В том числе промо баллы: {0}\n" +
                                 $"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                 if (receipt.DiscountCard != null && receipt.DiscountCard != "")
-                    StringFormatForPrint(dkData, 1);
+                {
+                    Driver.StringForPrinting = StringFormatForPrint(dkData, 1);
+                    ExecuteAndHandleError(Driver.PrintString);
+                }
                 //формирование итоговой информации чека
                 string payment = (receipt.Payment == 1) ? "наличные" : "пласт. карта";
                 decimal cardSum = ((receipt.Payment == 2) ? receipt.Summa : 0),
                         cashSum = ((receipt.Payment == 1) ? receipt.Summa : 0);
-                string change = receipt.Payment == 1 ? string.Format("{0:f}", cashSum - sum).Replace(",", ".") : "0.00";
+                string change = receipt.Payment == 1 ? string.Format("{0:function}", cashSum - sum).Replace(",", ".") : "0.00";
                 string result = $"Вид оплаты: {payment}\n" +
-                                $"Сумма по карте: {string.Format("{0:f}", cardSum).Replace(",", ".")}\n" +
-                                $"Сумма наличных: {string.Format("{0:f}", cashSum).Replace(",", ".")}\n" +
+                                $"Сумма по карте: {string.Format("{0:function}", cardSum).Replace(",", ".")}\n" +
+                                $"Сумма наличных: {string.Format("{0:function}", cashSum).Replace(",", ".")}\n" +
                                 $"Сдача: {change}\n" +
                                 $"Сумма прописью:\n" +
                                 $"{RusCurrency.Str((double)receipt.Summa)}";
-                StringFormatForPrint(result);
+                Driver.StringForPrinting = StringFormatForPrint(result);
+                ExecuteAndHandleError(Driver.PrintString);
                 Driver.StringForPrinting = "";
                 //Закрытие чека
                 return GetReport(Driver.FNCloseCheckEx, "Кассовый чек");
                
             }
-            else
-                AddLog("Нет подключения");
             return -1;
         }
         //печать х отчёта без гашения
@@ -524,28 +547,31 @@ namespace KassaApp.Models
             return GetReport(Driver.CashOutcome, "Выплата наличных", template);
         }
         //проверка состояния ккт и выполнение печати нефискального отчёта
-        private int GetReport(Func m, string name, string template = null)
+        private int GetReport(Func function, string reportName, string template = null)
         {
-            int res = ExecuteAndHandleError(m, true);
-            if (m != null && res == 0)
+            int res = ExecuteAndHandleError(function, true);
+            if (function != null && res == 0)
             {
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
                 //Ожидание печати чека
                 while (res != 0)
                 {
-                    if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.OK) == DialogResult.OK)
                         ExecuteAndHandleError(Driver.ContinuePrint, true);
 
                     res = ExecuteAndHandleError(Driver.WaitForPrinting);
                 }
                 //Отрезка чека
-                res = ExecuteAndHandleError(Driver.CutCheck, true);//отрезка отчёта
-                SaveReport(name, template);//сохранение отчёта
+                if (res == 0)
+                {
+                    res = ExecuteAndHandleError(Driver.CutCheck, true);//отрезка отчёта
+                    SaveReport(reportName, template);//сохранение отчёта
+                }
             }
             return res;
         }
         //сохранение отчётов в бд
-        private void SaveReport(string name, string template = null)
+        private void SaveReport(string reportName, string template = null)
         {
             //получить статус ккт
             ExecuteAndHandleError(Driver.FNGetStatus);
@@ -568,13 +594,13 @@ namespace KassaApp.Models
                             byte[] data = Encoding.Default.GetBytes(d);//перевод отчёта в байты
                             Report report = new Report()
                             {
-                                Name = name,
+                                Name = reportName,
                                 ReportData = data,
                                 Date = DateTime.Now
                             };
                             db.Report.Add(report);//добавление отчёта
                             db.SaveChanges();//сохранение отчёта
-                            MessageBox.Show($"Отчёт \"{name}\" сохранён!");
+                            MessageBox.Show($"Отчёт \"{reportName}\" сохранён!");
                         }
                     }
                 }
@@ -587,39 +613,39 @@ namespace KassaApp.Models
             }
         }
         //получить строку операционного регистра
-        public RegistrerItem GetOperRegItem(int num)
+        public RegistrerItem GetOperRegItem(int number)
         {
-            Driver.RegisterNumber = num;
+            Driver.RegisterNumber = number;
             if (ExecuteAndHandleError(Driver.GetOperationReg) == 0)
                 return new RegistrerItem()
                 {
-                    Number = num,
+                    Number = number,
                     Name = Driver.NameOperationReg,
                     Content = Driver.ContentsOfOperationRegister
                 };
             return null;
         }
         //получить строку денежного регистра
-        public RegistrerItem GetCashRegItem(int num)
+        public RegistrerItem GetCashRegItem(int number)
         {
-            Driver.RegisterNumber = num;
+            Driver.RegisterNumber = number;
             if (ExecuteAndHandleError(Driver.GetCashReg) == 0)
                 return new RegistrerItem()
                 {
-                    Number = num,
+                    Number = number,
                     Name = Driver.NameCashReg,
                     Content = Driver.ContentsOfCashRegister
                 };
             return null;
         }
         //метод формирует заголовок отчёта
-        //с указанием названия отчёта (name)
-        public string GetTitle(string name)
+        //с указанием названия отчёта (reportName)
+        public string GetTitle(string reportName)
         {
             if (CheckConnect() == 0)
             {
-                if (name != "")
-                    name += "\r\n";
+                if (reportName != "")
+                    reportName += "\r\n";
                 ExecuteAndHandleError(Driver.GetECRStatus);
                 var znkkt = Driver.SerialNumber;
                 Driver.TableNumber = 2;
@@ -632,7 +658,7 @@ namespace KassaApp.Models
                     $"ИНН: {Driver.INN}\r\n" +
                     $"ДАТА: {DateTime.Now}\r\n" +
                     $"Кассир: {Driver.ValueOfFieldString}\r\n" +
-                    $"{name}" +
+                    $"{reportName}" +
                     $"РН ККТ: {Driver.KKTRegistrationNumber}\r\n" +
                     $"ФН: {Driver.SerialNumber}\r\n" +
                     $"СМЕНА: {Driver.SessionNumber + 1}\r\n";

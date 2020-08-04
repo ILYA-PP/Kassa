@@ -11,6 +11,7 @@ namespace KassaApp.Models
     {
         private Server Server { get; set; }
         public string ReceiptStr { get; set; }
+        public string ReceiptName { get; set; }
         public string CardName { get; set; }
         private enum Operations
         {
@@ -20,7 +21,8 @@ namespace KassaApp.Models
             Cancel = 6004, // Отмена транзакции
             Total = 6000,// Итоги дня 
             UnconfirmedTransaction = 6003,//"Неподверждённая" транзакция
-            ConfirmedTransaction = 6001//"Подверждённая" транзакция
+            ConfirmedTransaction = 6001,//"Подверждённая" транзакция
+            XReport = 6002
         }
         public PaxTerminal()
         {
@@ -35,6 +37,11 @@ namespace KassaApp.Models
         public string GetReceipt()
         {
             return ReceiptStr;
+        }
+        //получить имя документа
+        public string GetReceiptName()
+        {
+            return ReceiptName;
         }
         //проверка, подключен ли терминал
         public bool IsEnabled()
@@ -61,6 +68,7 @@ namespace KassaApp.Models
                 if (result == 0)
                 {
                     ReceiptStr = Server.GParamString("Cheque");
+                    ReceiptName = "Чек терминала";
                     CardName = Server.GParamString("CardName");
                     return result;
                 }
@@ -131,39 +139,27 @@ namespace KassaApp.Models
                     MessageBox.Show($"День терминала НЕ закрыт. Код ошибки: {result}");
                 else
                 {
-                    MessageBox.Show("День терминала закрыт");
-                    SaveStringReport(GetReceipt());
+                    ReceiptStr = Server.GParamString("Cheque");
+                    ReceiptName = "Z-отчёт по банковским картам";
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
-        //сохранение отчёта по банковским картам
-        public void SaveStringReport(string d)
+        public void GetXReport()
         {
-            if (d != "")
+            try
             {
-                try
+                Server.Clear();
+                int result = Server.NFun((int)Operations.XReport);
+                if (result != 0)
+                    MessageBox.Show($"X-отчёт не получен. Код ошибки: {result}");
+                else
                 {
-                    using (var db = new KassaDBContext())
-                    {
-                        byte[] data = Encoding.Default.GetBytes(d);
-                        Report report = new Report()
-                        {
-                            Name = "Отчёт по банковским картам",
-                            ReportData = data,
-                            Date = DateTime.Now
-                        };
-                        db.Report.Add(report);
-                        db.SaveChanges();
-                    }
-                }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                            MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                    ReceiptStr = Server.GParamString("Cheque");
+                    ReceiptName = "X-отчёт по банковским картам";
                 }
             }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
         //действие при удалении объекта класса
         public void Dispose()

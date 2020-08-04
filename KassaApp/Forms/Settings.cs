@@ -51,7 +51,7 @@ namespace KassaApp
         public void TB_TextChange(object sender, KeyPressEventArgs e)
         {
             //формат строк, только целые числа
-            GeneralCodeForForms.TextBoxDigitFormat(sender, e);
+            TextFormat.TextBoxDigitFormat(sender, e);
         }
         //проверка связи с фискальным регистратором
         private void checkConnectB_Click(object sender, EventArgs e)
@@ -60,8 +60,6 @@ namespace KassaApp
             {
                 if (fr.CheckConnect() == 0)
                     MessageBox.Show("Фискальный регистратор подключен!");
-                else
-                    MessageBox.Show("Подключение отсутствует!");
             }
         }
         //обработка изменения метки Использовать пароль доступа

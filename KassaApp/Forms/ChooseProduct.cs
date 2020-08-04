@@ -26,14 +26,14 @@ namespace KassaApp.Forms
             }
         }
         //вывод данных о товарах на форму
-        private void ViewResult(IQueryable<Product> prod)
+        private void ViewResult(IQueryable<Product> products)
         {
             using (var db = new KassaDBContext())
             {
                 productsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех товарах
-                if (prod == null)
+                if (products == null)
                     foreach (Product p in db.Product)
                     {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
@@ -42,7 +42,7 @@ namespace KassaApp.Forms
                             productsDGV.Rows[productsDGV.Rows.Count-1].DefaultCellStyle.BackColor = Color.Red;
                     }
                 else
-                    foreach (Product p in prod)
+                    foreach (Product p in products)
                     {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);

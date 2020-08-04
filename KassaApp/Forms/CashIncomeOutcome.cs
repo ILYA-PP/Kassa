@@ -46,8 +46,6 @@ namespace KassaApp.Forms
                                 res = fr.CashOutcome(summ);
                             Close();
                         }
-                        else
-                            MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                     }
                 }
                 else
@@ -65,7 +63,7 @@ namespace KassaApp.Forms
         private void summaTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             //приведение вводимого текста к числовому формату
-            GeneralCodeForForms.TextBoxFormat(sender, e);
+            TextFormat.TextBoxFormat(sender, e);
         }
     }
 }

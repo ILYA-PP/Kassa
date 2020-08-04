@@ -32,7 +32,7 @@ namespace KassaApp
         //ограничение вводимых значений в текстбоксы
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            GeneralCodeForForms.TextBoxFormat(sender, e);
+            TextFormat.TextBoxFormat(sender, e);
         }
         //обработка нажатия кнопки Ввод
         private void addProductB_Click(object sender, EventArgs e)

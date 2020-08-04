@@ -19,18 +19,18 @@ namespace KassaApp.Forms
             NameFilter(searchTB.Text);
         }
         //вывод данных о товарах на форму
-        private void ViewResult(IQueryable<Report> rep)
+        private void ViewResult(IQueryable<Report> reports)
         {
             using (var db = new KassaDBContext())
             {
                 reportsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех отчётах
-                if (rep == null)
+                if (reports == null)
                     foreach (Report p in db.Report)
                         reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
                 else
-                    foreach (Report p in rep)
+                    foreach (Report p in reports)
                         reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
             }
         }

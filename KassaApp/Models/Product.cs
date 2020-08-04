@@ -73,14 +73,14 @@ namespace KassaApp
         public string BarCode { get; set; }
         public DateTime ShelfLife { get; set; }
         //метод для формирования объекта класса из строки DataGridView
-        public static Product ProductFromRow(DataGridViewRow row, Receipt r)
+        public static Product ProductFromRow(DataGridViewRow row, Receipt receipt)
         {
             try
             {
                 Product product;
                 //если продукт уже есть в составе чека
-                if (r != null)
-                    product = r.Products.Where(p => p.Name == row.Cells["nameCol"].Value.ToString()).FirstOrDefault();
+                if (receipt != null)
+                    product = receipt.Products.Where(p => p.Name == row.Cells["nameCol"].Value.ToString()).FirstOrDefault();
                 else
                 {
                     using (var db = new KassaDBContext())
@@ -101,11 +101,11 @@ namespace KassaApp
             }
         }
         //метод для формирования строки DataGridView из объекта класса
-        public static void RowFromProduct(Product p, DataGridView dgv)
+        public static void RowFromProduct(Product product, DataGridView dgv)
         {
             try
             {
-                dgv.Rows.Add(p.Name, p.Quantity, p.Price, p.Discount, p.NDS, p.Row_Summ);
+                dgv.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
             }
             catch (Exception ex)
             {

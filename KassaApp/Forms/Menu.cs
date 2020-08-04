@@ -56,10 +56,8 @@ namespace KassaApp
                         {
                             //формирование отчета
                             terminal.CloseDay();
-                            fr.Print(terminal.GetReceipt());//печать чека терминала
-                        }                           
-                        else
-                            MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
+                            fr.Print(terminal.GetReceipt(), terminal.GetReceiptName());//печать чека терминала
+                        }
                     }
                     else
                         MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
@@ -78,8 +76,6 @@ namespace KassaApp
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintZReport();
-                else
-                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
         }
         //обработка нажатия кнопки х-отчёт По Налогам
@@ -94,8 +90,6 @@ namespace KassaApp
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintXTaxReport();
-                else
-                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
         }
         //обработка нажатия кнопки х-отчёт По Секциям
@@ -110,8 +104,6 @@ namespace KassaApp
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintXSectionReport();
-                else
-                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
         }
         //обработка нажатия кнопки х-отчёт без Гашения
@@ -126,8 +118,6 @@ namespace KassaApp
             {
                 if (fr.CheckConnect() == 0)
                     fr.PrintXReport();
-                else
-                    MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
             }
         }
         //проверка пароля
@@ -185,6 +175,34 @@ namespace KassaApp
             }
             //переход на форму просмотра регистров
             new ViewRegistarers().ShowDialog();           
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (!CheckPassword())
+            {
+                MessageBox.Show("Неверный пароль!");
+                return;
+            }
+            using (ITerminal terminal = CurrentHardware.GetTerminal())
+            {
+                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+                {
+                    //проверка связи с терминалом
+                    if (terminal.IsEnabled())
+                    {
+                        //проверка связи с фискальным регистратором
+                        if (fr.CheckConnect() == 0)
+                        {
+                            //формирование отчета
+                            terminal.GetXReport();
+                            fr.Print(terminal.GetReceipt(), terminal.GetReceiptName());//печать чека терминала
+                        }
+                    }
+                    else
+                        MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
+                }
+            }
         }
     }
 }

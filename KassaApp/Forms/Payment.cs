@@ -18,7 +18,7 @@ namespace KassaApp
         //ограничение вводимых значений в текстбоксы
         private void priceTB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            GeneralCodeForForms.TextBoxFormat(sender, e);
+            TextFormat.TextBoxFormat(sender, e);
         }
         //расчёт сдачи при вводе суммы вносимых наличных
         private void moneyTB_TextChanged(object sender, EventArgs e)
@@ -69,7 +69,7 @@ namespace KassaApp
                                     messageL.Text = "Оплата успешно!";
                                     terminal.Unconfirmed();
                                     //если печать чека терминала успешна
-                                    if (terminal.GetReceipt() != null && fr.Print(terminal.GetReceipt()) == 0)
+                                    if (terminal.GetReceipt() != null && fr.Print(terminal.GetReceipt(), terminal.GetReceiptName()) == 0)
                                     {
                                         messageL.Text = "Печать чеков";
                                         CurrentReceipt.Payment = 2;
@@ -95,8 +95,6 @@ namespace KassaApp
                                     }                                
                                 }
                             }
-                            else
-                                MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                         }
                         else
                             MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
@@ -142,8 +140,6 @@ namespace KassaApp
                             Close();
                         }
                     }
-                    else
-                        MessageBox.Show("Фискальный регистратор не подключен! Проверьте подключение и повторите попытку.");
                 }
                 panel1.Visible = false;//убрать панель сообщений
                 this.Enabled = true;//разблокировать форму
