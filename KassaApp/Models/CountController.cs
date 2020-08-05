@@ -96,10 +96,10 @@ namespace KassaApp.Models
 					var receipts = db.Receipt.Where(r => r.Paid == false);
 					foreach (var r in receipts)
 					{
-						foreach (var p in r.Purchases)
+						foreach (var p in r.Purchase)
 							Recover(p.ProductId, p.Count);//восстановление остатков товара
 						db.Receipt.Remove(r);//удаление чека из бд
-						//db.Purchase.RemoveRange(db.Purchase.Where(p => p.ReceiptId == r.Id));
+						db.Purchase.RemoveRange(db.Purchase.Where(p => p.ReceiptId == r.Id));
 					}
 					db.SaveChanges();
 				}

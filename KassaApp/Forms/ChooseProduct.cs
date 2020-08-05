@@ -121,7 +121,7 @@ namespace KassaApp.Forms
                                             ReceiptId = ((Main)Owner).receipt.Id,
                                             Receipt = db.Receipt.Where(rec => rec.Id == ((Main)Owner).receipt.Id).FirstOrDefault()
                                         };
-                                        ((Main)Owner).receipt.Purchases.Add(purchase);
+                                        ((Main)Owner).receipt.Purchase.Add(purchase);
                                         db.Purchase.Add(purchase);
                                         db.SaveChanges();
                                     }

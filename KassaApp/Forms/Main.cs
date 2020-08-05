@@ -86,7 +86,7 @@ namespace KassaApp
                         db.Purchase.Remove(purchase);
                         db.SaveChanges();
                         //удаление из состава чека
-                        receipt.Purchases.Remove(purchase);
+                        receipt.Purchase.Remove(purchase);
                         receipt.Products.Remove(product);
                         receipt.CalculateSumm();
                         //удаление из DataGridView

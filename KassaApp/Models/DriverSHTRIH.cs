@@ -142,7 +142,7 @@ namespace KassaApp.Models
             }
             else
             {
-                receiptStr.Replace("~S","");
+                receiptStr = receiptStr.Replace("~S", "");
                 Driver.StringForPrinting = StringFormatForPrint(receiptStr, 1);
                 res = ExecuteAndHandleError(Driver.PrintString);
                 Thread.Sleep(3000);

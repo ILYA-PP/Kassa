@@ -10,6 +10,11 @@ namespace KassaApp.Models
     [Table("Receipt")]
     public partial class Receipt
     {
+        public Receipt()
+        {
+            Purchase = new HashSet<Purchase>();
+            Products = new List<Product>();
+        }
         [NotMapped]
         public decimal DiscountSum { get; set; }
         [NotMapped]
@@ -39,12 +44,7 @@ namespace KassaApp.Models
         [StringLength(11)]
         public string DiscountCard { get; set; }
         //связанные с чеков продажи
-        public virtual ICollection<Purchase> Purchases { get; set; }
-        public Receipt()
-        {
-            Purchases = new HashSet<Purchase>();
-            Products = new List<Product>();
-        }
+        public virtual ICollection<Purchase> Purchase { get; set; }
         //продукты в чеке
         [NotMapped]
         public List<Product> Products { get; set; }
