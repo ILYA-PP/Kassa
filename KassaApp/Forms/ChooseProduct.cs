@@ -118,6 +118,7 @@ namespace KassaApp.Forms
                                             Count = product.Quantity,
                                             Summa = product.Row_Summ,
                                             Date = DateTime.Now,
+                                            ReceiptId = ((Main)Owner).receipt.Id,
                                             Receipt = db.Receipt.Where(rec => rec.Id == ((Main)Owner).receipt.Id).FirstOrDefault()
                                         };
                                         ((Main)Owner).receipt.Purchases.Add(purchase);
@@ -134,11 +135,11 @@ namespace KassaApp.Forms
                         MessageBox.Show("Строка не выбрана!");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
-                               
+
         }
         //обработка нажатия кнопки Отмена
         private void cancelB_Click(object sender, EventArgs e)

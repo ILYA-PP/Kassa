@@ -34,9 +34,9 @@ namespace KassaApp.Models
 					}
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message);
+				MessageBox.Show(TextFormat.GetExceptionMessage(ex));
 			}
 			return false;
 		}
@@ -60,7 +60,7 @@ namespace KassaApp.Models
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message);
+				MessageBox.Show(TextFormat.GetExceptionMessage(ex));
 			}
 			return false;
 		}
@@ -83,7 +83,7 @@ namespace KassaApp.Models
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message);
+				MessageBox.Show(TextFormat.GetExceptionMessage(ex));
 			}
 		}
 		//восстановление остатков товаров всех неоплаченных чеков
@@ -99,13 +99,14 @@ namespace KassaApp.Models
 						foreach (var p in r.Purchases)
 							Recover(p.ProductId, p.Count);//восстановление остатков товара
 						db.Receipt.Remove(r);//удаление чека из бд
+						//db.Purchase.RemoveRange(db.Purchase.Where(p => p.ReceiptId == r.Id));
 					}
 					db.SaveChanges();
 				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message);
+				MessageBox.Show(TextFormat.GetExceptionMessage(ex));
 			}
 		}
 	}

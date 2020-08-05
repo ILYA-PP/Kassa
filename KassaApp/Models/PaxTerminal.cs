@@ -53,7 +53,7 @@ namespace KassaApp.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
             return false;
         }
@@ -75,7 +75,10 @@ namespace KassaApp.Models
                 else
                     MessageBox.Show($"Операция НЕ выполнена. Код ошибки: {result}");
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
             return -1;
         }
         //отмена транзакции
@@ -90,7 +93,10 @@ namespace KassaApp.Models
                 else
                     MessageBox.Show("Операция отменена");
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
         }
         //отмена транзакции
         public void Confirmed()
@@ -101,7 +107,10 @@ namespace KassaApp.Models
                 if (result != 0)
                     MessageBox.Show($"Транзакция не переведена в режим \"Подтверждённая\". Код ошибки: {result}");
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
         }
         //отмена транзакции
         public void Unconfirmed()
@@ -112,7 +121,10 @@ namespace KassaApp.Models
                 if (result != 0)
                     MessageBox.Show($"Транзакция не переведена в режим \"Неподтверждённая\". Код ошибки: {result}");
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
         }
         //возврат средств
         public void Return()
@@ -126,7 +138,10 @@ namespace KassaApp.Models
                 else
                     MessageBox.Show("Средства возвращены");
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
         }
         //операция закрытия дня
         public void CloseDay()
@@ -143,7 +158,10 @@ namespace KassaApp.Models
                     ReceiptName = "Z-отчёт по банковским картам";
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
         }
         public void GetXReport()
         {
@@ -159,7 +177,10 @@ namespace KassaApp.Models
                     ReceiptName = "X-отчёт по банковским картам";
                 }
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
         }
         //действие при удалении объекта класса
         public void Dispose()

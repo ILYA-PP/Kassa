@@ -63,7 +63,7 @@ namespace KassaApp.Models
             }
             catch (Exception ex)
             {
-                AddLog(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //вывод, возвращаемых фискальником сообщений
@@ -96,7 +96,7 @@ namespace KassaApp.Models
             }
         }
         //проверка состояния ККТ перед печатью
-        private void PrepareReceipt()
+        public void PrepareReceipt()
         {
             ExecuteAndHandleError(Driver.WaitForPrinting);
             ExecuteAndHandleError(Driver.GetECRStatus);
@@ -104,18 +104,14 @@ namespace KassaApp.Models
             {
                 case 3:
                     ExecuteAndHandleError(Driver.WaitForPrinting);
-                    if(MessageBox.Show("24 часа истеки! Зактыть смену и открыть новую смену?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        //Снятие Z-отчёта, закрытие смены
+                    //Снятие Z-отчёта, закрытие смены
+                    if (MessageBox.Show("24 часа истеки! Зактыть смену?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                         PrintZReport();
-                        //Открытие смены
-                        PrintOpenSessionReport();
-                    } 
                     break;
                 case 4:
                     //Открытие смены
-                    MessageBox.Show("Смена закрыта! Открытие новой смены");
-                    PrintOpenSessionReport(); 
+                    if (MessageBox.Show("Смена закрыта! Открытие новой смены", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        PrintOpenSessionReport();
                     break;
                 case 8:
                     //Отмена чека
@@ -271,7 +267,7 @@ namespace KassaApp.Models
                         return -1;
                     if(discountOnProduct > 0)
                     {
-                        Driver.StringForPrinting = StringFormatForPrint($"В том числе скидка\n={string.Format("{0:function}", discountOnProduct).Replace(",", ".")}", 3);
+                        Driver.StringForPrinting = StringFormatForPrint($"В том числе скидка\n={string.Format("{0:f}", discountOnProduct).Replace(",", ".")}", 3);
                         ExecuteAndHandleError(Driver.PrintString);
                     }    
                     amountDiscount += discountOnProduct;
@@ -281,11 +277,11 @@ namespace KassaApp.Models
                         ExecuteAndHandleError(Driver.PrintString);
                     }
                 }
-                Driver.StringForPrinting = StringFormatForPrint($"Всего\n={string.Format("{0:function}", sum).Replace(",", ".")}",3);
+                Driver.StringForPrinting = StringFormatForPrint($"Всего\n={string.Format("{0:f}", sum).Replace(",", ".")}",3);
                 ExecuteAndHandleError(Driver.PrintString);
                 if (amountDiscount > 0 && receipt.Discount > 0)
                 {
-                    Driver.StringForPrinting = StringFormatForPrint($"Всего скидка\n={string.Format("{0:function}", amountDiscount).Replace(",", ".")}", 3);
+                    Driver.StringForPrinting = StringFormatForPrint($"Всего скидка\n={string.Format("{0:f}", amountDiscount).Replace(",", ".")}", 3);
                     ExecuteAndHandleError(Driver.PrintString);
                 }
                 //указание способа оплаты
@@ -359,10 +355,10 @@ namespace KassaApp.Models
                 string payment = (receipt.Payment == 1) ? "наличные" : "пласт. карта";
                 decimal cardSum = ((receipt.Payment == 2) ? receipt.Summa : 0),
                         cashSum = ((receipt.Payment == 1) ? receipt.Summa : 0);
-                string change = receipt.Payment == 1 ? string.Format("{0:function}", cashSum - sum).Replace(",", ".") : "0.00";
+                string change = receipt.Payment == 1 ? string.Format("{0:f}", cashSum - sum).Replace(",", ".") : "0.00";
                 string result = $"Вид оплаты: {payment}\n" +
-                                $"Сумма по карте: {string.Format("{0:function}", cardSum).Replace(",", ".")}\n" +
-                                $"Сумма наличных: {string.Format("{0:function}", cashSum).Replace(",", ".")}\n" +
+                                $"Сумма по карте: {string.Format("{0:f}", cardSum).Replace(",", ".")}\n" +
+                                $"Сумма наличных: {string.Format("{0:f}", cashSum).Replace(",", ".")}\n" +
                                 $"Сдача: {change}\n" +
                                 $"Сумма прописью:\n" +
                                 $"{RusCurrency.Str((double)receipt.Summa)}";
@@ -370,8 +366,7 @@ namespace KassaApp.Models
                 ExecuteAndHandleError(Driver.PrintString);
                 Driver.StringForPrinting = "";
                 //Закрытие чека
-                return GetReport(Driver.FNCloseCheckEx, "Кассовый чек");
-               
+                return GetReport(Driver.FNCloseCheckEx, "Кассовый чек");   
             }
             return -1;
         }

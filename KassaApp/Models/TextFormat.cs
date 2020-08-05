@@ -34,5 +34,11 @@ namespace KassaApp.Models
             if (!Char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
                 e.KeyChar = '\0';
         }
+        //метод унифицирующий формат вывода сообщений
+        //о возникающих исключениях
+        public static string GetExceptionMessage(Exception ex)
+        {
+            return $"{ex.Message}\n    {ex.GetBaseException().Message}";
+        }
     }
 }

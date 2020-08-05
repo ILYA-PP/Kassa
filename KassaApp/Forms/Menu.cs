@@ -13,6 +13,11 @@ namespace KassaApp
             InitializeComponent();
             //путь к рабочей папке
             AppDomain.CurrentDomain.SetData("DataDirectory", Application.StartupPath);
+            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+            {
+                if (fr.CheckConnect() == 0)
+                    fr.PrepareReceipt();
+            }
         }
         //переход на главную форму
         private void регистрацияПродажToolStripMenuItem_Click(object sender, EventArgs e)

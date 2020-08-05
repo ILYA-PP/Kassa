@@ -105,7 +105,7 @@ namespace KassaApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //обработка нажатия кнопки Наличные
@@ -146,7 +146,7 @@ namespace KassaApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //отметить чек в БД в таблице Receipt, как оплаченый
@@ -167,7 +167,7 @@ namespace KassaApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //действие при закрытии формы

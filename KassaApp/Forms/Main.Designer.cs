@@ -105,7 +105,7 @@
             this.ndsCol,
             this.sumCol});
             this.receiptDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.receiptDGV.Location = new System.Drawing.Point(3, 192);
+            this.receiptDGV.Location = new System.Drawing.Point(3, 204);
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -116,7 +116,7 @@
             dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.receiptDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
-            this.receiptDGV.Size = new System.Drawing.Size(1083, 298);
+            this.receiptDGV.Size = new System.Drawing.Size(1083, 276);
             this.receiptDGV.TabIndex = 9;
             this.receiptDGV.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.receiptDGV_CellValueChanged);
             this.receiptDGV.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.receiptDGV_RowsAdded);
@@ -166,7 +166,7 @@
             this.discountOnReceiptB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.discountOnReceiptB.Location = new System.Drawing.Point(3, 3);
             this.discountOnReceiptB.Name = "discountOnReceiptB";
-            this.discountOnReceiptB.Size = new System.Drawing.Size(208, 54);
+            this.discountOnReceiptB.Size = new System.Drawing.Size(208, 64);
             this.discountOnReceiptB.TabIndex = 19;
             this.discountOnReceiptB.Text = "[F10]  Скидка на чек";
             this.discountOnReceiptB.UseVisualStyleBackColor = true;
@@ -185,7 +185,7 @@
             // nonDiscountTB
             // 
             this.nonDiscountTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.nonDiscountTB.Location = new System.Drawing.Point(3, 30);
+            this.nonDiscountTB.Location = new System.Drawing.Point(3, 35);
             this.nonDiscountTB.Name = "nonDiscountTB";
             this.nonDiscountTB.ReadOnly = true;
             this.nonDiscountTB.Size = new System.Drawing.Size(180, 22);
@@ -196,7 +196,7 @@
             // discountTB
             // 
             this.discountTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.discountTB.Location = new System.Drawing.Point(3, 30);
+            this.discountTB.Location = new System.Drawing.Point(3, 35);
             this.discountTB.Name = "discountTB";
             this.discountTB.ReadOnly = true;
             this.discountTB.Size = new System.Drawing.Size(180, 22);
@@ -254,7 +254,7 @@
             this.shtrihB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.shtrihB.Location = new System.Drawing.Point(3, 3);
             this.shtrihB.Name = "shtrihB";
-            this.shtrihB.Size = new System.Drawing.Size(114, 54);
+            this.shtrihB.Size = new System.Drawing.Size(114, 59);
             this.shtrihB.TabIndex = 28;
             this.shtrihB.Text = "[F1]  Штрих-код";
             this.shtrihB.UseVisualStyleBackColor = true;
@@ -266,7 +266,7 @@
             this.nameB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.nameB.Location = new System.Drawing.Point(123, 3);
             this.nameB.Name = "nameB";
-            this.nameB.Size = new System.Drawing.Size(114, 54);
+            this.nameB.Size = new System.Drawing.Size(114, 59);
             this.nameB.TabIndex = 29;
             this.nameB.Text = "[F3]  Название";
             this.nameB.UseVisualStyleBackColor = true;
@@ -278,7 +278,7 @@
             this.priceB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.priceB.Location = new System.Drawing.Point(243, 3);
             this.priceB.Name = "priceB";
-            this.priceB.Size = new System.Drawing.Size(114, 54);
+            this.priceB.Size = new System.Drawing.Size(114, 59);
             this.priceB.TabIndex = 30;
             this.priceB.Text = "[F4]  Цена";
             this.priceB.UseVisualStyleBackColor = true;
@@ -290,7 +290,7 @@
             this.svPriceB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.svPriceB.Location = new System.Drawing.Point(363, 3);
             this.svPriceB.Name = "svPriceB";
-            this.svPriceB.Size = new System.Drawing.Size(114, 54);
+            this.svPriceB.Size = new System.Drawing.Size(114, 59);
             this.svPriceB.TabIndex = 31;
             this.svPriceB.Text = "[F5]  Св. цена";
             this.svPriceB.UseVisualStyleBackColor = true;
@@ -301,7 +301,7 @@
             this.searchB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.searchB.Location = new System.Drawing.Point(483, 3);
             this.searchB.Name = "searchB";
-            this.searchB.Size = new System.Drawing.Size(114, 54);
+            this.searchB.Size = new System.Drawing.Size(114, 59);
             this.searchB.TabIndex = 32;
             this.searchB.Text = "[F6]  Поиск";
             this.searchB.UseVisualStyleBackColor = true;
@@ -313,7 +313,7 @@
             this.deleteB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.deleteB.Location = new System.Drawing.Point(723, 3);
             this.deleteB.Name = "deleteB";
-            this.deleteB.Size = new System.Drawing.Size(114, 54);
+            this.deleteB.Size = new System.Drawing.Size(114, 59);
             this.deleteB.TabIndex = 33;
             this.deleteB.Text = "[Del]  Удалить";
             this.deleteB.UseVisualStyleBackColor = true;
@@ -326,7 +326,7 @@
             this.boxB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.boxB.Location = new System.Drawing.Point(843, 3);
             this.boxB.Name = "boxB";
-            this.boxB.Size = new System.Drawing.Size(114, 54);
+            this.boxB.Size = new System.Drawing.Size(114, 59);
             this.boxB.TabIndex = 34;
             this.boxB.Text = "[F11]  Ящик";
             this.boxB.UseVisualStyleBackColor = true;
@@ -337,7 +337,7 @@
             this.paymentB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.paymentB.Location = new System.Drawing.Point(963, 3);
             this.paymentB.Name = "paymentB";
-            this.paymentB.Size = new System.Drawing.Size(117, 54);
+            this.paymentB.Size = new System.Drawing.Size(117, 59);
             this.paymentB.TabIndex = 35;
             this.paymentB.Text = "[F12]  Оплата";
             this.paymentB.UseVisualStyleBackColor = true;
@@ -349,7 +349,7 @@
             this.editB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.editB.Location = new System.Drawing.Point(603, 3);
             this.editB.Name = "editB";
-            this.editB.Size = new System.Drawing.Size(114, 54);
+            this.editB.Size = new System.Drawing.Size(114, 59);
             this.editB.TabIndex = 36;
             this.editB.Text = "[F9] Изменить";
             this.editB.UseVisualStyleBackColor = true;
@@ -362,7 +362,7 @@
             this.reserveB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.reserveB.Location = new System.Drawing.Point(3, 3);
             this.reserveB.Name = "reserveB";
-            this.reserveB.Size = new System.Drawing.Size(115, 55);
+            this.reserveB.Size = new System.Drawing.Size(115, 59);
             this.reserveB.TabIndex = 37;
             this.reserveB.Text = "[Ins]  Резерв";
             this.reserveB.UseVisualStyleBackColor = true;
@@ -374,7 +374,7 @@
             this.additInfoB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.additInfoB.Location = new System.Drawing.Point(124, 3);
             this.additInfoB.Name = "additInfoB";
-            this.additInfoB.Size = new System.Drawing.Size(116, 55);
+            this.additInfoB.Size = new System.Drawing.Size(116, 59);
             this.additInfoB.TabIndex = 38;
             this.additInfoB.Text = "[F8] Доп.инф.";
             this.additInfoB.UseVisualStyleBackColor = true;
@@ -392,11 +392,11 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.56112F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.87335F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 61.56553F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.8917F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.1083F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1089, 654);
             this.tableLayoutPanel1.TabIndex = 40;
             // 
@@ -410,11 +410,11 @@
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.discountOnReceiptB, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 134);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 129);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1083, 52);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1083, 69);
             this.tableLayoutPanel2.TabIndex = 14;
             // 
             // tableLayoutPanel4
@@ -429,7 +429,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(500, 54);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(500, 64);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
             // tableLayoutPanel3
@@ -444,7 +444,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(357, 54);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(357, 64);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -456,10 +456,10 @@
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel6, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel8, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 496);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 486);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(1083, 94);
             this.tableLayoutPanel5.TabIndex = 15;
             // 
@@ -474,8 +474,8 @@
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 29F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 61F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(243, 94);
             this.tableLayoutPanel6.TabIndex = 0;
             // 
@@ -487,12 +487,12 @@
             this.tableLayoutPanel7.Controls.Add(this.additInfoB, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.reserveB, 0, 0);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 35);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(0, 29);
             this.tableLayoutPanel7.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(243, 61);
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(243, 65);
             this.tableLayoutPanel7.TabIndex = 0;
             // 
             // timeTB
@@ -546,11 +546,11 @@
             this.tableLayoutPanel9.Controls.Add(this.boxB, 7, 0);
             this.tableLayoutPanel9.Controls.Add(this.deleteB, 6, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 596);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 586);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(1083, 55);
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1083, 65);
             this.tableLayoutPanel9.TabIndex = 16;
             // 
             // tableLayoutPanel10
@@ -565,7 +565,7 @@
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(1083, 125);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1083, 120);
             this.tableLayoutPanel10.TabIndex = 17;
             // 
             // resultL
@@ -574,7 +574,7 @@
             this.resultL.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.resultL.Location = new System.Drawing.Point(478, 1);
             this.resultL.Name = "resultL";
-            this.resultL.Size = new System.Drawing.Size(601, 123);
+            this.resultL.Size = new System.Drawing.Size(601, 118);
             this.resultL.TabIndex = 14;
             this.resultL.Text = "0.00";
             this.resultL.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -590,8 +590,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(1089, 654);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MinimizeBox = false;
             this.Name = "Main";
             this.ShowIcon = false;

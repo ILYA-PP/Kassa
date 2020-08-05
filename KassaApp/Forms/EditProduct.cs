@@ -26,7 +26,7 @@ namespace KassaApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //ограничение вводимых значений в текстбоксы
@@ -80,7 +80,7 @@ namespace KassaApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //обработка нажатия горячих клавиш

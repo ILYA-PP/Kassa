@@ -94,9 +94,9 @@ namespace KassaApp
                 }
                 return product;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
                 return null;
             }
         }
@@ -109,7 +109,7 @@ namespace KassaApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //метод для расчёта суммы по позиции
@@ -127,9 +127,9 @@ namespace KassaApp
                     return db.Product.Where(p => p.Id == Id).FirstOrDefault().Quantity;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
             return -1;
         }

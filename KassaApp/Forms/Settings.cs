@@ -24,7 +24,7 @@ namespace KassaApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //обработка нажатия кнопки Настройка
@@ -42,9 +42,9 @@ namespace KassaApp
                     MessageBox.Show("Настройки сохранены!");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
         //действие при изменении значений текстовых полей

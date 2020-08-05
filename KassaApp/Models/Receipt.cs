@@ -42,7 +42,7 @@ namespace KassaApp.Models
         public virtual ICollection<Purchase> Purchases { get; set; }
         public Receipt()
         {
-            Purchases = new List<Purchase>();
+            Purchases = new HashSet<Purchase>();
             Products = new List<Product>();
         }
         //продукты в чеке

@@ -5,6 +5,7 @@ namespace KassaApp.Models
     interface IFiscalRegistrar:IDisposable
     {
         int CheckConnect();
+        void PrepareReceipt();
         int Print(string receiptStr, string receiptName, bool Save = true);
         int PrintReceipt(Receipt receipt, string cardName = null);
         int PrintXReport();
