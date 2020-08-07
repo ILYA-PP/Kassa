@@ -73,6 +73,7 @@ namespace KassaApp
                                     {
                                         messageL.Text = "Печать чеков";
                                         CurrentReceipt.Payment = 2;
+                                        InsertData();
                                         //печать товарного чека
                                         if (fr.PrintReceipt(CurrentReceipt, null) == 0)
                                         {
@@ -111,7 +112,6 @@ namespace KassaApp
         //обработка нажатия кнопки Наличные
         private void cashB_Click(object sender, EventArgs e)
         {
-            decimal tempSum = 0;//сохранение суммы по чеку
             if (decimal.Parse(moneyTB.Text) < CurrentReceipt.Summa)
             {
                 MessageBox.Show("Вносимая сумма не может быть меньше суммы по чеку!");
@@ -128,14 +128,13 @@ namespace KassaApp
                     {
                         messageL.Text = "Печать чека";
                         CurrentReceipt.Payment = 1;
-                        tempSum = CurrentReceipt.Summa;
+                        InsertData();
                         //замена суммы по чеку на сумму вносимых наличных
                         CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
                         //печать товарного чека
                         if (fr.PrintReceipt(CurrentReceipt) == 0)
                         {
                             messageL.Text = "Успешно";
-                            CurrentReceipt.Summa = tempSum;
                             MarkAsPaid();
                             Close();
                         }
@@ -158,6 +157,22 @@ namespace KassaApp
                 {
                     var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
                     rec.Paid = true; //признак оплаты чека
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+            }
+        }
+        //отметить чек в БД в таблице Receipt, как оплаченый
+        private void InsertData()
+        {
+            try
+            {
+                using (var db = new KassaDBContext())
+                {
+                    var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
                     rec.Discount = CurrentReceipt.Discount; //скидка на чек
                     rec.Summa = CurrentReceipt.Summa; //сумма по чеку
                     rec.Payment = CurrentReceipt.Payment;//способ оплаты

@@ -1,6 +1,7 @@
 ﻿using KassaApp.Forms;
 using KassaApp.Models;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -49,15 +50,17 @@ namespace KassaApp
                 {
                     nameL.Text = product.Name;
                     summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}  Отд: {product.Department}";
-                    additDataL.Text = $"Ост: {product.GetBalance()}  СГ: {product.ShelfLife:dd.MM.yyyy}  ШК: {product.BarCode}";
+                    remainsL.Text = $"Ост: {product.GetBalance()}";
+                    shelfLifeL.Text = $"СГ: {product.ShelfLife:dd.MM.yyyy}";
+                    if (product.ShelfLife < DateTime.Now)
+                        shelfLifeL.BackColor = Color.Red;
+                    else
+                        shelfLifeL.BackColor = remainsL.BackColor;
+                    barCodeL.Text = $"ШК: {product.BarCode}";
                 } 
             }
             else
-            {
-                nameL.Text = "";
-                summL.Text = "";
-                additDataL.Text = "";
-            }
+                nameL.Text = shelfLifeL.Text = barCodeL.Text = summL.Text = remainsL.Text = "";
             if(receiptDGV.CurrentRow != null)
                 receiptDGV.CurrentRow.Selected = true;
         }

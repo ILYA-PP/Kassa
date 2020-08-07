@@ -41,7 +41,7 @@ namespace KassaApp.Models
         //проверка связи с ККТ
         public int CheckConnect()
         {
-            return ExecuteAndHandleError(Driver.Connect, true);
+            return ExecuteAndHandleError(Driver.CheckConnection);
         }
         //подключение к фискальному регистратору
         protected void Connect()
@@ -59,23 +59,23 @@ namespace KassaApp.Models
                     Timeout = int.Parse(driverData["Timeout"]),
                     Password = int.Parse(driverData["Password"])
                 };
-                ExecuteAndHandleError(Driver.Connect);
+                ExecuteAndHandleError(Driver.Connect, true);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
         //вывод, возвращаемых фискальником сообщений
-        private void AddLog(string message)
+        private void GetMessage(string message)
         {
-            MessageBox.Show(message);
+            MessageBox.Show(message, "Фискальный регистратор");
         }
         //вывод возникающих ошибок
         protected void CheckResult(int code, bool ViewMessage)
         {
             if (ViewMessage && code != 0)
-                AddLog($"Код: {code}\nОшибка: {Driver.ResultCodeDescription}");
+                GetMessage($"Код: {code}\nОшибка: {Driver.ResultCodeDescription}");
         }
 
         protected delegate int Func();
@@ -105,19 +105,19 @@ namespace KassaApp.Models
                 case 3:
                     ExecuteAndHandleError(Driver.WaitForPrinting);
                     //Снятие Z-отчёта, закрытие смены
-                    if (MessageBox.Show("24 часа истеки! Зактыть смену?","",MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("24 часа истеки! Зактыть смену?","Фискальный регистратор",MessageBoxButtons.YesNo) == DialogResult.Yes)
                         PrintZReport();
                     break;
                 case 4:
                     //Открытие смены
-                    if (MessageBox.Show("Смена закрыта! Открытие новой смены", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("Смена закрыта! Открытие новой смены", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         PrintOpenSessionReport();
                     break;
                 case 8:
                     //Отмена чека
                     OperatorPassword = Driver.Password;
                     Driver.Password = SysAdminPassword;
-                    if (MessageBox.Show("Открыт другой чек! Отменить чек?","", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("Открыт другой чек! Отменить чек?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         ExecuteAndHandleError(Driver.SysAdminCancelCheck, true);
                     Driver.Password = OperatorPassword;
                     break;
@@ -151,7 +151,7 @@ namespace KassaApp.Models
             res = ExecuteAndHandleError(Driver.WaitForPrinting); 
             while (res != 0)
             {
-                if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     ExecuteAndHandleError(Driver.PrintString, true);
                 else
                     break;
@@ -551,7 +551,7 @@ namespace KassaApp.Models
                 //Ожидание печати чека
                 while (res != 0)
                 {
-                    if (MessageBox.Show("Продолжить печать?", "Ошибка", MessageBoxButtons.OK) == DialogResult.OK)
+                    if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.OK) == DialogResult.OK)
                         ExecuteAndHandleError(Driver.ContinuePrint, true);
 
                     res = ExecuteAndHandleError(Driver.WaitForPrinting);
@@ -595,7 +595,7 @@ namespace KassaApp.Models
                             };
                             db.Report.Add(report);//добавление отчёта
                             db.SaveChanges();//сохранение отчёта
-                            MessageBox.Show($"Отчёт \"{reportName}\" сохранён!");
+                            GetMessage($"Отчёт \"{reportName}\" сохранён!");
                         }
                     }
                 }
@@ -603,7 +603,7 @@ namespace KassaApp.Models
                 {
                     foreach (var validationErrors in dbEx.EntityValidationErrors)
                         foreach (var validationError in validationErrors.ValidationErrors)
-                            MessageBox.Show($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                            GetMessage($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
                 }
             }
         }

@@ -33,6 +33,11 @@ namespace KassaApp.Models
         {
             return CardName;
         }
+        //вывод, возвращаемых терминалом сообщений
+        private void GetMessage(string message)
+        {
+            MessageBox.Show(message, "Терминал");
+        }
         //получить чек операции
         public string GetReceipt()
         {
@@ -53,7 +58,7 @@ namespace KassaApp.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
             return false;
         }
@@ -73,11 +78,11 @@ namespace KassaApp.Models
                     return result;
                 }
                 else
-                    MessageBox.Show($"Операция НЕ выполнена. Код ошибки: {result}");
+                    GetMessage($"Операция НЕ выполнена. Код ошибки: {result}");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
             return -1;
         }
@@ -89,13 +94,13 @@ namespace KassaApp.Models
                 Server.Clear();
                 int result = Server.NFun((int)Operations.Cancel);
                 if (result != 0)
-                    MessageBox.Show($"Операция НЕ отменена. Код ошибки: {result}");
+                    GetMessage($"Операция НЕ отменена. Код ошибки: {result}");
                 else
-                    MessageBox.Show("Операция отменена");
+                    GetMessage("Операция отменена");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
         //отмена транзакции
@@ -105,11 +110,11 @@ namespace KassaApp.Models
             {
                 int result = Server.NFun((int)Operations.ConfirmedTransaction);
                 if (result != 0)
-                    MessageBox.Show($"Транзакция не переведена в режим \"Подтверждённая\". Код ошибки: {result}");
+                    GetMessage($"Транзакция не переведена в режим \"Подтверждённая\". Код ошибки: {result}");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
         //отмена транзакции
@@ -119,11 +124,11 @@ namespace KassaApp.Models
             {
                 int result = Server.NFun((int)Operations.UnconfirmedTransaction);
                 if (result != 0)
-                    MessageBox.Show($"Транзакция не переведена в режим \"Неподтверждённая\". Код ошибки: {result}");
+                    GetMessage($"Транзакция не переведена в режим \"Неподтверждённая\". Код ошибки: {result}");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
         //возврат средств
@@ -134,13 +139,13 @@ namespace KassaApp.Models
                 Server.Clear();
                 int result = Server.NFun((int)Operations.Return);
                 if (result != 0)
-                    MessageBox.Show($"Средства НЕ возвращены. Код ошибки: {result}");
+                    GetMessage($"Средства НЕ возвращены. Код ошибки: {result}");
                 else
-                    MessageBox.Show("Средства возвращены");
+                    GetMessage("Средства возвращены");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
         //операция закрытия дня
@@ -151,7 +156,7 @@ namespace KassaApp.Models
                 Server.Clear();
                 int result = Server.NFun((int)Operations.Total);
                 if (result != 0)
-                    MessageBox.Show($"День терминала НЕ закрыт. Код ошибки: {result}");
+                    GetMessage($"День терминала НЕ закрыт. Код ошибки: {result}");
                 else
                 {
                     ReceiptStr = Server.GParamString("Cheque");
@@ -160,7 +165,7 @@ namespace KassaApp.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
         public void GetXReport()
@@ -170,7 +175,7 @@ namespace KassaApp.Models
                 Server.Clear();
                 int result = Server.NFun((int)Operations.XReport);
                 if (result != 0)
-                    MessageBox.Show($"X-отчёт не получен. Код ошибки: {result}");
+                    GetMessage($"X-отчёт не получен. Код ошибки: {result}");
                 else
                 {
                     ReceiptStr = Server.GParamString("Cheque");
@@ -179,7 +184,7 @@ namespace KassaApp.Models
             }
             catch (Exception ex)
             {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
         //действие при удалении объекта класса

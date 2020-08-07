@@ -53,6 +53,8 @@ namespace KassaApp.Forms
             //вывод данных отчёта в текстовое поле
             if (reportsDGV.SelectedRows.Count > 0)
                 reportTB.Text = Encoding.Default.GetString((byte[])reportsDGV.SelectedRows[0].Cells["dataCol"].Value);
+            if (reportsDGV.CurrentRow != null)
+                reportsDGV.CurrentRow.Selected = true;
         }
 
         private void NameFilter(string name)

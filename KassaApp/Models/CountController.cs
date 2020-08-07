@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KassaApp.Forms;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -96,10 +97,15 @@ namespace KassaApp.Models
 					var receipts = db.Receipt.Where(r => r.Paid == false);
 					foreach (var r in receipts)
 					{
-						foreach (var p in r.Purchase)
-							Recover(p.ProductId, p.Count);//восстановление остатков товара
-						db.Receipt.Remove(r);//удаление чека из бд
-						db.Purchase.RemoveRange(db.Purchase.Where(p => p.ReceiptId == r.Id));
+						if (r.Summa == 0 || new Recovery(r).ShowDialog() == DialogResult.No)
+						{
+							foreach (var p in r.Purchase)
+								Recover(p.ProductId, p.Count);//восстановление остатков товара
+							db.Receipt.Remove(r);//удаление чека из бд
+							db.Purchase.RemoveRange(db.Purchase.Where(p => p.ReceiptId == r.Id));
+						}
+						else
+							r.Paid = true;
 					}
 					db.SaveChanges();
 				}

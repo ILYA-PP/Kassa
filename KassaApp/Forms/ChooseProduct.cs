@@ -76,6 +76,10 @@ namespace KassaApp.Forms
                         {
                             //формирование продукта из строки DataGridView
                             product = Product.ProductFromRow(r, null);
+                            if (product.ShelfLife < DateTime.Now)
+                                if (MessageBox.Show($"Срок годности товара \"{product.Name}\" истёк {product.ShelfLife:dd.MM.yyyy}!\n\n" +
+                                    $"Действительно добавить товар в чек?", "Предупреждение", MessageBoxButtons.YesNo) == DialogResult.No)
+                                    return;
                             if (product != null)
                             {
                                 product.Quantity = (int)countNUD.Value;
