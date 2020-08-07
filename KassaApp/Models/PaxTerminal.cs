@@ -22,7 +22,7 @@ namespace KassaApp.Models
             Total = 6000,// Итоги дня 
             UnconfirmedTransaction = 6003,//"Неподверждённая" транзакция
             ConfirmedTransaction = 6001,//"Подверждённая" транзакция
-            XReport = 6002
+            XReport = 6002//получение х-отчёта по картам
         }
         public PaxTerminal()
         {

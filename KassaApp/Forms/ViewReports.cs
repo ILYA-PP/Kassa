@@ -11,6 +11,7 @@ namespace KassaApp.Forms
         public ViewReports()
         {
             InitializeComponent();
+            typeCB.SelectedIndex = 0;
             ViewResult(null);//вывод всех отчётов
         }
         //обработка ввода текста в строку Поиска
@@ -43,7 +44,8 @@ namespace KassaApp.Forms
                 //равна выбранной дате
                 var reports = db.Report.Where(r => r.Date.Year == dateSearchDTP.Value.Year &&
                                                r.Date.Month == dateSearchDTP.Value.Month &&
-                                               r.Date.Day == dateSearchDTP.Value.Day);
+                                               r.Date.Day == dateSearchDTP.Value.Day && 
+                                               r.Name.Contains(typeCB.SelectedItem.ToString()));
                 ViewResult(reports);
             }
         }
