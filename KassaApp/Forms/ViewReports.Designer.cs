@@ -30,8 +30,6 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.label1 = new System.Windows.Forms.Label();
-            this.searchTB = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dateSearchDTP = new System.Windows.Forms.DateTimePicker();
             this.reportTB = new System.Windows.Forms.TextBox();
@@ -50,36 +48,14 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 33);
-            this.label1.TabIndex = 47;
-            this.label1.Text = "Поиск:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // searchTB
-            // 
-            this.searchTB.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.searchTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.searchTB.Location = new System.Drawing.Point(73, 3);
-            this.searchTB.Name = "searchTB";
-            this.searchTB.Size = new System.Drawing.Size(350, 26);
-            this.searchTB.TabIndex = 48;
-            this.searchTB.TextChanged += new System.EventHandler(this.searchTB_TextChanged);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(3, 33);
+            this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 33);
+            this.label2.Size = new System.Drawing.Size(64, 37);
             this.label2.TabIndex = 49;
             this.label2.Text = "Дата:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -89,7 +65,7 @@
             this.dateSearchDTP.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateSearchDTP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dateSearchDTP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dateSearchDTP.Location = new System.Drawing.Point(73, 36);
+            this.dateSearchDTP.Location = new System.Drawing.Point(73, 3);
             this.dateSearchDTP.Name = "dateSearchDTP";
             this.dateSearchDTP.Size = new System.Drawing.Size(350, 26);
             this.dateSearchDTP.TabIndex = 50;
@@ -145,7 +121,7 @@
             this.dataCol,
             this.dateCol});
             this.reportsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.reportsDGV.Location = new System.Drawing.Point(3, 110);
+            this.reportsDGV.Location = new System.Drawing.Point(3, 83);
             this.reportsDGV.Name = "reportsDGV";
             this.reportsDGV.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -156,7 +132,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.reportsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.reportsDGV.Size = new System.Drawing.Size(426, 319);
+            this.reportsDGV.Size = new System.Drawing.Size(426, 346);
             this.reportsDGV.TabIndex = 52;
             this.reportsDGV.SelectionChanged += new System.EventHandler(this.reportsDGV_SelectionChanged);
             // 
@@ -185,7 +161,7 @@
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 107F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(432, 432);
             this.tableLayoutPanel2.TabIndex = 52;
@@ -195,20 +171,18 @@
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 2);
-            this.tableLayoutPanel3.Controls.Add(this.dateSearchDTP, 1, 1);
-            this.tableLayoutPanel3.Controls.Add(this.searchTB, 1, 0);
-            this.tableLayoutPanel3.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.typeCB, 1, 2);
+            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.dateSearchDTP, 1, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.typeCB, 1, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 3;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(426, 101);
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(426, 74);
             this.tableLayoutPanel3.TabIndex = 53;
             // 
             // label3
@@ -216,9 +190,9 @@
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(3, 66);
+            this.label3.Location = new System.Drawing.Point(3, 37);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 35);
+            this.label3.Size = new System.Drawing.Size(64, 37);
             this.label3.TabIndex = 51;
             this.label3.Text = "Тип:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -240,7 +214,7 @@
             "Выплата наличных",
             "Кассовый чек",
             "Чек терминала"});
-            this.typeCB.Location = new System.Drawing.Point(73, 69);
+            this.typeCB.Location = new System.Drawing.Point(73, 40);
             this.typeCB.Name = "typeCB";
             this.typeCB.Size = new System.Drawing.Size(350, 28);
             this.typeCB.TabIndex = 52;
@@ -271,9 +245,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox searchTB;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DateTimePicker dateSearchDTP;
         private System.Windows.Forms.TextBox reportTB;

@@ -21,16 +21,7 @@ namespace KassaApp.Forms
             typeCB.SelectedIndex = 0;
             ViewResult(null);//вывод всех отчётов
         }
-        /// <summary>
-        /// Метод обрабатывает ввод текста в textBox.
-        /// Формирует массив значений, подходящих под параметры запроса.
-        /// </summary>
-        /// <param name="sender">Объект, вызвавщий метод.</param>
-        /// <param name="e">Аргументы события.</param>
-        private void searchTB_TextChanged(object sender, EventArgs e)
-        {
-            NameFilter(searchTB.Text);
-        }
+
         /// <summary>
         /// Метод выводит результат поиска в таблицу формы.
         /// Если результат поиска равен null выводятся все отчёты.

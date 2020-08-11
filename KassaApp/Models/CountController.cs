@@ -121,12 +121,7 @@ namespace KassaApp.Models
 					foreach (var r in receipts)
 					{
 						if (r.Summa == 0 || new Recovery(r).ShowDialog() == DialogResult.No)
-						{
-							foreach (var p in r.Purchase)
-								Recover(p.ProductId, p.Count);//восстановление остатков товара
-							db.Receipt.Remove(r);//удаление чека из бд
-							db.Purchase.RemoveRange(db.Purchase.Where(p => p.ReceiptId == r.Id));
-						}
+							Reconciliation(r);
 						else
 							r.Paid = true;
 					}
