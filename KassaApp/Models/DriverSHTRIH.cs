@@ -8,12 +8,20 @@ using System.Windows.Forms;
 
 namespace KassaApp.Models
 {
-    //класс для работы с драйвером ККТ ШТРИХ-М
-    class DriverSHTRIH: IFiscalRegistrar
+    /// <summary>
+	/// Класс содержит функционал для работы с 
+    /// фискальными регистраторами фирмы ШТРИХ-М.
+	/// </summary>
+    class DriverSHTRIH : IFiscalRegistrar
     {
         private int SysAdminPassword = 0; //пароль сис. админа
         private int OperatorPassword = 0; // пароль текущего пользователя
         protected DrvFR Driver { get; set; }
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет подключение к фискальному регистратору
+        /// и получает пароль сис. админа.
+        /// </summary>
         public DriverSHTRIH()
         {
             //подключение к ККТ при создании объекта класса
@@ -28,22 +36,34 @@ namespace KassaApp.Models
                 SysAdminPassword = Driver.ValueOfFieldInteger;
             }
         }
+        /// <summary>
+		/// Метод выполняет отключение от фискального регистратора при 
+        /// удалении объекта.
+		/// </summary>
         public void Dispose()
         {
             //отключение от ККТ при удалении объекта класса
             Disconnect();
         }
+        /// <summary>
+		/// Метод выполняет отключение от фискального регистратора.
+		/// </summary>
         protected void Disconnect()
         {
             //Отключение от ККТ
             ExecuteAndHandleError(Driver.Disconnect, true);
         }
-        //проверка связи с ККТ
+        /// <summary>
+		/// Метод выполняет проверку подключения к фискальному регистратору.
+		/// </summary>
+        /// <returns>Результат работы метода.</returns>
         public int CheckConnect()
         {
             return ExecuteAndHandleError(Driver.CheckConnection);
         }
-        //подключение к фискальному регистратору
+        /// <summary>
+		/// Метод выполняет подключение к фискальному регистратору.
+		/// </summary>
         protected void Connect()
         {
             var driverData = ConfigurationManager.AppSettings;
@@ -66,12 +86,16 @@ namespace KassaApp.Models
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //вывод, возвращаемых фискальником сообщений
+        /// <summary>
+		/// Метод выводит сообщения, возвращаемые фискальным регистратором.
+		/// </summary>
         private void GetMessage(string message)
         {
             MessageBox.Show(message, "Фискальный регистратор");
         }
-        //вывод возникающих ошибок
+        /// <summary>
+		/// Метод выводит описание ошибок, возвращаемых фискальным регистратором.
+		/// </summary>
         protected void CheckResult(int code, bool ViewMessage)
         {
             if (ViewMessage && code != 0)
@@ -79,7 +103,14 @@ namespace KassaApp.Models
         }
 
         protected delegate int Func();
-        //проверка результата работы метода драйвера ККТ
+        /// <summary>
+		/// Метод выполняет функции фискального регистратора.
+		/// </summary>
+        /// <param name="function">Функция фискального регистратора, 
+        /// которую необходимо выполнить.</param>
+        /// <param name="ViewMessage">Признак необходимости вывода сообщения с результатом
+        /// выполнения метода.</param>
+        /// <returns>Результат работы метода.</returns>
         protected int ExecuteAndHandleError(Func function, bool ViewMessage = false)
         {
             while (true)
@@ -95,7 +126,10 @@ namespace KassaApp.Models
                 }
             }
         }
-        //проверка состояния ККТ перед печатью
+        /// <summary>
+		/// Метод выполняет проверку текущего состояния ККТ и при необходимости
+        /// открывает/закрывает смену или отменяет открытый чек.
+		/// </summary>
         public void PrepareReceipt()
         {
             ExecuteAndHandleError(Driver.WaitForPrinting);
@@ -124,8 +158,13 @@ namespace KassaApp.Models
             }
             ExecuteAndHandleError(Driver.WaitForPrinting);
         }
-        //метод печати нефискальных документов
-        //stringForPrint - строка для печати
+        /// <summary>
+        /// Метод выполняет печать нефискальных документов.
+        /// </summary>
+        /// <param name="receiptStr">Текст документа.</param>
+        /// <param name="receiptName">Название документа.</param>
+        /// <param name="Save">Признак необходимости сохранения чека в базу данных.</param>
+        /// <returns>Результат работы метода.</returns>
         public int Print(string receiptStr, string receiptName, bool Save = true)
         {
             PrepareReceipt();
@@ -173,8 +212,12 @@ namespace KassaApp.Models
                 SaveReport(receiptName, receiptStr);
             return res;
         }
-        //метод формирует и печатает строку
-        //с заданным выравниванием
+        /// <summary>
+        /// Метод формирует строку для печати с необходимым выравниванием.
+        /// </summary>
+        /// <param name="stringForPrint">Строка для форматирования.</param>
+        /// <param name="align">Способ выравнивания.</param>
+        /// <returns>Результат работы метода.</returns>
         private string StringFormatForPrint(string stringForPrint, int align = 0)
         {
             //alignment 0 - left, 1 - center, 2 - right, 
@@ -215,7 +258,12 @@ namespace KassaApp.Models
                 return res;
             }
         }
-        //печать фискального чека
+        /// <summary>
+        /// Метод выполняет печать фискальных чеков.
+        /// </summary>
+        /// <param name="receipt">Чек для печати.</param>
+        /// <param name="cardName">Имя банковской карты.</param>
+        /// <returns>Результат работы метода.</returns>
         public int PrintReceipt(Receipt receipt, string cardName = null)
         {
             if (CheckConnect() == 0)
@@ -370,7 +418,10 @@ namespace KassaApp.Models
             }
             return -1;
         }
-        //печать х отчёта без гашения
+        /// <summary>
+        /// Метод формирует шаблон х-отчёта (без гашения) для сохранения.
+        /// </summary>
+        /// <returns>Результат работы метода.</returns>
         public int PrintXReport()
         {
             string title = GetTitle("СУТОЧНЫЙ ОТЧ. БЕЗ ГАШ.");
@@ -404,7 +455,10 @@ namespace KassaApp.Models
             //печать и сохранение отчёта
             return GetReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)", template);
         }
-        //печать х отчёта по секциям
+        /// <summary>
+        /// Метод формирует шаблон х-отчёта по секциям для сохранения.
+        /// </summary>
+        /// <returns>Результат работы метода.</returns>
         public int PrintXSectionReport()
         {
             //получение шаблона отчёта
@@ -451,7 +505,10 @@ namespace KassaApp.Models
                 //печать и сохранение отчёта
                 return GetReport(Driver.PrintDepartmentReport, "X-отчёт по секциям", template);
         }
-        //печать х отчёта по налогам
+        /// <summary>
+        /// Метод формирует шаблон х-отчёта по налогам для сохранения.
+        /// </summary>
+        /// <returns>Результат работы метода.</returns>
         public int PrintXTaxReport()
         {
             string template = null;
@@ -482,16 +539,26 @@ namespace KassaApp.Models
             //печать и сохранение отчёта
             return GetReport(Driver.PrintTaxReport, "X-отчёт по налогам", template);
         }
+        /// <summary>
+        /// Метод отвечает за открытие смены.
+        /// </summary>
+        /// <returns>Результат работы метода.</returns>
         public int PrintOpenSessionReport()
         {
             return GetReport(Driver.OpenSession, "Отчёт об открытии смены");
         }
-        //печать z отчёта с гашением
+        /// <summary>
+        /// Метод отвечает за закрытие смены.
+        /// </summary>
+        /// <returns>Результат работы метода.</returns>
         public int PrintZReport()
         {
             return GetReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
         }
-        //печать операционных регистров
+        /// <summary>
+        /// Метод формирует шаблон операционных регистров для сохранения.
+        /// </summary>
+        /// <returns>Результат работы метода.</returns>
         public int PrintOperationReg()
         {
             //получение шаблона отчёта
@@ -517,7 +584,11 @@ namespace KassaApp.Models
             //печать и сохранение отчёта
             return GetReport(Driver.PrintOperationReg, "Операционные регистры", template);
         }
-        //внесение наличных
+        /// <summary>
+        /// Метод отвечает за внесение наличных.
+        /// </summary>
+        /// <param name="summ">Сумма внесения.</param>
+        /// <returns>Результат работы метода.</returns>
         public int CashIncome(decimal summ)
         {
             //получение шаблона отчёта
@@ -529,7 +600,11 @@ namespace KassaApp.Models
             //печать и сохранение отчёта
             return GetReport(Driver.CashIncome, "Внесение наличных", template);
         }
-        //выдача ниличных
+        /// <summary>
+        /// Метод отвечает за выплату наличных.
+        /// </summary>
+        /// <param name="summ">Сумма выплаты.</param>
+        /// <returns>Результат работы метода.</returns>
         public int CashOutcome(decimal summ)
         {
             //получение шаблона отчёта
@@ -541,7 +616,13 @@ namespace KassaApp.Models
             //печать и сохранение отчёта
             return GetReport(Driver.CashOutcome, "Выплата наличных", template);
         }
-        //проверка состояния ккт и выполнение печати нефискального отчёта
+        /// <summary>
+        /// Метод отвечает за вызов печати и сохранения отчётов.
+        /// </summary>
+        /// <param name="function">Функция печати.</param>
+        /// <param name="reportName">Имя отчёта.</param>
+        /// <param name="template">Шаблон отчёта.</param>
+        /// <returns>Результат работы метода.</returns>
         private int GetReport(Func function, string reportName, string template = null)
         {
             int res = ExecuteAndHandleError(function, true);
@@ -565,7 +646,11 @@ namespace KassaApp.Models
             }
             return res;
         }
-        //сохранение отчётов в бд
+        /// <summary>
+        /// Метод отвечает сохранение отчётов в базу данных.
+        /// </summary>
+        /// <param name="reportName">Имя отчёта.</param>
+        /// <param name="template">Шаблон отчёта.</param>
         private void SaveReport(string reportName, string template = null)
         {
             //получить статус ккт
@@ -607,7 +692,11 @@ namespace KassaApp.Models
                 }
             }
         }
-        //получить строку операционного регистра
+        /// <summary>
+        /// Метод получает данные строки операционного регистра.
+        /// </summary>
+        /// <param name="number">Номер строки.</param>
+        /// <returns>Данные строки операционного регистра.</returns>
         public RegistrerItem GetOperRegItem(int number)
         {
             Driver.RegisterNumber = number;
@@ -620,7 +709,11 @@ namespace KassaApp.Models
                 };
             return null;
         }
-        //получить строку денежного регистра
+        /// <summary>
+        /// Метод получает данные строки денежного регистра.
+        /// </summary>
+        /// <param name="number">Номер строки.</param>
+        /// <returns>Данные строки денежного регистра.</returns>
         public RegistrerItem GetCashRegItem(int number)
         {
             Driver.RegisterNumber = number;
@@ -633,8 +726,11 @@ namespace KassaApp.Models
                 };
             return null;
         }
-        //метод формирует заголовок отчёта
-        //с указанием названия отчёта (reportName)
+        /// <summary>
+        /// Метод формирует заголовок отчёта.
+        /// </summary>
+        /// <param name="reportName">Имя отчёта.</param>
+        /// <returns>Заголовок отчёта.</returns>
         public string GetTitle(string reportName)
         {
             if (CheckConnect() == 0)

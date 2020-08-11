@@ -4,8 +4,15 @@ using System.Windows.Forms;
 
 namespace KassaApp
 {
+    /// <summary>
+    /// Класс содержит логику работы формы определения скидки на чек.
+    /// </summary>
     public partial class DiscountOnReceipt : Form
     {
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы.
+        /// </summary>
         public DiscountOnReceipt()
         {
             InitializeComponent();
@@ -20,7 +27,12 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //обработка кнопки Ввод
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Ввод.
+        /// Отвечает ввод процента скидки или номера дисконтной карты в чек. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void enterB_Click(object sender, EventArgs e)
         {
             if (discountDataTB.Text != "")
@@ -63,12 +75,22 @@ namespace KassaApp
             else
                 MessageBox.Show("Заполните поле!");
         }
-        //обработка нажатия кнопки Отмена
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Отмена.
+        /// Вызывает метод Close для формы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
         }
-        //обработка изменение выбора способа указания скидки
+        /// <summary>
+        /// Метод обрабатывает выбор значения radioButton.
+        /// Определяет способ определения скидки.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void RB_CheckedChanged(object sender, EventArgs e)
         {
             if (discountProcentRB.Checked)
@@ -77,7 +99,14 @@ namespace KassaApp
                 operationL.Text = "ДК:";
             discountDataTB.Text = "";
         }
-
+        /// <summary>
+        /// Метод обрабатывает нажатие клавиш при вводе текста в textBox.
+        /// Допускает ввод дробных чисел, 
+        /// если вводится процент скидки, или допускает ввод только целых чисел, 
+        /// если вводится номер дисконтной карты.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void discountDataTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(discountProcentRB.Checked)

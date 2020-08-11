@@ -5,9 +5,17 @@ using System.Windows.Forms;
 
 namespace KassaApp
 {
+    /// <summary>
+    /// Класс содержит логику работы формы оплаты.
+    /// </summary>
     public partial class Payment : Form
     {
         private Receipt CurrentReceipt;
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы и установку первичных хначений формы.
+        /// </summary>
+        /// <param name="receipt">Чек, сформированный на главной форме.</param>
         public Payment(Receipt receipt)
         {
             InitializeComponent();
@@ -15,12 +23,22 @@ namespace KassaApp
             resultL.Text = $"Сумма по чеку: {CurrentReceipt.Summa}";
             moneyTB.Text = CurrentReceipt.Summa.ToString();
         }
-        //ограничение вводимых значений в текстбоксы
+        /// <summary>
+        /// Метод обрабатывает нажатие клавиш при вводе текста в textBox.
+        /// Допускает ввод дробных чисел.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void priceTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             TextFormat.TextBoxFormat(sender, e);
         }
-        //расчёт сдачи при вводе суммы вносимых наличных
+        /// <summary>
+        /// Метод обрабатывает ввод текста в textBox.
+        /// отвечает за расчёт сдачи при вводе суммы вносимых наличных.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void moneyTB_TextChanged(object sender, EventArgs e)
         {
             if (moneyTB.Text != "")
@@ -42,12 +60,22 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //закрытие формы
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Отмена.
+        /// Вызывает метод Close для формы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
         }
-        //обработка нажатия кнопки Банковская карта
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Банковская карта.
+        /// Отвечает за оплату покупки по банковской карте.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void nonCashB_Click(object sender, EventArgs e)
         {
             try
@@ -109,7 +137,12 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //обработка нажатия кнопки Наличные
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Наличные.
+        /// Отвечает за оплату покупки наличными.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void cashB_Click(object sender, EventArgs e)
         {
             if (decimal.Parse(moneyTB.Text) < CurrentReceipt.Summa)
@@ -148,7 +181,9 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //отметить чек в БД в таблице Receipt, как оплаченый
+        /// <summary>
+        /// Метод отвечает за отметку чека, как оплаченного, в базе данных.
+        /// </summary>
         private void MarkAsPaid()
         {
             try
@@ -165,7 +200,9 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //отметить чек в БД в таблице Receipt, как оплаченый
+        /// <summary>
+        /// Метод отвечает сохранение данных по чеку в базе данных.
+        /// </summary>
         private void InsertData()
         {
             try
@@ -185,7 +222,13 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //действие при закрытии формы
+        /// <summary>
+        /// Метод обрабатывает событие закрытия формы.
+        /// Отвечает за удаление старого и создание нового чека
+        /// при отказе работать с текущими позициями. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
             using (var db = new KassaDBContext())

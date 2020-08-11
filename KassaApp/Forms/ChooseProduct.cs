@@ -6,15 +6,27 @@ using System.Windows.Forms;
 
 namespace KassaApp.Forms
 {
+    /// <summary>
+    /// Класс содержит логику работы формы выбора товара.
+    /// </summary>
     public partial class ChooseProduct : Form
     {
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы и первичное заполнение таблицы товаров.
+        /// </summary>
         public ChooseProduct()
         {
             InitializeComponent();
             ViewResult(null);
             ActiveControl = productsDGV;
         }
-        //обработка ввода текста в строку Поиска
+        /// <summary>
+        /// Метод обрабатывает ввод текста в textBox.
+        /// Формирует массив значений, подходящих под параметры запроса.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
             using (var db = new KassaDBContext())
@@ -25,7 +37,11 @@ namespace KassaApp.Forms
                 ViewResult(products);
             }
         }
-        //вывод данных о товарах на форму
+        /// <summary>
+        /// Метод выводит результат поиска в таблицу формы.
+        /// Если результат поиска равен null выводятся все продукты.
+        /// </summary>
+        /// <param name="products">Массив, содержащий найденные продукты.</param>
         private void ViewResult(IQueryable<Product> products)
         {
             using (var db = new KassaDBContext())
@@ -61,7 +77,12 @@ namespace KassaApp.Forms
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //обработка нажатия кнопки Ввод
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Ввод.
+        /// Отвечает за вывод выбранного продукта в таблицу формы Main. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void enterB_Click(object sender, EventArgs e)
         {
             try
@@ -145,12 +166,22 @@ namespace KassaApp.Forms
             }
 
         }
-        //обработка нажатия кнопки Отмена
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Отмена.
+        /// Вызывает метод Close для формы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
         }
-
+        /// <summary>
+        /// Метод обрабатывает событие изменения выбора в dataGridView.
+        /// Выделяет строку в которой было выбрано поле.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void productsDGV_SelectionChanged(object sender, EventArgs e)
         {
             if (productsDGV.CurrentRow != null)

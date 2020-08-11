@@ -4,13 +4,25 @@ using System.Windows.Forms;
 
 namespace KassaApp.Forms
 {
+    /// <summary>
+    /// Класс содержит логику работы формы показаний регистров.
+    /// </summary>
     public partial class ViewRegistarers : Form
     {
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы.
+        /// </summary>
         public ViewRegistarers()
         {
             InitializeComponent();
         }
-        //обработка нажатия кнопки Прочитать операционные регистры
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Прочитать операционные регистры.
+        /// Отвечает за вывод операционных регистров в список формы. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void readOperationRegB_Click(object sender, EventArgs e)
         {
             using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
@@ -36,7 +48,12 @@ namespace KassaApp.Forms
                 }
             }
         }
-        //обработка нажатия кнопки Прочитать денежные регистры
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Прочитать денежные регистры.
+        /// Отвечает за вывод денежных регистров в список формы. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void readCashRegB_Click(object sender, EventArgs e)
         {
             using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
@@ -62,7 +79,12 @@ namespace KassaApp.Forms
                 }
             }
         }
-        //обработка нажатия кнопки Печать операционных регистров
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопкипечать операционных регистров.
+        /// Отвечает за печать и сохранение операционных регистров ККТ. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void printOperationRegB_Click(object sender, EventArgs e)
         {
             using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())

@@ -4,13 +4,21 @@ using System.Windows.Forms;
 
 namespace KassaApp.Forms
 {
+    /// <summary>
+    /// Класс содержит логику работы формы внесения/выплаты наличных.
+    /// </summary>
     public partial class CashIncomeOutcome : Form
     {
         private bool IsCashIncome; //указывает назначение формы, Внесение или же Выплата
-        public CashIncomeOutcome(bool operation)
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы и определяет её назначение (внесение или выплата).
+        /// </summary>
+        /// <param name="isCashIncome">Назначение формы: true - внесение, false - выплата.</param>
+        public CashIncomeOutcome(bool isCashIncome)
         {
             InitializeComponent();
-            IsCashIncome = operation;
+            IsCashIncome = isCashIncome;
             if (IsCashIncome)
                 operationL.Text = "Внесение наличных";
             else
@@ -26,7 +34,12 @@ namespace KassaApp.Forms
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //обработка нажатия кнопки Ввод
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Ввод.
+        /// Отвечает за фиксирование внесения или выплаты указанной суммы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void enterB_Click(object sender, EventArgs e)
         {
             decimal summ, res;
@@ -54,12 +67,22 @@ namespace KassaApp.Forms
             else
                 MessageBox.Show("Введите сумму!");
         }
-        //обработка нажатия кнопки Отмена
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Отмена.
+        /// Вызывает метод Close для формы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
         }
-
+        /// <summary>
+        /// Метод обрабатывает нажатие клавиш при вводе текста в textBox.
+        /// Допускает ввод дробных чисел.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void summaTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             //приведение вводимого текста к числовому формату

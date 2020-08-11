@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KassaApp.Models
 {
-    //класс представляющий таблицу БД Report
-    //хранит все печатаемые чеки
+    /// <summary>
+    /// Класс преставляет таблицу Report базы данных
+    /// и предоставляет функционал для работы с ним.
+    /// </summary>
     [Table("Report")]
     public partial class Report
     {

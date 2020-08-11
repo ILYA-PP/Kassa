@@ -5,9 +5,17 @@ using System.Windows.Forms;
 
 namespace KassaApp
 {
+    /// <summary>
+    /// Класс содержит логику работы формы редактирования выбранного продукта.
+    /// </summary>
     public partial class EditProduct : Form
     {
         private Product OldProduct; //переданная строка для изменения
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы и заполнение данных для редактирования.
+        /// </summary>
+        /// <param name="row">Строка, которую надо изменить.</param>
         public EditProduct(DataGridViewRow row)
         {
             InitializeComponent();
@@ -29,12 +37,22 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //ограничение вводимых значений в текстбоксы
+        /// <summary>
+        /// Метод обрабатывает нажатие клавиш при вводе текста в textBox.
+        /// Допускает ввод дробных чисел.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
             TextFormat.TextBoxFormat(sender, e);
         }
-        //обработка нажатия кнопки Ввод
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Ввод.
+        /// Отвечает за проверку корректности и сохранение изменённых данных. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void addProductB_Click(object sender, EventArgs e)
         {
             try
@@ -94,28 +112,52 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //обработка нажатия кнопки Отмена
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Отмена.
+        /// Вызывает метод Close для формы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
             Close();
         }
-        //обработчики кнопок установки фокуса на текстбоксы
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Скидка.
+        /// Устанавливает фокус для поля скидки.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void discountB_Click(object sender, EventArgs e)
         {
             discountTB.Focus();
         }
-
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Количество.
+        /// Устанавливает фокус для поля количества.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void countB_Click(object sender, EventArgs e)
         {
             countNUD.Focus();
         }
-
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Отдел.
+        /// Устанавливает фокус для поля отдела.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void departmentB_Click(object sender, EventArgs e)
         {
             departmentNUD.Focus();
         }
-        //изменение данных в DataGridView
-        //после изменения значений текстовых полей
+        /// <summary>
+        /// Метод обрабатывает ввод текста в textBox.
+        /// Отвечает за изменение данных в DataGridView после изменения значений текстовых полей
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void textBoxs_TextChange(object sender, EventArgs e)
         {
             if (receiptDGV.Rows.Count > 0)

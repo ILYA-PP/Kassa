@@ -3,9 +3,15 @@ namespace KassaApp
     using KassaApp.Models;
     using System.Data.Entity;
 
-    //класс для работы с БД
+    /// <summary>
+	/// Класс представляющий контект базы данных.
+	/// </summary>
     public partial class KassaDBContext : DbContext
     {
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет подключение к базе данных по указанной строке подкючения.
+        /// </summary>
         public KassaDBContext()
             : base("name=KassaDBContext")
         {
@@ -16,7 +22,7 @@ namespace KassaApp
         public virtual DbSet<Purchase> Purchase { get; set; }
         public virtual DbSet<Receipt> Receipt{ get; set; }
         public virtual DbSet<Report> Report { get; set; }
-
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             Database.SetInitializer<KassaDBContext>(null);

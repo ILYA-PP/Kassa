@@ -6,8 +6,11 @@ using System.Windows.Forms;
 
 namespace KassaApp.Models
 {
-    //класс для работы терминалом через драйвер SBRFSRV
-    class PaxTerminal: ITerminal
+    /// <summary>
+	/// Класс содержит функционал для работы с 
+    /// терминалом Pax через драйвер SBRF.
+	/// </summary>
+    class PaxTerminal : ITerminal
     {
         private Server Server { get; set; }
         public string ReceiptStr { get; set; }
@@ -24,31 +27,49 @@ namespace KassaApp.Models
             ConfirmedTransaction = 6001,//"Подверждённая" транзакция
             XReport = 6002//получение х-отчёта по картам
         }
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет создание объекта сервера.
+        /// </summary>
         public PaxTerminal()
         {
             Server = new Server();
         }
-        //получить имя карты
+        /// <summary>
+        /// Метод возвращает имя банковской карты.
+        /// </summary>
+        /// <returns>Имя банквской карты.</returns>
         public string GetCardName()
         {
             return CardName;
         }
-        //вывод, возвращаемых терминалом сообщений
+        /// <summary>
+        /// Метод выводит сообщения, возвращаемые терминалом.
+        /// </summary>
         private void GetMessage(string message)
         {
             MessageBox.Show(message, "Терминал");
         }
-        //получить чек операции
+        /// <summary>
+        /// Метод возвращает чек, сформированный терминалом.
+        /// </summary>
+        /// <returns>Чек терминала.</returns>
         public string GetReceipt()
         {
             return ReceiptStr;
         }
-        //получить имя документа
+        /// <summary>
+        /// Метод возвращает имя документа.
+        /// </summary>
+        /// <returns>Имя документа.</returns>
         public string GetReceiptName()
         {
             return ReceiptName;
         }
-        //проверка, подключен ли терминал
+        /// <summary>
+        /// Метод проверяет связь с терминалом.
+        /// </summary>
+        /// <returns>Призвак подключения терминала.</returns>
         public bool IsEnabled()
         {
             try
@@ -62,7 +83,11 @@ namespace KassaApp.Models
             }
             return false;
         }
-        //операция покупки
+        /// <summary>
+        /// Метод выполняет операцию покупки.
+        /// </summary>
+        /// <param name="sum">Сумма покупки (в рублях).</param>
+        /// <returns>Результат работы метода.</returns>
         public int Purchase(decimal sum)
         {
             try
@@ -86,7 +111,9 @@ namespace KassaApp.Models
             }
             return -1;
         }
-        //отмена транзакции
+        /// <summary>
+        /// Метод выполняет отмену транзакции.
+        /// </summary>
         public void CancelTransaction()
         {
             try
@@ -103,7 +130,9 @@ namespace KassaApp.Models
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //отмена транзакции
+        /// <summary>
+        /// Метод переводит транзакцию в режим "Подтверждённая".
+        /// </summary>
         public void Confirmed()
         {
             try
@@ -117,7 +146,9 @@ namespace KassaApp.Models
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //отмена транзакции
+        /// <summary>
+        /// Метод переводит транзакцию в режим "Неподтверждённая".
+        /// </summary>
         public void Unconfirmed()
         {
             try
@@ -131,7 +162,9 @@ namespace KassaApp.Models
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //возврат средств
+        /// <summary>
+        /// Метод выполняет операцию возврата средств.
+        /// </summary>
         public void Return()
         {
             try
@@ -148,7 +181,9 @@ namespace KassaApp.Models
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //операция закрытия дня
+        /// <summary>
+        /// Метод выполняет операцию закрытия дня.
+        /// </summary>
         public void CloseDay()
         {
             try
@@ -168,6 +203,9 @@ namespace KassaApp.Models
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
+        /// <summary>
+        /// Метод получает x-отчёт по банковским картам.
+        /// </summary>
         public void GetXReport()
         {
             try
@@ -187,7 +225,9 @@ namespace KassaApp.Models
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //действие при удалении объекта класса
+        /// <summary>
+		/// Метод выполняет очистку сервера при удалении объекта.
+		/// </summary>
         public void Dispose()
         {
             Server.Clear();

@@ -1,7 +1,8 @@
 ﻿namespace KassaApp.Models
 {
-    //класс представляет строку 
-    //денежного или операционного регистра
+    /// <summary>
+    /// Класс преставляет строку регистра фискального регистратора.
+    /// </summary>
     class RegistrerItem
     {
         public int Number;

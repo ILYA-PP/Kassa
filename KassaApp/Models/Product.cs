@@ -7,8 +7,10 @@ namespace KassaApp
     using System.Linq;
     using System.Windows.Forms;
 
-    //класс представляющий таблицу БД Product
-    //имеющиеся товары
+    /// <summary>
+    /// Класс преставляет таблицу Product базы данных
+    /// и предоставляет функционал для работы с ним.
+    /// </summary>
     [Table("Product")]
     public partial class Product
     {
@@ -72,7 +74,12 @@ namespace KassaApp
         [StringLength(100)]
         public string BarCode { get; set; }
         public DateTime ShelfLife { get; set; }
-        //метод для формирования объекта класса из строки DataGridView
+        /// <summary>
+		/// Метод формирует объект класса Product из строки DataGridView.
+		/// </summary>
+        /// <param name="row">Строка с данными.</param>
+        /// <param name="receipt">Текущий чек.</param>
+        /// <returns>Сформированный продукт.</returns>
         public static Product ProductFromRow(DataGridViewRow row, Receipt receipt)
         {
             try
@@ -100,7 +107,11 @@ namespace KassaApp
                 return null;
             }
         }
-        //метод для формирования строки DataGridView из объекта класса
+        /// <summary>
+		/// Метод формирует строку DataGridView из объекта класса Product.
+		/// </summary>
+        /// <param name="product">Продукт из которого будет сформирована строка.</param>
+        /// <param name="dgv">DataGridView в который будет добавлена строка.</param>
         public static void RowFromProduct(Product product, DataGridView dgv)
         {
             try
@@ -112,12 +123,17 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //метод для расчёта суммы по позиции
+        /// <summary>
+		/// Метод производит расчёт суммы по позиции.
+		/// </summary>
         public void RowSummCalculate()
         {
             Row_Summ = (Price - Math.Round(Price * (decimal)Discount / 100, 2)) * Quantity;
         }
-
+        /// <summary>
+		/// Метод остаток товара.
+		/// </summary>
+        /// <returns>Остаток товара.</returns>
         public int GetBalance()
         {
             try

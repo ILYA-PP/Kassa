@@ -4,8 +4,10 @@
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    //клас представляет таблицу БД Purchase
-    //продажи конкретного продукта
+    /// <summary>
+    /// Класс преставляет таблицу Purchase базы данных
+    /// и предоставляет функционал для работы с ним.
+    /// </summary>
     [Table("Purchase")]
     public partial class Purchase
     {

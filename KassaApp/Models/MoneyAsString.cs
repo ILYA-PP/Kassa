@@ -3,7 +3,9 @@ using System.Text;
 
 namespace KassaApp.Models
 {
-    //класс формирует пропись суммы
+    /// <summary>
+    /// Класс содержит функцинал для формирования прописи суммы.
+    /// </summary>
     class MoneyAsString
     {
         private static string[] hunds =

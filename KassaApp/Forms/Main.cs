@@ -7,19 +7,34 @@ using System.Windows.Forms;
 
 namespace KassaApp
 {
+    /// <summary>
+    /// Класс содержит логику работы формы чека.
+    /// </summary>
     public partial class Main : Form
     {
         public Receipt receipt;
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы.
+        /// </summary>
         public Main()
         {
             InitializeComponent();
         }
-        //переход на форму скидки на чек
+        /// <summary>
+        /// Метод отвечает за переход на форму установки скидки на чек. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void discountOnReceiptB_Click(object sender, EventArgs e)
         {
             new DiscountOnReceipt().ShowDialog(this);
         }
-        //переход на форму Добавления/Удаления товаров
+        /// <summary>
+        /// Метод отвечает за переход на форму редактирования выбранного товара. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void editB_Click(object sender, EventArgs e)
         {
             //Если выбрана строка, то изменение
@@ -28,7 +43,11 @@ namespace KassaApp
             else
                 MessageBox.Show("Строка не выбрана!");
         }
-        //переход на форму оплаты
+        /// <summary>
+        /// Метод отвечает за переход на форму оплаты. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void paymentB_Click(object sender, EventArgs e)
         {
             if (receipt.Summa == 0)
@@ -38,7 +57,13 @@ namespace KassaApp
             }
             new Payment(receipt).ShowDialog(this);
         }
-        //изменение значений на форме при выборе строки таблицы
+        /// <summary>
+        /// Метод обрабатывает событие изменения выбора в dataGridView.
+        /// Отвечает за изменение значений на форме при выборе строки таблицы 
+        /// и выделяет строку в которой было выбрано поле.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void receiptDGV_SelectionChanged(object sender, EventArgs e)
         {
             //если строка выбрана
@@ -64,12 +89,22 @@ namespace KassaApp
             if(receiptDGV.CurrentRow != null)
                 receiptDGV.CurrentRow.Selected = true;
         }
-        //вывод времени
+        /// <summary>
+        /// Метод обрабатывает событие прошествия интервала времени.
+        /// Отвечает за установку даты и времени на форме 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void timer_Tick(object sender, EventArgs e)
         {
             timeTB.Text = $"{DateTime.Now.ToLocalTime()}"; 
         }
-        //обработка кнопки удаления записи таблицы
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Удалить.
+        /// Отвечает за удаление записи таблицы. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void deleteB_Click(object sender, EventArgs e)
         {
             //если строка выбрана
@@ -100,7 +135,9 @@ namespace KassaApp
                 }
             }
         }
-        //изменение итога при добавлении и удалении записей таблицы
+        /// <summary>
+        /// Метод отвечает за изменение итога при добавлении и удалении записей таблицы.
+        /// </summary>
         private void rowCount_Changed()
         {
             if (receipt != null)
@@ -120,12 +157,20 @@ namespace KassaApp
                 }
             }
         }
-        //изменение значений на форме при добавлении записей таблицы
+        /// <summary>
+        /// Метод обрабатывает событие добавления строки в таблицу.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             rowCount_Changed();
         }
-        //изменение значений на форме при удалении записей таблицы
+        /// <summary>
+        /// Метод обрабатывает событие удаления строки таблицы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void receiptDGV_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             rowCount_Changed();
@@ -150,32 +195,53 @@ namespace KassaApp
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        //изменение значений на форме изменении данных таблицы
+        /// <summary>
+        /// Метод обрабатывает событие изменения значения поля таблицы.
+        /// Отвечает за обновление танных формы. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void receiptDGV_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             rowCount_Changed();
             if (receiptDGV.SelectedRows.Count > 0)
                 receiptDGV_SelectionChanged(null, null);
         }
-        //переход на форму поиска
+        /// <summary>
+        /// Метод отвечает за переход на форму выбора товара. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void searchB_Click(object sender, EventArgs e)
         {
             new ChooseProduct().ShowDialog(this);
         }
-        //действие при закрытии формы
+        /// <summary>
+        /// Метод обрабатывает событие закрытия формы.
+        /// Отвечает за вызов сравнения остатков. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             //сверка остатков по товарам, добавленным в чек
             CountController.Reconciliation(receipt);
         }
-        //обновление данных DataGridView
+        /// <summary>
+        /// Метод отвечает за обновление данных в таблице. 
+        /// </summary>
         public void DGV_Refresh()
         {
             receiptDGV.Rows.Clear();
             foreach (Product p in receipt.Products)
                 Product.RowFromProduct(p, receiptDGV);
         }
-        //действие при загрузке формы
+        /// <summary>
+        /// Метод обрабатывает событие загрузки формы.
+        /// Отвечает вызов сравнения остатков и создание объекта чека. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void Main_Load(object sender, EventArgs e)
         {
             //сверка остатков по всем товарам

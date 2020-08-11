@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KassaApp.Models
 {
-    //класс представляющий таблицу БД Receipt
-    //хранит все пробиваемые чеки
+    /// <summary>
+    /// Класс преставляет таблицу Receipt базы данных
+    /// и предоставляет функционал для работы с ним.
+    /// </summary>
     [Table("Receipt")]
     public partial class Receipt
     {
@@ -48,7 +50,9 @@ namespace KassaApp.Models
         //продукты в чеке
         [NotMapped]
         public List<Product> Products { get; set; }
-        //расчёт суммы по чеку
+        /// <summary>
+		/// Метод производит расчёт суммы по чеку.
+		/// </summary>
         public void CalculateSumm()
         {
             Summa = 0;
@@ -58,6 +62,5 @@ namespace KassaApp.Models
             DiscountSum = Math.Round(Summa * (decimal)Discount / 100, 2);
             Summa -= DiscountSum;
         }
-
     }
 }

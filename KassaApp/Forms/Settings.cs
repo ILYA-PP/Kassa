@@ -5,12 +5,19 @@ using System.Windows.Forms;
 
 namespace KassaApp
 {
+    /// <summary>
+    /// Класс содержит логику работы формы настройки связи.
+    /// </summary>
     public partial class Settings : Form
     {
+        /// <summary>
+        /// Конструктор класса.
+        /// Выполняет инициализацию формы и установку текущих настроек.
+        /// для восстановления.
+        /// </summary>
         public Settings()
         {
             InitializeComponent();
-            //заполнение данных формы текущими настройками
             driverCB.SelectedIndex = 0;
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             try
@@ -27,7 +34,12 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //обработка нажатия кнопки Настройка
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Настройка.
+        /// Устанавливает настройки для фискального регистратора. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void registrSettingsB_Click(object sender, EventArgs e)
         {
             try
@@ -47,13 +59,22 @@ namespace KassaApp
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
         }
-        //действие при изменении значений текстовых полей
+        /// <summary>
+        /// Метод обрабатывает ввод текста в textBox.
+        /// Допускает ввод только целых чисел.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         public void TB_TextChange(object sender, KeyPressEventArgs e)
         {
-            //формат строк, только целые числа
             TextFormat.TextBoxDigitFormat(sender, e);
         }
-        //проверка связи с фискальным регистратором
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Проверка связи фискального регистратора.
+        /// Отвечает за проверку связи с фискальным регистратором. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void checkConnectB_Click(object sender, EventArgs e)
         {
             using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
@@ -62,7 +83,12 @@ namespace KassaApp
                     MessageBox.Show("Фискальный регистратор подключен!");
             }
         }
-        //обработка изменения метки Использовать пароль доступа
+        /// <summary>
+        /// Метод обрабатывает изменение выбора Использовать пароль доступа.
+        /// Отвечает за сохранения настройки использования пароля. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void usePasswordCheckB_CheckedChanged(object sender, EventArgs e)
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -73,7 +99,12 @@ namespace KassaApp
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
         }
-
+        /// <summary>
+        /// Метод обрабатывает нажатие кнопки Проверка связи терминала.
+        /// Отвечает за проверку связи с терминалом. 
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void checkTermlConnectB_Click(object sender, EventArgs e)
         {
             using (ITerminal terminal = CurrentHardware.GetTerminal())
