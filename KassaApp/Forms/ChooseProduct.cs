@@ -17,6 +17,7 @@ namespace KassaApp.Forms
         /// </summary>
         public ChooseProduct()
         {
+            Log.Logger.Info($"Открытие окна Выбора товара...");
             InitializeComponent();
             ViewResult(null);
             ActiveControl = productsDGV;
@@ -126,6 +127,7 @@ namespace KassaApp.Forms
                                                 p.Row_Summ += product.Row_Summ;
                                                 ((Main)Owner).DGV_Refresh();
                                                 db.SaveChanges();
+                                                Log.Logger.Info($"Количество товара (ID = {p.Id}) прибавлен к существующей позиции в чеке");
                                             }
                                             added = true;
                                         }
@@ -135,6 +137,7 @@ namespace KassaApp.Forms
                                     {
                                         //создаётся новая позиция в чеке
                                         ((Main)Owner).receipt.Products.Add(product);
+                                        Log.Logger.Info($"Создана позиция с товаром (ID = {product.Id}) в чеке");
                                         ((Main)Owner).DGV_Refresh();
                                         //данные добавляются в БД в таблицу Purchase
                                         purchase = new Purchase()
@@ -149,6 +152,7 @@ namespace KassaApp.Forms
                                         ((Main)Owner).receipt.Purchase.Add(purchase);
                                         db.Purchase.Add(purchase);
                                         db.SaveChanges();
+                                        Log.Logger.Info($"Добавлена записть в таблицу Purchase базы данных с товаром (ID = {product.Id})");
                                     }
                                     //обновление данных формы
                                     ViewResult(null);
@@ -174,6 +178,7 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
+            Log.Logger.Info("Закрытие окна Выбора товара...");
             Close();
         }
         /// <summary>
