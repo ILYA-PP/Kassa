@@ -52,7 +52,13 @@ namespace KassaApp.Models
         /// <returns>Строка в изменённом формате.</returns>
         public static string GetExceptionMessage(Exception ex)
         {
-            return $"{ex.Message}\n    {ex.GetBaseException().Message}";
+            string mes = "";
+            if (ex.Message != ex.GetBaseException().Message)
+                mes = $"{ex.Message}\n    {ex.GetBaseException().Message}";
+            else
+                mes = $"{ex.Message}";
+            Log.Logger.Error(mes);
+            return mes;
         }
     }
 }

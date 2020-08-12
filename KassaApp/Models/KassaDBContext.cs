@@ -1,6 +1,7 @@
 namespace KassaApp
 {
     using KassaApp.Models;
+    using System.Configuration;
     using System.Data.Entity;
 
     /// <summary>
@@ -15,6 +16,7 @@ namespace KassaApp
         public KassaDBContext()
             : base("name=KassaDBContext")
         {
+            Log.Logger.Info($"Подключение к базе данных: {ConfigurationManager.ConnectionStrings["KassaDBContext"]}");
         }
 
         //наборы данных представляющие таблицы БД

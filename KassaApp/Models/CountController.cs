@@ -24,6 +24,7 @@ namespace KassaApp.Models
 				using (var db = new KassaDBContext())
 				{
 					var productInDB = db.Product.Where(p => p.Name == product.Name).FirstOrDefault();
+					Log.Logger.Info($"Попытка выбрать товар с ID = {product.Id} в количестве {product.Quantity} шт.");
 					//если количество выбранного товара меньше либо равно остатку
 					if (product.Quantity <= productInDB.Quantity)
 					{
@@ -32,11 +33,14 @@ namespace KassaApp.Models
 							//вычесть количество из остатков в бд
 							productInDB.Quantity -= product.Quantity;
 							db.SaveChanges();
+							Log.Logger.Info($"Товар с ID = {product.Id} в количестве {product.Quantity} шт. " +
+								$"вычтен из остатков. Остаток: {productInDB.Quantity - product.Quantity}");
 						}
 						return true;
 					}
 					else
 					{
+						Log.Logger.Info($"Недостаточно товара с ID = {product.Id}. Остаток: {productInDB.Quantity}");
 						MessageBox.Show("Недостаточно товара в наличии!" +
 										$"\nТовар: {productInDB.Name}" +
 										$"\nОстаток: {productInDB.Quantity}");
@@ -68,6 +72,7 @@ namespace KassaApp.Models
 						//прибавить количество к остаткам в бд
 						productInDB.Quantity += count;
 						db.SaveChanges();
+						Log.Logger.Info($"Товар с ID = {id} в количестве {count} шт. восстановлен");
 					}
 					return true;
 				}
@@ -92,12 +97,17 @@ namespace KassaApp.Models
 				using (var db = new KassaDBContext())
 				{
 					foreach (Product p in receipt.Products)
+					{
+						Log.Logger.Info($"Восстановление остатков по товару с ID = {p.Id} в количестве {p.Quantity} шт.");
 						Recover(p.Id, p.Quantity);//восстановление остатков товара
+					}						
 					if (receipt != null)
 					{
 						//удаление чека из бд
 						db.Receipt.Remove(db.Receipt.Where(r => r.Id == receipt.Id).FirstOrDefault());
+						Log.Logger.Info($"Чек с ID = {receipt.Id} удалён из базы данных");
 						db.SaveChanges();
+						Log.Logger.Info($"Сохранение изменений в базе данных");
 					}
 				}
 			}
@@ -118,14 +128,22 @@ namespace KassaApp.Models
 				using (var db = new KassaDBContext())
 				{
 					var receipts = db.Receipt.Where(r => r.Paid == false);
+					Log.Logger.Info($"В базе данных найдено {receipts.Count()} неоплаченных чека");
 					foreach (var r in receipts)
 					{
 						if (r.Summa == 0 || new Recovery(r).ShowDialog() == DialogResult.No)
+						{
+							Log.Logger.Info($"Восстановление остатков по чеку с ID = {r.Id}");
 							Reconciliation(r);
+						}
 						else
+						{
 							r.Paid = true;
+							Log.Logger.Info($"Чек с ID = {r.Id} отмечен, как Оплаченный");
+						}
 					}
 					db.SaveChanges();
+					Log.Logger.Info($"Сохранение изменений в базе данных");
 				}
 			}
 			catch (Exception ex)

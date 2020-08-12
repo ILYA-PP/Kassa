@@ -33,6 +33,7 @@ namespace KassaApp.Models
         /// </summary>
         public PaxTerminal()
         {
+            Log.Logger.Info($"Подключение к терминалу");
             Server = new Server();
         }
         /// <summary>
@@ -72,13 +73,16 @@ namespace KassaApp.Models
         /// <returns>Призвак подключения терминала.</returns>
         public bool IsEnabled()
         {
+            Log.Logger.Info($"Проверка связи с терминалом");
             try
             {
                 if (Server.NFun((int)Operations.PinPadEnabled) == 0)
                     return true;
+                Log.Logger.Info($"Есть связь с терминалом");
             }
             catch (Exception ex)
             {
+                Log.Logger.Info($"Нет связи с терминалом");
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
             return false;
@@ -92,18 +96,25 @@ namespace KassaApp.Models
         {
             try
             {
+                Log.Logger.Info($"Оплата покупки через терминал: {sum} руб.");
                 Server.Clear();
                 Server.SParam("Amount", sum * 100);
                 int result = Server.NFun((int)Operations.Purchase);
                 if (result == 0)
                 {
+                    Log.Logger.Info($"Получение чека");
                     ReceiptStr = Server.GParamString("Cheque");
                     ReceiptName = "Чек терминала";
+                    Log.Logger.Info($"Получение имени карты");
                     CardName = Server.GParamString("CardName");
+                    Log.Logger.Info($"Оплата: Успешно");
                     return result;
                 }
                 else
+                {
+                    Log.Logger.Error($"Ошибка оплаты. Код ошибки: {result}");
                     GetMessage($"Операция НЕ выполнена. Код ошибки: {result}");
+                }
             }
             catch (Exception ex)
             {
@@ -118,12 +129,19 @@ namespace KassaApp.Models
         {
             try
             {
+                Log.Logger.Info($"Отмена транзакции...");
                 Server.Clear();
                 int result = Server.NFun((int)Operations.Cancel);
                 if (result != 0)
+                {
+                    Log.Logger.Error($"Транзакция не отменена. Код ошибки: {result}");
                     GetMessage($"Операция НЕ отменена. Код ошибки: {result}");
+                }
                 else
+                {
+                    Log.Logger.Info($"Транзакция отменена");
                     GetMessage("Операция отменена");
+                }
             }
             catch (Exception ex)
             {
@@ -137,9 +155,13 @@ namespace KassaApp.Models
         {
             try
             {
+                Log.Logger.Info($"Перевод транзакции в режим \"Подтверждённая\"");
                 int result = Server.NFun((int)Operations.ConfirmedTransaction);
                 if (result != 0)
+                {
+                    Log.Logger.Error($"Транзакция не переведена в режим \"Подтверждённая\". Код ошибки: {result}");
                     GetMessage($"Транзакция не переведена в режим \"Подтверждённая\". Код ошибки: {result}");
+                }
             }
             catch (Exception ex)
             {
@@ -153,9 +175,13 @@ namespace KassaApp.Models
         {
             try
             {
+                Log.Logger.Info($"Перевод транзакции в режим \"Неподтверждённая\"");
                 int result = Server.NFun((int)Operations.UnconfirmedTransaction);
                 if (result != 0)
+                {
+                    Log.Logger.Error($"Транзакция не переведена в режим \"Неподтверждённая\". Код ошибки: {result}");
                     GetMessage($"Транзакция не переведена в режим \"Неподтверждённая\". Код ошибки: {result}");
+                }
             }
             catch (Exception ex)
             {
@@ -188,14 +214,20 @@ namespace KassaApp.Models
         {
             try
             {
+                Log.Logger.Info($"Закрытие дня терминала...");
                 Server.Clear();
                 int result = Server.NFun((int)Operations.Total);
                 if (result != 0)
+                {
+                    Log.Logger.Error($"День терминала НЕ закрыт. Код ошибки: {result}");
                     GetMessage($"День терминала НЕ закрыт. Код ошибки: {result}");
+                }
                 else
                 {
+                    Log.Logger.Info($"Получение отчёта о закрытии дня...");
                     ReceiptStr = Server.GParamString("Cheque");
                     ReceiptName = "Z-отчёт по банковским картам";
+                    Log.Logger.Info($"Отчёт получен");
                 }
             }
             catch (Exception ex)
@@ -210,14 +242,19 @@ namespace KassaApp.Models
         {
             try
             {
+                Log.Logger.Info($"Получение X-отчёта по банковским картам...");
                 Server.Clear();
                 int result = Server.NFun((int)Operations.XReport);
                 if (result != 0)
+                {
+                    Log.Logger.Error($"X-отчёт не получен. Код ошибки: {result}");
                     GetMessage($"X-отчёт не получен. Код ошибки: {result}");
+                }
                 else
                 {
                     ReceiptStr = Server.GParamString("Cheque");
                     ReceiptName = "X-отчёт по банковским картам";
+                    Log.Logger.Info($"Отчёт получен");
                 }
             }
             catch (Exception ex)
@@ -230,6 +267,7 @@ namespace KassaApp.Models
 		/// </summary>
         public void Dispose()
         {
+            Log.Logger.Info($"Отключение от терминала");
             Server.Clear();
         }
     }

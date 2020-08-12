@@ -51,7 +51,8 @@ namespace KassaApp.Models
         protected void Disconnect()
         {
             //Отключение от ККТ
-            ExecuteAndHandleError(Driver.Disconnect, true);
+            if(ExecuteAndHandleError(Driver.Disconnect, true) == 0)
+                Log.Logger.Info($"Фискальный регистратор отключен");
         }
         /// <summary>
 		/// Метод выполняет проверку подключения к фискальному регистратору.
@@ -59,7 +60,12 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int CheckConnect()
         {
-            return ExecuteAndHandleError(Driver.CheckConnection);
+            int res = ExecuteAndHandleError(Driver.CheckConnection);
+            if(res == 0)
+                Log.Logger.Info($"Есть связь с ККТ");
+            else
+                Log.Logger.Info($"Нет связи с ККТ");
+            return res;
         }
         /// <summary>
 		/// Метод выполняет подключение к фискальному регистратору.
@@ -79,6 +85,8 @@ namespace KassaApp.Models
                     Timeout = int.Parse(driverData["Timeout"]),
                     Password = int.Parse(driverData["Password"])
                 };
+                Log.Logger.Info($"Подключение к ККТ: Тип подключения = {Driver.ConnectionType}" +
+                    $"COM-порт = {Driver.ComNumber} Скорость обмена = {Driver.BaudRate}");
                 ExecuteAndHandleError(Driver.Connect, true);
             }
             catch (Exception ex)
@@ -99,7 +107,10 @@ namespace KassaApp.Models
         protected void CheckResult(int code, bool ViewMessage)
         {
             if (ViewMessage && code != 0)
+            {
                 GetMessage($"Код: {code}\nОшибка: {Driver.ResultCodeDescription}");
+                Log.Logger.Error($"ККТ: Код: {code} Ошибка: {Driver.ResultCodeDescription}");
+            }
         }
 
         protected delegate int Func();
@@ -152,7 +163,11 @@ namespace KassaApp.Models
                     OperatorPassword = Driver.Password;
                     Driver.Password = SysAdminPassword;
                     if (MessageBox.Show("Открыт другой чек! Отменить чек?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        ExecuteAndHandleError(Driver.SysAdminCancelCheck, true);
+                    {
+                        Log.Logger.Info($"Отмена открытого чека...");
+                        if(ExecuteAndHandleError(Driver.SysAdminCancelCheck, true) == 0)
+                            Log.Logger.Info($"Чек отменён");
+                    }
                     Driver.Password = OperatorPassword;
                     break;
             }
@@ -167,6 +182,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int Print(string receiptStr, string receiptName, bool Save = true)
         {
+            Log.Logger.Info($"Печать нефискального документа...");
             PrepareReceipt();
             //печать документа
             if (receiptStr == null)
@@ -190,10 +206,17 @@ namespace KassaApp.Models
             res = ExecuteAndHandleError(Driver.WaitForPrinting); 
             while (res != 0)
             {
+                Log.Logger.Warn($"Ошибка печати");
                 if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    Log.Logger.Info($"Продолжение печати");
                     ExecuteAndHandleError(Driver.PrintString, true);
+                }
                 else
+                {
+                    Log.Logger.Info($"Отмена печати");
                     break;
+                }
 
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
             }
@@ -204,12 +227,16 @@ namespace KassaApp.Models
                 Driver.StringQuantity = 2;
                 Driver.UseReceiptRibbon = true;
                 ExecuteAndHandleError(Driver.FeedDocument, true);
+                Log.Logger.Info($"Отрезка чека");
                 res = ExecuteAndHandleError(Driver.CutCheck, true);
                 return res;
             }
             //сохранение отчёта
             if (Save)
+            {
+                Log.Logger.Info($"Сохранение чека...");
                 SaveReport(receiptName, receiptStr);
+            }
             return res;
         }
         /// <summary>
@@ -220,6 +247,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         private string StringFormatForPrint(string stringForPrint, int align = 0)
         {
+            Log.Logger.Info("Формирование строки для печати нефискального документа");
             //alignment 0 - left, 1 - center, 2 - right, 
             //3 - пробелы внутри строки
             string r = "", l = "";
@@ -255,6 +283,7 @@ namespace KassaApp.Models
                     else
                         res += str;
                 }
+                Log.Logger.Info("Строка сформирована");
                 return res;
             }
         }
@@ -266,12 +295,14 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int PrintReceipt(Receipt receipt, string cardName = null)
         {
+            Log.Logger.Info($"Печать фискального чека ID = {receipt.Id}...");
             if (CheckConnect() == 0)
             {
                 PrepareReceipt();
                 decimal sum = 0, discountOnProduct = 0, discountOnReceipt = 0, amountDiscount = 0;
                 Driver.CheckType = 0;
                 //Открытие чека
+                Log.Logger.Info("Открытие фискального чека...");
                 if (ExecuteAndHandleError(Driver.OpenCheck, true) != 0)
                     return -1;
                 //if (receipt.Phone != null)
@@ -310,7 +341,8 @@ namespace KassaApp.Models
                         Driver.Tax1 = 2;
                     else if (p.NDS == 0)
                         Driver.Tax1 = 4;
-
+                    Log.Logger.Info($"Фиксация позиции: Товар: {p.Name} Количество: {p.Quantity} " +
+                        $"Цена: {p.Price} Скидка: {discountOnProduct}");
                     if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                         return -1;
                     if(discountOnProduct > 0)
@@ -414,6 +446,7 @@ namespace KassaApp.Models
                 ExecuteAndHandleError(Driver.PrintString);
                 Driver.StringForPrinting = "";
                 //Закрытие чека
+                Log.Logger.Info("Закрытие чека...");
                 return GetReport(Driver.FNCloseCheckEx, "Кассовый чек");   
             }
             return -1;
@@ -424,6 +457,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int PrintXReport()
         {
+            Log.Logger.Info("Формирование отчёта \"СУТОЧНЫЙ ОТЧ. БЕЗ ГАШ.\"...");
             string title = GetTitle("СУТОЧНЫЙ ОТЧ. БЕЗ ГАШ.");
             //получение шаблона отчёта
             string template = $"{title}\r\n" +
@@ -453,6 +487,7 @@ namespace KassaApp.Models
                     $"НАЛ. В КАССЕ: {GetCashRegItem(241).Content}\r\n" +
                     $"ВЫРУЧКА: {GetCashRegItem(121).Content - GetCashRegItem(122).Content - GetCashRegItem(123).Content + GetCashRegItem(124).Content}\r\n";
             //печать и сохранение отчёта
+            Log.Logger.Info("Печать х-отчёта (без гашения)...");
             return GetReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)", template);
         }
         /// <summary>
@@ -461,6 +496,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int PrintXSectionReport()
         {
+            Log.Logger.Info("Формирование отчёта \"ОТЧЁТ ПО СЕКЦИЯМ\"...");
             //получение шаблона отчёта
             int sectionNum = 1;
             decimal resP = 0, resR = 0, resVP = 0, resVR = 0;
@@ -502,8 +538,9 @@ namespace KassaApp.Models
                         $"ВОЗВРАТ ПРИХОДА: {resVP}\r\n" +
                         $"ВОЗВРАТ РАСХОДА: {resVR}\r\n" +
                     $"ВЫРУЧКА: {resP - resR - resVP + resVR}";
-                //печать и сохранение отчёта
-                return GetReport(Driver.PrintDepartmentReport, "X-отчёт по секциям", template);
+            //печать и сохранение отчёта
+            Log.Logger.Info("Печать х-отчёта по секциям...");
+            return GetReport(Driver.PrintDepartmentReport, "X-отчёт по секциям", template);
         }
         /// <summary>
         /// Метод формирует шаблон х-отчёта по налогам для сохранения.
@@ -511,6 +548,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int PrintXTaxReport()
         {
+            Log.Logger.Info("Формирование отчёта \"ОТЧЁТ ПО НАЛОГАМ\"...");
             string template = null;
             //получение шаблона отчёта
             string title = GetTitle("ОТЧЁТ ПО НАЛОГАМ");
@@ -536,6 +574,7 @@ namespace KassaApp.Models
                     $"Оборот по налогу: {0}\r\n" +
                     $"Налог: {0}\r\n";
             }
+            Log.Logger.Info("Печать х-отчёта по налогам...");
             //печать и сохранение отчёта
             return GetReport(Driver.PrintTaxReport, "X-отчёт по налогам", template);
         }
@@ -545,6 +584,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int PrintOpenSessionReport()
         {
+            Log.Logger.Error($"Открытие смены ККТ...");
             return GetReport(Driver.OpenSession, "Отчёт об открытии смены");
         }
         /// <summary>
@@ -553,6 +593,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int PrintZReport()
         {
+            Log.Logger.Error($"Закрытие смены ККТ...");
             return GetReport(Driver.PrintReportWithCleaning, "Z-отчёт (c гашением)");
         }
         /// <summary>
@@ -561,6 +602,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int PrintOperationReg()
         {
+            Log.Logger.Info("Формирование отчёта \"ОПЕРАЦИОННЫЕ РЕГИСТРЫ\"...");
             //получение шаблона отчёта
             string template = null;
             string title = GetTitle("ОПЕРАЦИОННЫЕ РЕГИСТРЫ");
@@ -581,6 +623,7 @@ namespace KassaApp.Models
                 $"НОМЕР ОТЧЁТА ПО НАЛОГАМ: {GetOperRegItem(178).Content}\r\n" +
                 $"НОМЕР ОТЧЁТА ПО КАССИРАМ: {0}\r\n";
             }
+            Log.Logger.Info("Печать операционных регистров...");
             //печать и сохранение отчёта
             return GetReport(Driver.PrintOperationReg, "Операционные регистры", template);
         }
@@ -591,6 +634,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int CashIncome(decimal summ)
         {
+            Log.Logger.Info($"Внесени наличных: {summ}...");
             //получение шаблона отчёта
             string template = null;
             string title = GetTitle("");
@@ -607,6 +651,7 @@ namespace KassaApp.Models
         /// <returns>Результат работы метода.</returns>
         public int CashOutcome(decimal summ)
         {
+            Log.Logger.Info($"Выдача наличных: {summ}...");
             //получение шаблона отчёта
             string template = null;
             string title = GetTitle("");
@@ -630,17 +675,18 @@ namespace KassaApp.Models
             {
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
                 //Ожидание печати чека
-                while (res != 0)
+                Log.Logger.Warn($"Ошибка печати");
+                if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.OK) == DialogResult.OK)
-                        ExecuteAndHandleError(Driver.ContinuePrint, true);
-
-                    res = ExecuteAndHandleError(Driver.WaitForPrinting);
+                    Log.Logger.Info($"Продолжение печати");
+                    ExecuteAndHandleError(Driver.PrintString, true);
                 }
                 //Отрезка чека
                 if (res == 0)
                 {
+                    Log.Logger.Info($"Отрезка чека");
                     res = ExecuteAndHandleError(Driver.CutCheck, true);//отрезка отчёта
+                    Log.Logger.Info($"Сохранение отчёта \"{reportName}\"...");
                     SaveReport(reportName, template);//сохранение отчёта
                 }
             }
@@ -681,6 +727,7 @@ namespace KassaApp.Models
                             db.Report.Add(report);//добавление отчёта
                             db.SaveChanges();//сохранение отчёта
                             GetMessage($"Отчёт \"{reportName}\" сохранён!");
+                            Log.Logger.Info($"Отчёт \"{reportName}\" сохранён!");
                         }
                     }
                 }
@@ -688,7 +735,12 @@ namespace KassaApp.Models
                 {
                     foreach (var validationErrors in dbEx.EntityValidationErrors)
                         foreach (var validationError in validationErrors.ValidationErrors)
+                        {
                             GetMessage($"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}");
+                            Log.Logger.Error($"Ошибка при работе с таблицей Report " +
+                                $"базы данных. Свойство: {validationError.PropertyName} " +
+                                $"Ошибка: {validationError.ErrorMessage}");
+                        }
                 }
             }
         }
@@ -733,6 +785,7 @@ namespace KassaApp.Models
         /// <returns>Заголовок отчёта.</returns>
         public string GetTitle(string reportName)
         {
+            Log.Logger.Info($"Формирование заголовка отчёта...");
             if (CheckConnect() == 0)
             {
                 if (reportName != "")

@@ -75,6 +75,7 @@ namespace KassaApp.Models
 
         public static string Str(double val)
         {
+            Log.Logger.Info($"Формирование прописи суммы: {val}...");
             return Str(val, true,
                 "рубль", "рубля", "рублей",
                 "копейка", "копейки", "копеек");
@@ -120,7 +121,7 @@ namespace KassaApp.Models
 
             //Делаем первую букву заглавной
             r[0] = char.ToUpper(r[0]);
-
+            Log.Logger.Info($"Пропись сформирована: {r}");
             return r.ToString();
         }
     }
