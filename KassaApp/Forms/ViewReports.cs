@@ -17,6 +17,7 @@ namespace KassaApp.Forms
         /// </summary>
         public ViewReports()
         {
+            Log.Logger.Info("Открытие окна Просмотра отчётов...");
             InitializeComponent();
             typeCB.SelectedIndex = 0;
             ViewResult(null);//вывод всех отчётов
@@ -100,6 +101,11 @@ namespace KassaApp.Forms
         {
             if (typeCB.SelectedItem != null)
                 NameFilter(typeCB.SelectedItem.ToString());
+        }
+
+        private void ViewReports_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.Logger.Info("Закрытие окна Просмотра отчётов...");
         }
     }
 }

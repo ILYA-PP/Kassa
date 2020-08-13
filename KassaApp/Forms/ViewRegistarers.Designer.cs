@@ -85,7 +85,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(809, 453);
+            this.tabPage2.Size = new System.Drawing.Size(809, 387);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Операционные регистры";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -97,7 +97,7 @@
             this.operationRegLB.ItemHeight = 20;
             this.operationRegLB.Location = new System.Drawing.Point(3, 3);
             this.operationRegLB.Name = "operationRegLB";
-            this.operationRegLB.Size = new System.Drawing.Size(803, 447);
+            this.operationRegLB.Size = new System.Drawing.Size(803, 381);
             this.operationRegLB.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -182,6 +182,7 @@
             this.ShowIcon = false;
             this.Text = "Показания регистров";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ViewRegistarers_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);

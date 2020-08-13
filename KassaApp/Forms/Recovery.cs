@@ -18,6 +18,7 @@ namespace KassaApp.Forms
         /// </summary>
         public Recovery(Receipt receipt)
         {
+            Log.Logger.Info("Открытие окна Восстановления остатков...");
             InitializeComponent();
             Receipt = receipt;
             totalL.Text = string.Format("Итог по чеку: {0:f}", receipt.Summa);
@@ -51,6 +52,11 @@ namespace KassaApp.Forms
         private void notPaidB_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.No;
+        }
+
+        private void Recovery_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.Logger.Info("Закрытие окна Восстановления остатков...");
         }
     }
 }

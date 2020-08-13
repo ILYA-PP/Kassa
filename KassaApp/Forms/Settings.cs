@@ -17,6 +17,7 @@ namespace KassaApp
         /// </summary>
         public Settings()
         {
+            Log.Logger.Info("Открытие окна Настройки связи...");
             InitializeComponent();
             driverCB.SelectedIndex = 0;
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -114,6 +115,11 @@ namespace KassaApp
                 else
                     MessageBox.Show("Подключение отсутствует!");
             }
+        }
+
+        private void Settings_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.Logger.Info("Открытие окна Настройки связи...");
         }
     }
 }

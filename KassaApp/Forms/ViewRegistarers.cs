@@ -15,6 +15,7 @@ namespace KassaApp.Forms
         /// </summary>
         public ViewRegistarers()
         {
+            Log.Logger.Info("Открытие окна Просмотра регистров...");
             InitializeComponent();
         }
         /// <summary>
@@ -92,6 +93,11 @@ namespace KassaApp.Forms
                 if (fr.CheckConnect() == 0)
                     fr.PrintOperationReg(); //Печать операционных регистров
             }
+        }
+
+        private void ViewRegistarers_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.Logger.Info("Закрытие окна Просмотра регистров...");
         }
     }
 }
