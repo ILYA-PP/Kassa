@@ -15,6 +15,7 @@ namespace KassaApp
         /// </summary>
         public DiscountOnReceipt()
         {
+            Log.Logger.Info("Открытие окна Установки скидки на чек...");
             InitializeComponent();
         }
         //обработка нажатия горячих клавиш
@@ -48,6 +49,7 @@ namespace KassaApp
                             ((Main)Owner).receipt.Discount = double.Parse(discountDataTB.Text);
                             ((Main)Owner).receipt.CalculateSumm();
                             ((Main)Owner).DGV_Refresh();
+                            Log.Logger.Info($"Установлен процент скидки в размере {discountDataTB.Text}%");
                             MessageBox.Show("Скидка на чек установлена!");
                             Close();
                         }
@@ -64,6 +66,7 @@ namespace KassaApp
                         {
                             ((Main)Owner).receipt.DiscountCard = discountDataTB.Text;
                             ((Main)Owner).DGV_Refresh();
+                            Log.Logger.Info($"Установлен номер дисконтной карты {discountDataTB.Text}");
                             MessageBox.Show("Дисконтная карта установлена!");
                             Close();
                         }
@@ -83,6 +86,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
+            Log.Logger.Info("Закрытие окна Установки скидки на чек...");
             Close();
         }
         /// <summary>
