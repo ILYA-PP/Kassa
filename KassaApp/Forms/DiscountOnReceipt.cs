@@ -114,7 +114,7 @@ namespace KassaApp
         private void discountDataTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(discountProcentRB.Checked)
-                TextFormat.TextBoxFormat(sender, e);
+                TextFormat.TextBoxDoubleFormat(sender, e);
             else
                 TextFormat.TextBoxDigitFormat(sender, e);
         }

@@ -32,7 +32,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события</param>
         private void priceTB_KeyPress(object sender, KeyPressEventArgs e)
         {
-            TextFormat.TextBoxFormat(sender, e);
+            TextFormat.TextBoxDoubleFormat(sender, e);
         }
         /// <summary>
         /// Метод обрабатывает ввод текста в textBox.
@@ -218,6 +218,7 @@ namespace KassaApp
                     rec.Summa = CurrentReceipt.Summa; //сумма по чеку
                     rec.Payment = CurrentReceipt.Payment;//способ оплаты
                     rec.DiscountCard = CurrentReceipt.DiscountCard;//дк
+                    Log.Logger.Info($"Вставка данных о чеке: Скидка: {rec.Discount} Сумма: {rec.Summa} Способ оплаты: {rec.Payment} ДК: {rec.DiscountCard}");
                     db.SaveChanges();
                 }
             }
@@ -246,7 +247,8 @@ namespace KassaApp
                     var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id && p.Paid == false).FirstOrDefault();
                     if (r != null)
                         CountController.Reconciliation(CurrentReceipt); //сверка остатков
-                    db.Receipt.Add(((Main)Owner).receipt);//добавление нового чека
+                    ((Main)Owner).receipt = db.Receipt.Add(((Main)Owner).receipt);//добавление нового чека
+                    Log.Logger.Info($"Создан чек (ID = {((Main)Owner).receipt.Id})");
                     db.SaveChanges();
                 }
             }

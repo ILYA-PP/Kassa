@@ -16,7 +16,7 @@ namespace KassaApp.Models
         /// </summary>
         /// <param name="sender">Объект, вызвавщий метод.</param>
         /// <param name="e">Аргументы события.</param>
-        public static void TextBoxFormat(object sender, KeyPressEventArgs e)
+        public static void TextBoxDoubleFormat(object sender, KeyPressEventArgs e)
         {
             var tb = (TextBox)sender;
             //ввод только чисел, точек и удаление 

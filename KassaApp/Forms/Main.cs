@@ -69,10 +69,10 @@ namespace KassaApp
         {
             //если строка выбрана
             //изменение значений полей Без скидки, Скидка, Итог, Сумма и отдел
-            if(receiptDGV.SelectedRows.Count > 0)
+            if (receiptDGV.SelectedRows.Count > 0)
             {
                 Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt);
-                if(product != null)
+                if (product != null)
                 {
                     nameL.Text = product.Name;
                     summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}  Отд: {product.Department}";
@@ -83,10 +83,13 @@ namespace KassaApp
                     else
                         shelfLifeL.BackColor = remainsL.BackColor;
                     barCodeL.Text = $"ШК: {product.BarCode}";
-                } 
+                }
             }
             else
+            {
                 nameL.Text = shelfLifeL.Text = barCodeL.Text = summL.Text = remainsL.Text = "";
+                shelfLifeL.BackColor = remainsL.BackColor;
+            }
             if(receiptDGV.CurrentRow != null)
                 receiptDGV.CurrentRow.Selected = true;
         }
@@ -120,6 +123,7 @@ namespace KassaApp
                 {
                     using (var db = new KassaDBContext())
                     {
+                        Log.Logger.Info($"Удаление данных о покупке из таблицы Purchase");
                         //удаление из БД из таблицы Purchase
                         var purchase = db.Purchase.Where(p => p.ProductId == product.Id && p.ReceiptId == receipt.Id).FirstOrDefault();
                         db.Purchase.Remove(purchase);
@@ -257,7 +261,7 @@ namespace KassaApp
                 receipt = new Receipt();
                 receipt = db.Receipt.Add(receipt);
                 db.SaveChanges();
-                Log.Logger.Info($"Создан чек (ID = {db.Receipt.ToList().Max().Id})");
+                Log.Logger.Info($"Создан чек (ID = {receipt.Id})");
                 timer.Start();
             }
         }

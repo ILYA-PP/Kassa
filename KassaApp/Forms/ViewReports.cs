@@ -32,6 +32,7 @@ namespace KassaApp.Forms
         {
             using (var db = new KassaDBContext())
             {
+                Log.Logger.Info($"Получение списка отчётов");
                 reportsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех отчётах
@@ -53,6 +54,7 @@ namespace KassaApp.Forms
         {
             using (var db = new KassaDBContext())
             {
+                Log.Logger.Info($"Получение списка отчётов по дате и типу");
                 //получение отчётов дата добавления которых
                 //равна выбранной дате
                 var reports = db.Report.Where(r => r.Date.Year == dateSearchDTP.Value.Year &&
@@ -84,6 +86,7 @@ namespace KassaApp.Forms
         {
             using (var db = new KassaDBContext())
             {
+                Log.Logger.Info($"Получение списка отчётов, название которых содержит \"{name}\"");
                 //получение отчётов название которых
                 //содержит введённый в поисковую строку текст
                 var reports = db.Report.Where(p => p.Name.Contains(name));

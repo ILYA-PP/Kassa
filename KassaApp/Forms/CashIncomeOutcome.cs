@@ -91,7 +91,7 @@ namespace KassaApp.Forms
         private void summaTB_KeyPress(object sender, KeyPressEventArgs e)
         {
             //приведение вводимого текста к числовому формату
-            TextFormat.TextBoxFormat(sender, e);
+            TextFormat.TextBoxDoubleFormat(sender, e);
         }
     }
 }

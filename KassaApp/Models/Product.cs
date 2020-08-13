@@ -93,6 +93,7 @@ namespace KassaApp
                     using (var db = new KassaDBContext())
                     {
                         string name = row.Cells["nameCol"].Value.ToString();
+                        Log.Logger.Info($"Получение товара по имени \"{name}\"");
                         int count = int.Parse(row.Cells["countCol"].Value.ToString());
                         product = db.Product.Where(p => p.Name == name).FirstOrDefault();
                         product.Quantity = count;
@@ -140,7 +141,9 @@ namespace KassaApp
             {
                 using (var db = new KassaDBContext())
                 {
-                    return db.Product.Where(p => p.Id == Id).FirstOrDefault().Quantity;
+                    var product = db.Product.Where(p => p.Id == Id).FirstOrDefault();
+                    Log.Logger.Info($"Получение остатка товара (ID = {product.Id})");
+                    return product.Quantity;
                 }
             }
             catch (Exception ex)

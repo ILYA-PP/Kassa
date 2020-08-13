@@ -24,6 +24,7 @@ namespace KassaApp.Forms
             totalL.Text = string.Format("Итог по чеку: {0:f}", receipt.Summa);
             using (var db = new KassaDBContext())
             {
+                Log.Logger.Info($"Получение товаров чека (ID = {Receipt.Id})");
                 foreach (var purchase in receipt.Purchase)
                 {
                     var product = db.Product.Where(prod => prod.Id == purchase.ProductId).FirstOrDefault();

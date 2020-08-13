@@ -32,6 +32,7 @@ namespace KassaApp.Forms
         {
             using (var db = new KassaDBContext())
             {
+                Log.Logger.Info($"Получение товаров, название которых содержит \"{searchTB.Text}\"");
                 //получение продуктов название которых
                 //содержит введённый в поисковую строку текст
                 var products = db.Product.Where(p => p.Name.Contains(searchTB.Text));
@@ -47,6 +48,7 @@ namespace KassaApp.Forms
         {
             using (var db = new KassaDBContext())
             {
+                Log.Logger.Info($"Получение списка товаров");
                 productsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех товарах
@@ -90,6 +92,7 @@ namespace KassaApp.Forms
             {
                 using (var db = new KassaDBContext())
                 {
+                    Log.Logger.Info($"Получение товара, выбранного в списке");
                     Product product;
                     Purchase purchase;
                     //если продукт выбран

@@ -46,7 +46,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события</param>
         private void OnlyDigit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            TextFormat.TextBoxFormat(sender, e);
+            TextFormat.TextBoxDoubleFormat(sender, e);
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки Ввод.
@@ -75,7 +75,9 @@ namespace KassaApp
                             Discount = double.Parse(discountTB.Text),
                             NDS = OldProduct.NDS,
                             Department = (int)departmentNUD.Value,
-                            Type = OldProduct.Type
+                            Type = OldProduct.Type,
+                            ShelfLife = OldProduct.ShelfLife,
+                            BarCode = OldProduct.BarCode  
                         };
                         product.RowSummCalculate();
                         product.Quantity -= OldProduct.Quantity;
@@ -91,7 +93,8 @@ namespace KassaApp
                             //обновление данных в БД в таблице Purchase
                             var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
                             oldP.Count = product.Quantity;
-                            oldP.Summa = (decimal)product.Row_Summ;
+                            oldP.Summa = product.Row_Summ;
+                            Log.Logger.Info($"Изменение данных о покупке в таблице Purchase");
                             Log.Logger.Info($"Новые данные: Товар: {product.Name} " +
                             $"Количество: {product.Quantity} " +
                             $"Отдел: {product.Department} Скидка: {product.Discount}");

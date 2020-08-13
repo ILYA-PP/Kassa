@@ -34,7 +34,7 @@ namespace KassaApp.Models
 							productInDB.Quantity -= product.Quantity;
 							db.SaveChanges();
 							Log.Logger.Info($"Товар с ID = {product.Id} в количестве {product.Quantity} шт. " +
-								$"вычтен из остатков. Остаток: {productInDB.Quantity - product.Quantity}");
+								$"вычтен из остатков. Остаток: {productInDB.Quantity}");
 						}
 						return true;
 					}
@@ -107,7 +107,6 @@ namespace KassaApp.Models
 						db.Receipt.Remove(db.Receipt.Where(r => r.Id == receipt.Id).FirstOrDefault());
 						Log.Logger.Info($"Чек с ID = {receipt.Id} удалён из базы данных");
 						db.SaveChanges();
-						Log.Logger.Info($"Сохранение изменений в базе данных");
 					}
 				}
 			}
@@ -143,7 +142,6 @@ namespace KassaApp.Models
 						}
 					}
 					db.SaveChanges();
-					Log.Logger.Info($"Сохранение изменений в базе данных");
 				}
 			}
 			catch (Exception ex)

@@ -3,10 +3,11 @@ namespace KassaApp
     using KassaApp.Models;
     using System.Configuration;
     using System.Data.Entity;
+    using System.Windows.Forms;
 
     /// <summary>
-	/// Класс представляющий контект базы данных.
-	/// </summary>
+    /// Класс представляющий контект базы данных.
+    /// </summary>
     public partial class KassaDBContext : DbContext
     {
         /// <summary>
@@ -16,7 +17,8 @@ namespace KassaApp
         public KassaDBContext()
             : base("name=KassaDBContext")
         {
-            Log.Logger.Info($"Подключение к базе данных: {ConfigurationManager.ConnectionStrings["KassaDBContext"]}");
+            Log.Logger.Info($"Подключение к базе данных: " +
+                $"{ConfigurationManager.ConnectionStrings["KassaDBContext"].ToString().Replace("|DataDirectory|", Application.StartupPath)}");
         }
 
         //наборы данных представляющие таблицы БД
