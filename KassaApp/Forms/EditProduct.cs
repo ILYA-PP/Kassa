@@ -18,6 +18,7 @@ namespace KassaApp
         /// <param name="row">Строка, которую надо изменить.</param>
         public EditProduct(DataGridViewRow row)
         {
+            Log.Logger.Info("Открытие окна Редактирования товара...");
             InitializeComponent();
             OldProduct = Product.ProductFromRow(row, null);
             try
@@ -61,6 +62,9 @@ namespace KassaApp
                 {
                     if (countNUD.Value != 0 && discountTB.Text != "")
                     {
+                        Log.Logger.Info($"Старые данные: Товар: {OldProduct.Name} " +
+                            $"Количество: {OldProduct.Quantity} " +
+                            $"Отдел: {OldProduct.Department} Скидка: {OldProduct.Discount}");
                         //создание продукта с изменёнными данными
                         Product product = new Product()
                         {
@@ -88,6 +92,9 @@ namespace KassaApp
                             var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
                             oldP.Count = product.Quantity;
                             oldP.Summa = (decimal)product.Row_Summ;
+                            Log.Logger.Info($"Новые данные: Товар: {product.Name} " +
+                            $"Количество: {product.Quantity} " +
+                            $"Отдел: {product.Department} Скидка: {product.Discount}");
                             db.SaveChanges();
                         }
                         Close();
@@ -120,6 +127,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
+            Log.Logger.Info("Закрытие окна Установки скидки на чек...");
             Close();
         }
         /// <summary>
