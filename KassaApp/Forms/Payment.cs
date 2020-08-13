@@ -18,6 +18,7 @@ namespace KassaApp
         /// <param name="receipt">Чек, сформированный на главной форме.</param>
         public Payment(Receipt receipt)
         {
+            Log.Logger.Info("Открытие окна Оплаты...");
             InitializeComponent();
             CurrentReceipt = receipt;
             resultL.Text = $"Сумма по чеку: {CurrentReceipt.Summa}";
@@ -80,6 +81,7 @@ namespace KassaApp
         {
             try
             {
+                Log.Logger.Info($"Оплата через терминал сумма = {CurrentReceipt.Summa}");
                 messageL.Text = "Идёт процесс оплаты через терминал";
                 this.Enabled = false; //блокировка формы
                 panel1.Visible = true; //показать панель сообщений
@@ -152,6 +154,7 @@ namespace KassaApp
             }
             try
             {
+                Log.Logger.Info($"Оплата наличными сумма = {CurrentReceipt.Summa}");
                 messageL.Text = "Оплата наличными";
                 this.Enabled = false; //блокировка формы
                 panel1.Visible = true; //показать панель сообщений
@@ -193,6 +196,7 @@ namespace KassaApp
                     var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
                     rec.Paid = true; //признак оплаты чека
                     db.SaveChanges();
+                    Log.Logger.Info($"Чек с ID = {rec.Id} отмечен, как Оплаченный");
                 }
             }
             catch (Exception ex)
@@ -231,6 +235,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Log.Logger.Info("Закрытие окна Меню...");
             using (var db = new KassaDBContext())
             {
                 //если в диалоговом окне выбрано Нет
