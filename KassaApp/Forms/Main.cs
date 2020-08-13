@@ -19,6 +19,7 @@ namespace KassaApp
         /// </summary>
         public Main()
         {
+            Log.Logger.Info("Открытие окна Регистрации продаж...");
             InitializeComponent();
         }
         /// <summary>
@@ -131,6 +132,9 @@ namespace KassaApp
                         receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
                         //восстановление остатка
                         CountController.Recover(product.Id, product.Quantity);
+                        Log.Logger.Info($"Удалена позиция чека: " +
+                            $"{product.Name} | {product.Quantity} | " +
+                            $"{product.Price} | {product.Row_Summ}");
                     }
                 }
             }
@@ -224,6 +228,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Log.Logger.Info("Закрытие окна Регистрации продаж...");
             //сверка остатков по товарам, добавленным в чек
             CountController.Reconciliation(receipt);
         }
@@ -252,6 +257,7 @@ namespace KassaApp
                 receipt = new Receipt();
                 receipt = db.Receipt.Add(receipt);
                 db.SaveChanges();
+                Log.Logger.Info($"Создан чек (ID = {db.Receipt.ToList().Max().Id})");
                 timer.Start();
             }
         }
