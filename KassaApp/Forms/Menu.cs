@@ -18,6 +18,7 @@ namespace KassaApp
         /// </summary>
         public Menu()
         {
+            Log.Logger.Info("Открытие окна Меню...");
             InitializeComponent();
             //путь к рабочей папке
             AppDomain.CurrentDomain.SetData("DataDirectory", Application.StartupPath);
@@ -276,6 +277,11 @@ namespace KassaApp
                         MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
                 }
             }
+        }
+
+        private void Menu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.Logger.Info("Закрытие окна Меню...");
         }
     }
 }
