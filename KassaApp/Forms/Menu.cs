@@ -14,7 +14,7 @@ namespace KassaApp
         /// <summary>
         /// Конструктор класса.
         /// Выполняет инициализацию формы, устанавливает путь к рабочей папке
-        /// и вызывает метод проверси состояния ККТ.
+        /// и вызывает метод проверки состояния ККТ.
         /// </summary>
         public Menu()
         {
@@ -36,12 +36,8 @@ namespace KassaApp
         private void регистрацияПродажToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //проверка пароля
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            new Main().Show();
+            if (CheckPassword())
+                new Main().Show();
         }
         /// <summary>
         /// Метод отвечает за переход на форму настройки связи. 
@@ -50,13 +46,9 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void настройкаСвязиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //проверка пароля
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            new Settings().Show();
+            //проверка пароля и переход на форму настройки связи
+            if (CheckPassword())
+                new Settings().Show();
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки Отчет по банковским картам.
@@ -66,30 +58,26 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void отчётыПоБанковскимКартамToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            using (ITerminal terminal = CurrentHardware.GetTerminal())
-            {
-                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+            if (CheckPassword())
+                using (ITerminal terminal = CurrentHardware.GetTerminal())
                 {
-                    //проверка связи с терминалом
-                    if (terminal.IsEnabled())
+                    using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                     {
-                        //проверка связи с фискальным регистратором
-                        if (fr.CheckConnect() == 0)
+                        //проверка связи с терминалом
+                        if (terminal.IsEnabled())
                         {
-                            //формирование отчета
-                            terminal.CloseDay();
-                            fr.Print(terminal.GetReceipt(), terminal.GetReceiptName());//печать чека терминала
+                            //проверка связи с фискальным регистратором
+                            if (fr.CheckConnect() == 0)
+                            {
+                                //формирование отчета
+                                terminal.CloseDay();
+                                fr.Print(terminal.GetReceipt(), terminal.GetReceiptName());//печать чека терминала
+                            }
                         }
+                        else
+                            MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
                     }
-                    else
-                        MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
                 }
-            }
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки Z-отчёт (с гашением).
@@ -99,16 +87,12 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void zотчётсГашениемToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
-            {
-                if (fr.CheckConnect() == 0)
-                    fr.PrintZReport();
-            }
+            if (CheckPassword())
+                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+                {
+                    if (fr.CheckConnect() == 0)
+                        fr.PrintZReport();
+                }
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки х-отчёт По Налогам.
@@ -118,16 +102,12 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void хотчётПоНалогамToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
-            {
-                if (fr.CheckConnect() == 0)
-                    fr.PrintXTaxReport();
-            }
+            if (CheckPassword())
+                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+                {
+                    if (fr.CheckConnect() == 0)
+                        fr.PrintXTaxReport();
+                }
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки х-отчёт По Секциям.
@@ -137,16 +117,12 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void хотчётПоСекциямToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
-            {
-                if (fr.CheckConnect() == 0)
-                    fr.PrintXSectionReport();
-            }
+            if (CheckPassword())
+                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+                {
+                    if (fr.CheckConnect() == 0)
+                        fr.PrintXSectionReport();
+                }
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки х-отчёт без Гашения.
@@ -156,16 +132,12 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void хотчётбезГашенияToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
-            {
-                if (fr.CheckConnect() == 0)
-                    fr.PrintXReport();
-            }
+            if (CheckPassword())
+                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+                {
+                    if (fr.CheckConnect() == 0)
+                        fr.PrintXReport();
+                }
         }
         /// <summary>
         /// Метод отвечает за проверку пароля, 
@@ -181,6 +153,7 @@ namespace KassaApp
                 return true;
             if (usePass == "0")
                 return true;
+            MessageBox.Show("Неверный пароль!");
             return false;
         }
         /// <summary>
@@ -190,13 +163,9 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void просмотрОтчётовToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
             //переход на форму просмотра отчётов
-            new ViewReports().ShowDialog();
+            if (CheckPassword())
+                new ViewReports().ShowDialog();
         }
         /// <summary>
         /// Метод отвечает за переход на форму внесения/выдачи наличных.
@@ -206,13 +175,9 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void внесениеНаличныхToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
             //переход на форму внесения/выплаты наличных
-            new CashIncomeOutcome(true).ShowDialog();
+            if (CheckPassword())
+                new CashIncomeOutcome(true).ShowDialog();
         }
         /// <summary>
         /// Метод отвечает за переход на форму внесения/выдачи наличных.
@@ -222,13 +187,8 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void выплатаНаличныхToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            //переход на форму внесения/выплаты наличных
-            new CashIncomeOutcome(false).ShowDialog();
+            if (CheckPassword())
+                new CashIncomeOutcome(false).ShowDialog();
         }
         /// <summary>
         /// Метод отвечает за переход на форму показаний регистров.
@@ -237,13 +197,8 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void показанияОегистровToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            //переход на форму просмотра регистров
-            new ViewRegistarers().ShowDialog();           
+            if (CheckPassword())
+                new ViewRegistarers().ShowDialog();           
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки х-отчёт по банковским картам.
@@ -253,32 +208,33 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (!CheckPassword())
-            {
-                MessageBox.Show("Неверный пароль!");
-                return;
-            }
-            using (ITerminal terminal = CurrentHardware.GetTerminal())
-            {
-                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+            if (CheckPassword())
+                using (ITerminal terminal = CurrentHardware.GetTerminal())
                 {
-                    //проверка связи с терминалом
-                    if (terminal.IsEnabled())
+                    using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                     {
-                        //проверка связи с фискальным регистратором
-                        if (fr.CheckConnect() == 0)
+                        //проверка связи с терминалом
+                        if (terminal.IsEnabled())
                         {
-                            //формирование отчета
-                            terminal.GetXReport();
-                            fr.Print(terminal.GetReceipt(), terminal.GetReceiptName());//печать чека терминала
+                            //проверка связи с фискальным регистратором
+                            if (fr.CheckConnect() == 0)
+                            {
+                                //формирование отчета
+                                terminal.GetXReport();
+                                fr.Print(terminal.GetReceipt(), terminal.GetReceiptName());//печать чека терминала
+                            }
                         }
+                        else
+                            MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
                     }
-                    else
-                        MessageBox.Show("Терминал не подключен! Проверьте подключение и повторите попытку.");
                 }
-            }
         }
-
+        /// <summary>
+        /// Метод обрабатывает событие закрытия формы.
+        /// Отвечает за запись информации о закрытии окна в лог.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void Menu_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Logger.Info("Закрытие окна Меню...");
