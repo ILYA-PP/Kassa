@@ -123,6 +123,7 @@
             this.comPortTB.Name = "comPortTB";
             this.comPortTB.Size = new System.Drawing.Size(127, 26);
             this.comPortTB.TabIndex = 9;
+            this.comPortTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // exchangeSpeedTB
             // 
@@ -131,6 +132,7 @@
             this.exchangeSpeedTB.Name = "exchangeSpeedTB";
             this.exchangeSpeedTB.Size = new System.Drawing.Size(127, 26);
             this.exchangeSpeedTB.TabIndex = 8;
+            this.exchangeSpeedTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // label3
             // 

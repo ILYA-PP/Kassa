@@ -105,7 +105,12 @@ namespace KassaApp.Forms
             if (typeCB.SelectedItem != null)
                 NameFilter(typeCB.SelectedItem.ToString());
         }
-
+        /// <summary>
+        /// Метод обрабатывает событие закрытия формы.
+        /// Отвечает за запись информации о закрытии окна в лог.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void ViewReports_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Logger.Info("Закрытие окна Просмотра отчётов...");

@@ -21,10 +21,24 @@ namespace KassaApp
             InitializeComponent();
             driverCB.SelectedIndex = 0;
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            int baudRate;
             try
             {
                 comPortTB.Text = config.AppSettings.Settings["ComNumber"].Value;
-                exchangeSpeedTB.Text = config.AppSettings.Settings["BaudRate"].Value;
+                switch (config.AppSettings.Settings["BaudRate"].Value)
+                {
+                    case "0": baudRate = 2400; break;
+                    case "1": baudRate = 4800; break;
+                    case "2": baudRate = 9600; break;
+                    case "3": baudRate = 19200; break;
+                    case "4": baudRate = 38400; break;
+                    case "5": baudRate = 57600; break;
+                    case "6": baudRate = 115200; break;
+                    default:
+                        MessageBox.Show("Неверное значение скорости обмена! Установлено значение по умолчанию: 115200");
+                        baudRate = 115200; break;
+                }
+                exchangeSpeedTB.Text = baudRate.ToString();
                 if (config.AppSettings.Settings["UsedPassword"].Value == "1")
                     usePasswordCheckB.Checked = true;
                 else
@@ -46,10 +60,24 @@ namespace KassaApp
             try
             {
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                int baudRate;
                 if (comPortTB.Text != "" && exchangeSpeedTB.Text != "")
                 {
                     config.AppSettings.Settings["ComNumber"].Value = comPortTB.Text; //изменение сом порта
-                    config.AppSettings.Settings["BaudRate"].Value = exchangeSpeedTB.Text; // изменение скорости обмена
+                    switch (exchangeSpeedTB.Text)
+                    {
+                        case "2400": baudRate = 0; break;
+                        case "4800": baudRate = 1; break;
+                        case "9600": baudRate = 2; break;
+                        case "19200": baudRate = 3; break;
+                        case "38400": baudRate = 4; break;
+                        case "57600": baudRate = 5; break;
+                        case "115200": baudRate = 6; break;
+                        default: MessageBox.Show("Неверное значение скорости обмена! Установлено значение по умолчанию: 115200");
+                            exchangeSpeedTB.Text = "115200";
+                            baudRate = 6; break;
+                    }
+                    config.AppSettings.Settings["BaudRate"].Value = baudRate.ToString(); // изменение скорости обмена
                     config.Save();
                     ConfigurationManager.RefreshSection("appSettings");//сохранение изменений
                     MessageBox.Show("Настройки сохранены!");
@@ -116,10 +144,25 @@ namespace KassaApp
                     MessageBox.Show("Подключение отсутствует!");
             }
         }
-
+        /// <summary>
+        /// Метод обрабатывает событие закрытия формы.
+        /// Отвечает за запись информации о закрытии окна в лог.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Logger.Info("Открытие окна Настройки связи...");
+        }
+        /// <summary>
+        /// Метод обрабатывает нажатие клавиш при вводе текста в textBox.
+        /// Допускает ввод только целых чисел.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод</param>
+        /// <param name="e">Аргументы события</param>
+        private void TB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            TextFormat.TextBoxDigitFormat(sender, e);
         }
     }
 }
