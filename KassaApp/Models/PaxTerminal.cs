@@ -1,7 +1,5 @@
 ﻿using SBRFSRV;
 using System;
-using System.Data.Entity.Validation;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
@@ -82,9 +80,9 @@ namespace KassaApp.Models
             }
             catch (Exception ex)
             {
-                Log.Logger.Info($"Нет связи с терминалом");
                 GetMessage(TextFormat.GetExceptionMessage(ex));
             }
+            Log.Logger.Info($"Нет связи с терминалом");
             return false;
         }
         /// <summary>

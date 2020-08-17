@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
@@ -20,7 +19,7 @@ namespace KassaApp.Models
         {
             var tb = (TextBox)sender;
             //ввод только чисел, точек и удаление 
-            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != ',' && e.KeyChar != (char)Keys.Back)
             {
                 e.KeyChar = '\0';
                 return;
@@ -42,7 +41,7 @@ namespace KassaApp.Models
         public static void TextBoxDigitFormat(object sender, KeyPressEventArgs e)
         {
             //ввод только чисел и удаление
-            if (!Char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
                 e.KeyChar = '\0';
         }
         /// <summary>

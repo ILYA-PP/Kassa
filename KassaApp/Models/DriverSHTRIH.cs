@@ -155,7 +155,7 @@ namespace KassaApp.Models
                     break;
                 case 4:
                     //Открытие смены
-                    if (MessageBox.Show("Смена закрыта! Открытие новой смены", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("Смена закрыта! Открыть новую смену?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         PrintOpenSessionReport();
                     break;
                 case 8:
@@ -188,10 +188,10 @@ namespace KassaApp.Models
             if (receiptStr == null)
                 return -1;
             int res = 0;
-            var mas = receiptStr.Replace("~S", "^").Split('^');
-            if(mas.Length > 2)
+            var mas = receiptStr.Replace("~S", "^").Split('^');//отделяет чек терминала от его копии
+            if(mas.Length > 2)//если чек с копией
             {
-                for(int i = 0; i<=1;i++)
+                for(int i = 0; i<=1; i++)
                     res = Print(mas[i], receiptName, i != 0 ? false : true);
                 return res;
             }
@@ -217,7 +217,6 @@ namespace KassaApp.Models
                     Log.Logger.Info($"Отмена печати");
                     break;
                 }
-
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
             }
             //Отрезка чека
@@ -250,7 +249,7 @@ namespace KassaApp.Models
             Log.Logger.Info("Формирование строки для печати нефискального документа");
             //alignment 0 - left, 1 - center, 2 - right, 
             //3 - пробелы внутри строки
-            string r = "", l = "";
+            string r, l;
             string res = "";
             if (align == 3)
             {
@@ -367,36 +366,24 @@ namespace KassaApp.Models
                 //указание способа оплаты
                 if (cardName == null)
                     cardName = "";
+                Driver.Summ1 = 0;
+                Driver.Summ2 = 0;
+                Driver.Summ3 = 0;
+                Driver.Summ4 = 0;
                 if (receipt.Payment == 1)
-                {
                     Driver.Summ1 = receipt.Summa;
-                    Driver.Summ2 = 0;
-                    Driver.Summ3 = 0;
-                    Driver.Summ4 = 0;
-                }
                 else if (receipt.Payment == 2)
-                {
                     switch (cardName.ToLower())
                     {
                         case "мир": 
-                            Driver.Summ2 = receipt.Summa; 
-                            Driver.Summ3 = 0;
-                            Driver.Summ4 = 0; break;
+                            Driver.Summ2 = receipt.Summa; break;
                         case "visa": 
-                            Driver.Summ3 = receipt.Summa; 
-                            Driver.Summ2 = 0;
-                            Driver.Summ4 = 0; break;
+                            Driver.Summ3 = receipt.Summa; break;
                         case "mastercard": 
-                            Driver.Summ4 = receipt.Summa; 
-                            Driver.Summ3 = 0;
-                            Driver.Summ2 = 0; break;
+                            Driver.Summ4 = receipt.Summa; break;
                         default:
-                            Driver.Summ2 = receipt.Summa;
-                            Driver.Summ3 = 0;
-                            Driver.Summ4 = 0; break;
+                            Driver.Summ2 = receipt.Summa; break;
                     }
-                    Driver.Summ1 = 0;
-                }
                 Driver.Summ5 = 0;
                 Driver.Summ6 = 0;
                 Driver.Summ7 = 0;

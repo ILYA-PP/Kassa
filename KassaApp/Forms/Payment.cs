@@ -99,9 +99,9 @@ namespace KassaApp
                                     messageL.Text = "Оплата успешно!";
                                     terminal.Unconfirmed();
                                     //если печать чека терминала успешна
+                                    messageL.Text = "Печать чеков";
                                     if (terminal.GetReceipt() != null && fr.Print(terminal.GetReceipt(), terminal.GetReceiptName()) == 0)
                                     {
-                                        messageL.Text = "Печать чеков";
                                         CurrentReceipt.Payment = 2;
                                         InsertData();
                                         //печать товарного чека
@@ -147,42 +147,40 @@ namespace KassaApp
         /// <param name="e">Аргументы события</param>
         private void cashB_Click(object sender, EventArgs e)
         {
-            if (decimal.Parse(moneyTB.Text) < CurrentReceipt.Summa)
-            {
-                MessageBox.Show("Вносимая сумма не может быть меньше суммы по чеку!");
-                return;
-            }
-            try
-            {
-                Log.Logger.Info($"Оплата наличными сумма = {CurrentReceipt.Summa}");
-                messageL.Text = "Оплата наличными";
-                this.Enabled = false; //блокировка формы
-                panel1.Visible = true; //показать панель сообщений
-                using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
+            if (decimal.Parse(moneyTB.Text) > CurrentReceipt.Summa)
+                try
                 {
-                    if (fr.CheckConnect() == 0)
+                    Log.Logger.Info($"Оплата наличными сумма = {CurrentReceipt.Summa}");
+                    messageL.Text = "Оплата наличными";
+                    this.Enabled = false; //блокировка формы
+                    panel1.Visible = true; //показать панель сообщений
+                    using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
                     {
-                        messageL.Text = "Печать чека";
-                        CurrentReceipt.Payment = 1;
-                        InsertData();
-                        //замена суммы по чеку на сумму вносимых наличных
-                        CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
-                        //печать товарного чека
-                        if (fr.PrintReceipt(CurrentReceipt) == 0)
+                        if (fr.CheckConnect() == 0)
                         {
-                            messageL.Text = "Успешно";
-                            MarkAsPaid();
-                            Close();
+                            messageL.Text = "Печать чека";
+                            CurrentReceipt.Payment = 1;
+                            InsertData();
+                            //замена суммы по чеку на сумму вносимых наличных
+                            CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
+                            //печать товарного чека
+                            if (fr.PrintReceipt(CurrentReceipt) == 0)
+                            {
+                                messageL.Text = "Успешно";
+                                MarkAsPaid();
+                                Close();
+                            }
                         }
                     }
+                    panel1.Visible = false;//убрать панель сообщений
+                    this.Enabled = true;//разблокировать форму
                 }
-                panel1.Visible = false;//убрать панель сообщений
-                this.Enabled = true;//разблокировать форму
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(TextFormat.GetExceptionMessage(ex));
-            }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(TextFormat.GetExceptionMessage(ex));
+                }
+            else
+                MessageBox.Show("Вносимая сумма не может быть меньше суммы по чеку!");
         }
         /// <summary>
         /// Метод отвечает за отметку чека, как оплаченного, в базе данных.
