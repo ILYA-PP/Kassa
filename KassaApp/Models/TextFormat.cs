@@ -51,7 +51,7 @@ namespace KassaApp.Models
         /// <returns>Строка в изменённом формате.</returns>
         public static string GetExceptionMessage(Exception ex)
         {
-            string mes = "";
+            string mes;
             if (ex.Message != ex.GetBaseException().Message)
                 mes = $"{ex.Message}\n    {ex.GetBaseException().Message}";
             else
