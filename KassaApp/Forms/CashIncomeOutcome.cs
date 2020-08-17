@@ -60,7 +60,7 @@ namespace KassaApp.Forms
                             else
                                 res = fr.CashOutcome(summ);
                             if(res == 0)
-                                Log.Logger.Info($"Успех операции: {operationL.Text}...");
+                                Log.Logger.Info($"Успех операции: {operationL.Text}");
                             Close();
                         }
                     }

@@ -294,6 +294,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Изменить позицию";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditProduct_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).EndInit();

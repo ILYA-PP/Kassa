@@ -10,7 +10,7 @@ namespace KassaApp.Forms
     /// </summary>
     public partial class Recovery : Form
     {
-        private Receipt Receipt;
+        private readonly Receipt Receipt;
         /// <summary>
         /// Конструктор класса.
         /// Выполняет инициализацию формы и первичное заполнение таблицы товаров
@@ -42,6 +42,7 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void paidB_Click(object sender, EventArgs e)
         {
+            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом {DialogResult}...");
             this.DialogResult = DialogResult.Yes;
         }
         /// <summary>
@@ -52,12 +53,8 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void notPaidB_Click(object sender, EventArgs e)
         {
+            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом {DialogResult}...");
             this.DialogResult = DialogResult.No;
-        }
-
-        private void Recovery_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Log.Logger.Info("Закрытие окна Восстановления остатков...");
         }
     }
 }

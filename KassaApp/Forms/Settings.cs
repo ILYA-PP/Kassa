@@ -12,7 +12,7 @@ namespace KassaApp
     {
         /// <summary>
         /// Конструктор класса.
-        /// Выполняет инициализацию формы и установку текущих настроек.
+        /// Выполняет инициализацию формы и установку текущих настроек
         /// для восстановления.
         /// </summary>
         public Settings()
@@ -73,7 +73,8 @@ namespace KassaApp
                         case "38400": baudRate = 4; break;
                         case "57600": baudRate = 5; break;
                         case "115200": baudRate = 6; break;
-                        default: MessageBox.Show("Неверное значение скорости обмена! Установлено значение по умолчанию: 115200");
+                        default:
+                            MessageBox.Show("Неверное значение скорости обмена! Установлено значение по умолчанию: 115200");
                             exchangeSpeedTB.Text = "115200";
                             baudRate = 6; break;
                     }
@@ -82,21 +83,13 @@ namespace KassaApp
                     ConfigurationManager.RefreshSection("appSettings");//сохранение изменений
                     MessageBox.Show("Настройки сохранены!");
                 }
+                else
+                    MessageBox.Show("Заполните все поля!");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(TextFormat.GetExceptionMessage(ex));
             }
-        }
-        /// <summary>
-        /// Метод обрабатывает ввод текста в textBox.
-        /// Допускает ввод только целых чисел.
-        /// </summary>
-        /// <param name="sender">Объект, вызвавщий метод.</param>
-        /// <param name="e">Аргументы события.</param>
-        public void TB_TextChange(object sender, KeyPressEventArgs e)
-        {
-            TextFormat.TextBoxDigitFormat(sender, e);
         }
         /// <summary>
         /// Метод обрабатывает нажатие кнопки Проверка связи фискального регистратора.

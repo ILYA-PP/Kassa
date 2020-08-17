@@ -57,7 +57,7 @@ namespace KassaApp.Forms
                     {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
-                        if (p.ShelfLife != new DateTime(1901,1,1) && p.ShelfLife < DateTime.Now)
+                        if (p.ShelfLife < DateTime.Now)
                             productsDGV.Rows[productsDGV.Rows.Count-1].DefaultCellStyle.BackColor = Color.Red;
                     }
                 else
@@ -65,12 +65,12 @@ namespace KassaApp.Forms
                     {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
-                        if (p.ShelfLife != new DateTime(1901, 1, 1) && p.ShelfLife < DateTime.Now)
+                        if (p.ShelfLife < DateTime.Now)
                             productsDGV.Rows[productsDGV.Rows.Count-1].DefaultCellStyle.BackColor = Color.Red;
                     }
             }
         }
-        //обработка нажатия горячих клавиш
+        //обработка горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)

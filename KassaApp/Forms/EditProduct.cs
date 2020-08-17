@@ -182,5 +182,14 @@ namespace KassaApp
             if (sender.GetType() == typeof(TextBox) && ((TextBox)sender).Text.Length == 0)
                 ((TextBox)sender).Text = "0.00";
         }
+        /// <summary>
+        /// Метод обрабатывает событие закрытия формы.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
+        private void EditProduct_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.Logger.Info("Закрытие окна Изменения товара...");
+        }
     }
 }

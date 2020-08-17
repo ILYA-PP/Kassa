@@ -20,7 +20,7 @@ namespace KassaApp.Forms
             Log.Logger.Info("Открытие окна Просмотра отчётов...");
             InitializeComponent();
             typeCB.SelectedIndex = 0;
-            ViewResult(null);//вывод всех отчётов
+            ViewResult();//вывод всех отчётов
         }
 
         /// <summary>
@@ -28,11 +28,11 @@ namespace KassaApp.Forms
         /// Если результат поиска равен null выводятся все отчёты.
         /// </summary>
         /// <param name="reports">Массив, содержащий найденные отчёты.</param>
-        private void ViewResult(IQueryable<Report> reports)
+        private void ViewResult(IQueryable<Report> reports = null)
         {
             using (var db = new KassaDBContext())
             {
-                Log.Logger.Info($"Получение списка отчётов");
+                Log.Logger.Info($"Вывод списка отчётов");
                 reportsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех отчётах

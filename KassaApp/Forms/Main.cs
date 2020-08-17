@@ -51,12 +51,10 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void paymentB_Click(object sender, EventArgs e)
         {
-            if (receipt.Summa == 0)
-            {
+            if (receipt.Summa > 0)
+                new Payment(receipt).ShowDialog(this);
+            else
                 MessageBox.Show("Сумма чека равна 0. Оплата невозможна!");
-                return;
-            }
-            new Payment(receipt).ShowDialog(this);
         }
         /// <summary>
         /// Метод обрабатывает событие изменения выбора в dataGridView.
@@ -123,7 +121,8 @@ namespace KassaApp
                 {
                     using (var db = new KassaDBContext())
                     {
-                        Log.Logger.Info($"Удаление данных о покупке из таблицы Purchase");
+                        Log.Logger.Info($"Удаление данных о покупке (ID товара = {product.Id}; " +
+                            $"ID чека = {receipt.Id}) из таблицы Purchase");
                         //удаление из БД из таблицы Purchase
                         var purchase = db.Purchase.Where(p => p.ProductId == product.Id && p.ReceiptId == receipt.Id).FirstOrDefault();
                         db.Purchase.Remove(purchase);
@@ -205,7 +204,7 @@ namespace KassaApp
         }
         /// <summary>
         /// Метод обрабатывает событие изменения значения поля таблицы.
-        /// Отвечает за обновление танных формы. 
+        /// Отвечает за обновление данных формы. 
         /// </summary>
         /// <param name="sender">Объект, вызвавщий метод.</param>
         /// <param name="e">Аргументы события.</param>

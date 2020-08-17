@@ -149,11 +149,10 @@ namespace KassaApp
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var usePass = config.AppSettings.Settings["UsedPassword"].Value;
             //если установлена галочка Использовать пароль доступа
-            if (usePass == "1" && usePass == passwordTB.Text)
+            if (usePass == "1" && usePass == passwordTB.Text || usePass == "0")
                 return true;
-            if (usePass == "0")
-                return true;
-            MessageBox.Show("Неверный пароль!");
+            else 
+                MessageBox.Show("Неверный пароль!");
             return false;
         }
         /// <summary>

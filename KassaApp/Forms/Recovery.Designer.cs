@@ -214,7 +214,6 @@
             this.MinimizeBox = false;
             this.Name = "Recovery";
             this.Text = "Восстановление";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Recovery_FormClosing);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).EndInit();
