@@ -85,7 +85,7 @@ namespace KassaApp.Models
                     Timeout = int.Parse(driverData["Timeout"]),
                     Password = int.Parse(driverData["Password"])
                 };
-                Log.Logger.Info($"Подключение к ККТ: Тип подключения = {Driver.ConnectionType}" +
+                Log.Logger.Info($"Подключение к ККТ: Тип подключения = {Driver.ConnectionType} " +
                     $"COM-порт = {Driver.ComNumber} Скорость обмена = {Driver.BaudRate}");
                 ExecuteAndHandleError(Driver.Connect, true);
             }
@@ -203,7 +203,7 @@ namespace KassaApp.Models
                 Thread.Sleep(3000);
             }
             //Ожидание печати чека
-            res = ExecuteAndHandleError(Driver.WaitForPrinting); 
+            res = ExecuteAndHandleError(Driver.WaitForPrinting, true); 
             while (res != 0)
             {
                 Log.Logger.Warn($"Ошибка печати");
@@ -488,43 +488,43 @@ namespace KassaApp.Models
             int sectionNum = 1;
             decimal resP = 0, resR = 0, resVP = 0, resVR = 0;
             string title = GetTitle("ОТЧЁТ ПО СЕКЦИЯМ");
-                string template = $"{title}\r\n";
-                for (int i = 72; i <= 136; i += 4)
-                {
-                    if (GetOperRegItem(i).Content > 0 || GetOperRegItem(i + 1).Content > 0 ||
-                        GetOperRegItem(i + 2).Content > 0 || GetOperRegItem(i + 3).Content > 0)
-                        template += $"  СЕКЦИЯ {sectionNum}\r\n{GetOperRegItem(i).Content} " +
-                            $"ПРИХОД: { GetCashRegItem(121 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 1).Content} " +
-                            $"РАСХОД: { GetCashRegItem(122 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 2).Content} " +
-                            $"ВОЗВРАТ ПРИХОДА: { GetCashRegItem(123 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 3).Content} " +
-                            $"ВОЗВРАТ РАСХОДА: { GetCashRegItem(124 + 4 * (sectionNum - 1)).Content}\r\n";
-                    sectionNum++;
-                }
-                resP = GetCashRegItem(193).Content - GetCashRegItem(185).Content + GetCashRegItem(189).Content;
-                resR = GetCashRegItem(194).Content - GetCashRegItem(186).Content + GetCashRegItem(190).Content;
-                resVP = GetCashRegItem(195).Content - GetCashRegItem(187).Content + GetCashRegItem(191).Content;
-                resVR = GetCashRegItem(196).Content - GetCashRegItem(188).Content + GetCashRegItem(192).Content;
-                template += $"  ИТОГ ПО СЕКЦИЯМ\r\n" +
-                        $"ПРИХОД: {GetCashRegItem(193).Content}\r\n" +
-                        $"РАСХОД: {GetCashRegItem(194).Content}\r\n" +
-                        $"ВОЗВРАТ ПРИХОДА: {GetCashRegItem(195).Content}\r\n" +
-                        $"ВОЗВРАТ РАСХОДА: {GetCashRegItem(196).Content}\r\n" +
-                    $"  СКИДКИ\r\n{GetOperRegItem(136).Content} " +
-                        $"ПРИХОД: {GetCashRegItem(185).Content}\r\n{GetOperRegItem(137).Content} " +
-                        $"РАСХОД: {GetCashRegItem(186).Content}\r\n{GetOperRegItem(138).Content} " +
-                        $"ВОЗВРАТ ПРИХОДА: {GetCashRegItem(187).Content}\r\n{GetOperRegItem(139).Content} " +
-                        $"ВОЗВРАТ РАСХОДА: {GetCashRegItem(188).Content}\r\n" +
-                    $"  НАДБАВКИ\r\n{GetOperRegItem(140).Content} " +
-                        $"ПРИХОД: {GetCashRegItem(189).Content}\r\n{GetOperRegItem(141).Content} " +
-                        $"РАСХОД: {GetCashRegItem(190).Content}\r\n{GetOperRegItem(142).Content} " +
-                        $"ВОЗВРАТ ПРИХОДА: {GetCashRegItem(191).Content}\r\n{GetOperRegItem(143).Content} " +
-                        $"ВОЗВРАТ РАСХОДА: {GetCashRegItem(192).Content}\r\n" +
-                    $"  ИТОГО\r\n" +
-                        $"ПРИХОД: {resP}\r\n" +
-                        $"РАСХОД: {resR}\r\n" +
-                        $"ВОЗВРАТ ПРИХОДА: {resVP}\r\n" +
-                        $"ВОЗВРАТ РАСХОДА: {resVR}\r\n" +
-                    $"ВЫРУЧКА: {resP - resR - resVP + resVR}";
+            string template = $"{title}\r\n";
+            for (int i = 72; i <= 136; i += 4)
+            {
+                if (GetOperRegItem(i).Content > 0 || GetOperRegItem(i + 1).Content > 0 ||
+                    GetOperRegItem(i + 2).Content > 0 || GetOperRegItem(i + 3).Content > 0)
+                    template += $"  СЕКЦИЯ {sectionNum}\r\n{GetOperRegItem(i).Content} " +
+                        $"ПРИХОД: { GetCashRegItem(121 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 1).Content} " +
+                        $"РАСХОД: { GetCashRegItem(122 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 2).Content} " +
+                        $"ВОЗВРАТ ПРИХОДА: { GetCashRegItem(123 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 3).Content} " +
+                        $"ВОЗВРАТ РАСХОДА: { GetCashRegItem(124 + 4 * (sectionNum - 1)).Content}\r\n";
+                sectionNum++;
+            }
+            resP = GetCashRegItem(193).Content - GetCashRegItem(185).Content + GetCashRegItem(189).Content;
+            resR = GetCashRegItem(194).Content - GetCashRegItem(186).Content + GetCashRegItem(190).Content;
+            resVP = GetCashRegItem(195).Content - GetCashRegItem(187).Content + GetCashRegItem(191).Content;
+            resVR = GetCashRegItem(196).Content - GetCashRegItem(188).Content + GetCashRegItem(192).Content;
+            template += $"  ИТОГ ПО СЕКЦИЯМ\r\n" +
+                    $"ПРИХОД: {GetCashRegItem(193).Content}\r\n" +
+                    $"РАСХОД: {GetCashRegItem(194).Content}\r\n" +
+                    $"ВОЗВРАТ ПРИХОДА: {GetCashRegItem(195).Content}\r\n" +
+                    $"ВОЗВРАТ РАСХОДА: {GetCashRegItem(196).Content}\r\n" +
+                $"  СКИДКИ\r\n{GetOperRegItem(136).Content} " +
+                    $"ПРИХОД: {GetCashRegItem(185).Content}\r\n{GetOperRegItem(137).Content} " +
+                    $"РАСХОД: {GetCashRegItem(186).Content}\r\n{GetOperRegItem(138).Content} " +
+                    $"ВОЗВРАТ ПРИХОДА: {GetCashRegItem(187).Content}\r\n{GetOperRegItem(139).Content} " +
+                    $"ВОЗВРАТ РАСХОДА: {GetCashRegItem(188).Content}\r\n" +
+                $"  НАДБАВКИ\r\n{GetOperRegItem(140).Content} " +
+                    $"ПРИХОД: {GetCashRegItem(189).Content}\r\n{GetOperRegItem(141).Content} " +
+                    $"РАСХОД: {GetCashRegItem(190).Content}\r\n{GetOperRegItem(142).Content} " +
+                    $"ВОЗВРАТ ПРИХОДА: {GetCashRegItem(191).Content}\r\n{GetOperRegItem(143).Content} " +
+                    $"ВОЗВРАТ РАСХОДА: {GetCashRegItem(192).Content}\r\n" +
+                $"  ИТОГО\r\n" +
+                    $"ПРИХОД: {resP}\r\n" +
+                    $"РАСХОД: {resR}\r\n" +
+                    $"ВОЗВРАТ ПРИХОДА: {resVP}\r\n" +
+                    $"ВОЗВРАТ РАСХОДА: {resVR}\r\n" +
+                $"ВЫРУЧКА: {resP - resR - resVP + resVR}";
             //печать и сохранение отчёта
             Log.Logger.Info("Печать х-отчёта по секциям...");
             return GetReport(Driver.PrintDepartmentReport, "X-отчёт по секциям", template);
@@ -662,11 +662,16 @@ namespace KassaApp.Models
             {
                 res = ExecuteAndHandleError(Driver.WaitForPrinting);
                 //Ожидание печати чека
-                Log.Logger.Warn($"Ошибка печати");
-                if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                while (res != 0)
                 {
-                    Log.Logger.Info($"Продолжение печати");
-                    ExecuteAndHandleError(Driver.PrintString, true);
+                    Log.Logger.Warn($"Ошибка печати");
+                    if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.OK) == DialogResult.OK)
+                    {
+                        Log.Logger.Info($"Продолжение печати");
+                        ExecuteAndHandleError(Driver.ContinuePrint, true);
+                    }
+
+                    res = ExecuteAndHandleError(Driver.WaitForPrinting);
                 }
                 //Отрезка чека
                 if (res == 0)

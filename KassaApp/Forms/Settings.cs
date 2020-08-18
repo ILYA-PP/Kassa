@@ -101,6 +101,7 @@ namespace KassaApp
         {
             using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
             {
+                Log.Logger.Info("Проверка связи с ККТ");
                 if (fr.CheckConnect() == 0)
                     MessageBox.Show("Фискальный регистратор подключен!");
             }
@@ -131,6 +132,7 @@ namespace KassaApp
         {
             using (ITerminal terminal = CurrentHardware.GetTerminal())
             {
+                Log.Logger.Info("Проверка связи с терминалом");
                 if (terminal.IsEnabled())
                     MessageBox.Show("Терминал подключен!");
                 else

@@ -42,7 +42,7 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void paidB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом {DialogResult}...");
+            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом Yes...");
             this.DialogResult = DialogResult.Yes;
         }
         /// <summary>
@@ -53,7 +53,7 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void notPaidB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом {DialogResult}...");
+            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом No...");
             this.DialogResult = DialogResult.No;
         }
     }

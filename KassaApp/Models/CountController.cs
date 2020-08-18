@@ -133,6 +133,12 @@ namespace KassaApp.Models
 						if (r.Summa == 0 || new Recovery(r).ShowDialog() == DialogResult.No)
 						{
 							Log.Logger.Info($"Восстановление остатков по чеку с ID = {r.Id}");
+							if (r.Payment == 2)
+								using (ITerminal terminal = CurrentHardware.GetTerminal())
+								{
+									if (terminal.IsEnabled())
+										terminal.CancelTransaction();
+								}
 							Reconciliation(r);
 						}
 						else

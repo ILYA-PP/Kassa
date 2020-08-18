@@ -100,6 +100,7 @@ namespace KassaApp.Models
                 int result = Server.NFun((int)Operations.Purchase);
                 if (result == 0)
                 {
+                    Unconfirmed();
                     Log.Logger.Info($"Получение чека");
                     ReceiptStr = Server.GParamString("Cheque");
                     ReceiptName = "Чек терминала";

@@ -93,17 +93,16 @@ namespace KassaApp
                         {
                             if (fr.CheckConnect() == 0)
                             {
+                                CurrentReceipt.Payment = 2;
+                                InsertData();
                                 //если оплата через терминал успешна
                                 if (terminal.Purchase(CurrentReceipt.Summa) == 0)
                                 {                                
                                     messageL.Text = "Оплата успешно!";
-                                    terminal.Unconfirmed();
                                     //если печать чека терминала успешна
                                     messageL.Text = "Печать чеков";
                                     if (terminal.GetReceipt() != null && fr.Print(terminal.GetReceipt(), terminal.GetReceiptName()) == 0)
-                                    {
-                                        CurrentReceipt.Payment = 2;
-                                        InsertData();
+                                    {;
                                         //печать товарного чека
                                         if (fr.PrintReceipt(CurrentReceipt, null) == 0)
                                         {
@@ -147,7 +146,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события</param>
         private void cashB_Click(object sender, EventArgs e)
         {
-            if (decimal.Parse(moneyTB.Text) > CurrentReceipt.Summa)
+            if (decimal.Parse(moneyTB.Text) >= CurrentReceipt.Summa)
                 try
                 {
                     Log.Logger.Info($"Оплата наличными сумма = {CurrentReceipt.Summa}");
