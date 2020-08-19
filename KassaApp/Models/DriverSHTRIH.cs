@@ -473,7 +473,7 @@ namespace KassaApp.Models
                         $"ВОЗВРАТА ПРИХОДА: {GetCashRegItem(251).Content}\r\n" +
                         $"ВОЗВРАТА РАСХОДА: {GetCashRegItem(252).Content}\r\n" +
                     $"НАЛ. В КАССЕ: {GetCashRegItem(241).Content}\r\n" +
-                    $"ВЫРУЧКА: {GetCashRegItem(121).Content - GetCashRegItem(122).Content - GetCashRegItem(123).Content + GetCashRegItem(124).Content}\r\n";
+                    $"ВЫРУЧКА: {double.Parse(GetCashRegItem(121).Content) - double.Parse(GetCashRegItem(122).Content) - double.Parse(GetCashRegItem(123).Content) + double.Parse(GetCashRegItem(124).Content)}\r\n";
             //печать и сохранение отчёта
             Log.Logger.Info("Печать х-отчёта (без гашения)...");
             return GetReport(Driver.PrintReportWithoutCleaning, "X-отчёт (без гашения)", template);
@@ -492,8 +492,8 @@ namespace KassaApp.Models
             string template = $"{title}\r\n";
             for (int i = 72; i <= 136; i += 4)
             {
-                if (GetOperRegItem(i).Content > 0 || GetOperRegItem(i + 1).Content > 0 ||
-                    GetOperRegItem(i + 2).Content > 0 || GetOperRegItem(i + 3).Content > 0)
+                if (double.Parse(GetOperRegItem(i).Content) > 0 || double.Parse(GetOperRegItem(i + 1).Content) > 0 ||
+                    double.Parse(GetOperRegItem(i + 2).Content) > 0 || double.Parse(GetOperRegItem(i + 3).Content) > 0)
                     template += $"  СЕКЦИЯ {sectionNum}\r\n{GetOperRegItem(i).Content} " +
                         $"ПРИХОД: { GetCashRegItem(121 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 1).Content} " +
                         $"РАСХОД: { GetCashRegItem(122 + 4 * (sectionNum - 1)).Content}\r\n{GetOperRegItem(i + 2).Content} " +
@@ -501,10 +501,10 @@ namespace KassaApp.Models
                         $"ВОЗВРАТ РАСХОДА: { GetCashRegItem(124 + 4 * (sectionNum - 1)).Content}\r\n";
                 sectionNum++;
             }
-            resP = GetCashRegItem(193).Content - GetCashRegItem(185).Content + GetCashRegItem(189).Content;
-            resR = GetCashRegItem(194).Content - GetCashRegItem(186).Content + GetCashRegItem(190).Content;
-            resVP = GetCashRegItem(195).Content - GetCashRegItem(187).Content + GetCashRegItem(191).Content;
-            resVR = GetCashRegItem(196).Content - GetCashRegItem(188).Content + GetCashRegItem(192).Content;
+            resP = decimal.Parse(GetCashRegItem(193).Content) - decimal.Parse(GetCashRegItem(185).Content) + decimal.Parse(GetCashRegItem(189).Content);
+            resR = decimal.Parse(GetCashRegItem(194).Content) - decimal.Parse(GetCashRegItem(186).Content) + decimal.Parse(GetCashRegItem(190).Content);
+            resVP = decimal.Parse(GetCashRegItem(195).Content) - decimal.Parse(GetCashRegItem(187).Content) + decimal.Parse(GetCashRegItem(191).Content);
+            resVR = decimal.Parse(GetCashRegItem(196).Content) - decimal.Parse(GetCashRegItem(188).Content) + decimal.Parse(GetCashRegItem(192).Content);
             template += $"  ИТОГ ПО СЕКЦИЯМ\r\n" +
                     $"ПРИХОД: {GetCashRegItem(193).Content}\r\n" +
                     $"РАСХОД: {GetCashRegItem(194).Content}\r\n" +
@@ -750,7 +750,7 @@ namespace KassaApp.Models
                 {
                     Number = number,
                     Name = Driver.NameOperationReg,
-                    Content = Driver.ContentsOfOperationRegister
+                    Content = string.Format("{0:d4}",Driver.ContentsOfOperationRegister)
                 };
             return null;
         }
@@ -767,7 +767,7 @@ namespace KassaApp.Models
                 {
                     Number = number,
                     Name = Driver.NameCashReg,
-                    Content = Driver.ContentsOfCashRegister
+                    Content = Driver.ContentsOfCashRegister.ToString()
                 };
             return null;
         }

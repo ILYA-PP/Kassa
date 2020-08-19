@@ -6,7 +6,7 @@
     class RegistrerItem
     {
         public int Number;
-        public decimal Content;
+        public string Content;
         public string Name;
     }
 }
