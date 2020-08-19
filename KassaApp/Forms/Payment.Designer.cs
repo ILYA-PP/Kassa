@@ -38,7 +38,7 @@
             this.specPayB = new System.Windows.Forms.Button();
             this.cancelB = new System.Windows.Forms.Button();
             this.additOpB = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.noteTB = new System.Windows.Forms.TextBox();
             this.noteB = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.messageL = new System.Windows.Forms.Label();
@@ -158,14 +158,14 @@
             this.additOpB.Text = "[F6]  Доп.оп.";
             this.additOpB.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // noteTB
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(12, 398);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(308, 26);
-            this.textBox1.TabIndex = 17;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.noteTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.noteTB.Location = new System.Drawing.Point(12, 398);
+            this.noteTB.Name = "noteTB";
+            this.noteTB.Size = new System.Drawing.Size(308, 26);
+            this.noteTB.TabIndex = 17;
+            this.noteTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // noteB
             // 
@@ -177,6 +177,7 @@
             this.noteB.TabIndex = 18;
             this.noteB.Text = "[F1]  Примечание";
             this.noteB.UseVisualStyleBackColor = true;
+            this.noteB.Click += new System.EventHandler(this.noteB_Click);
             // 
             // panel1
             // 
@@ -204,7 +205,7 @@
             this.ClientSize = new System.Drawing.Size(630, 436);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.noteB);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.noteTB);
             this.Controls.Add(this.additOpB);
             this.Controls.Add(this.cancelB);
             this.Controls.Add(this.specPayB);
@@ -239,7 +240,7 @@
         private System.Windows.Forms.Button specPayB;
         private System.Windows.Forms.Button cancelB;
         private System.Windows.Forms.Button additOpB;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox noteTB;
         private System.Windows.Forms.Button noteB;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label messageL;

@@ -341,9 +341,10 @@ namespace KassaApp.Models
                         Driver.Tax1 = 2;
                     else if (p.NDS == 0)
                         Driver.Tax1 = 4;
+                    Driver.DiscountValue = discountOnProduct;
                     Log.Logger.Info($"Фиксация позиции: Товар: {p.Name} Количество: {p.Quantity} " +
                         $"Цена: {p.Price} Скидка: {discountOnProduct}");
-                    if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
+                    if (ExecuteAndHandleError(Driver.FNDiscountOperation, true) != 0)
                         return -1;
                     if(discountOnProduct > 0)
                     {
@@ -490,7 +491,7 @@ namespace KassaApp.Models
             decimal resP = 0, resR = 0, resVP = 0, resVR = 0;
             string title = GetTitle("ОТЧЁТ ПО СЕКЦИЯМ");
             string template = $"{title}\r\n";
-            for (int i = 72; i <= 136; i += 4)
+            for (int i = 72; i < 136; i += 4)
             {
                 if (double.Parse(GetOperRegItem(i).Content) > 0 || double.Parse(GetOperRegItem(i + 1).Content) > 0 ||
                     double.Parse(GetOperRegItem(i + 2).Content) > 0 || double.Parse(GetOperRegItem(i + 3).Content) > 0)
@@ -501,15 +502,15 @@ namespace KassaApp.Models
                         $"ВОЗВРАТ РАСХОДА: { GetCashRegItem(124 + 4 * (sectionNum - 1)).Content}\r\n";
                 sectionNum++;
             }
-            resP = decimal.Parse(GetCashRegItem(193).Content) - decimal.Parse(GetCashRegItem(185).Content) + decimal.Parse(GetCashRegItem(189).Content);
-            resR = decimal.Parse(GetCashRegItem(194).Content) - decimal.Parse(GetCashRegItem(186).Content) + decimal.Parse(GetCashRegItem(190).Content);
-            resVP = decimal.Parse(GetCashRegItem(195).Content) - decimal.Parse(GetCashRegItem(187).Content) + decimal.Parse(GetCashRegItem(191).Content);
-            resVR = decimal.Parse(GetCashRegItem(196).Content) - decimal.Parse(GetCashRegItem(188).Content) + decimal.Parse(GetCashRegItem(192).Content);
+            resP = decimal.Parse(GetCashRegItem(193).Content) + decimal.Parse(GetCashRegItem(197).Content) + decimal.Parse(GetCashRegItem(201).Content) + decimal.Parse(GetCashRegItem(205).Content);
+            resR = decimal.Parse(GetCashRegItem(194).Content) + decimal.Parse(GetCashRegItem(198).Content) + decimal.Parse(GetCashRegItem(202).Content) + decimal.Parse(GetCashRegItem(206).Content);
+            resVP = decimal.Parse(GetCashRegItem(195).Content) + decimal.Parse(GetCashRegItem(199).Content) + decimal.Parse(GetCashRegItem(203).Content) + decimal.Parse(GetCashRegItem(207).Content);
+            resVR = decimal.Parse(GetCashRegItem(196).Content) + decimal.Parse(GetCashRegItem(200).Content) + decimal.Parse(GetCashRegItem(204).Content) + decimal.Parse(GetCashRegItem(208).Content);
             template += $"  ИТОГ ПО СЕКЦИЯМ\r\n" +
-                    $"ПРИХОД: {GetCashRegItem(193).Content}\r\n" +
-                    $"РАСХОД: {GetCashRegItem(194).Content}\r\n" +
-                    $"ВОЗВРАТ ПРИХОДА: {GetCashRegItem(195).Content}\r\n" +
-                    $"ВОЗВРАТ РАСХОДА: {GetCashRegItem(196).Content}\r\n" +
+                    $"ПРИХОД: {resP}\r\n" +
+                    $"РАСХОД: {resR}\r\n" +
+                    $"ВОЗВРАТ ПРИХОДА: {resVP}\r\n" +
+                    $"ВОЗВРАТ РАСХОДА: {resVR}\r\n" +
                 $"  СКИДКИ\r\n{GetOperRegItem(136).Content} " +
                     $"ПРИХОД: {GetCashRegItem(185).Content}\r\n{GetOperRegItem(137).Content} " +
                     $"РАСХОД: {GetCashRegItem(186).Content}\r\n{GetOperRegItem(138).Content} " +

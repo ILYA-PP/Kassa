@@ -45,6 +45,8 @@ namespace KassaApp.Models
         public int Payment { get; set; }
         [StringLength(11)]
         public string DiscountCard { get; set; }
+        [StringLength(1000)]
+        public string Note { get; set; }
         //связанные с чеков продажи
         public virtual ICollection<Purchase> Purchase { get; set; }
         //продукты в чеке

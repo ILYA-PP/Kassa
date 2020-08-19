@@ -55,7 +55,7 @@ namespace KassaApp
                 case Keys.F5:; break;
                 case Keys.Escape: if (!cancelB.Focused) cancelB_Click(null, null); break;
                 case Keys.F6:; break;
-                case Keys.F1:; break;
+                case Keys.F1: if (!noteTB.Focused) noteB_Click(null, null); break;
                 case Keys.Enter: if (!cashB.Focused) cashB_Click(null, null); break;
                 case Keys.Multiply: if (!nonCashB.Focused) nonCashB_Click(null, null); break;
             }
@@ -215,6 +215,7 @@ namespace KassaApp
                     rec.Discount = CurrentReceipt.Discount; //скидка на чек
                     rec.Payment = CurrentReceipt.Payment;//способ оплаты
                     rec.DiscountCard = CurrentReceipt.DiscountCard;//дк
+                    rec.Note = noteTB.Text;
                     Log.Logger.Info($"Вставка данных о чеке: Скидка: {rec.Discount} Сумма: {rec.Summa} Способ оплаты: {rec.Payment} ДК: {rec.DiscountCard}");
                     db.SaveChanges();
                 }
@@ -249,6 +250,11 @@ namespace KassaApp
                     db.SaveChanges();
                 }
             }
+        }
+
+        private void noteB_Click(object sender, EventArgs e)
+        {
+            noteTB.Focus();
         }
     }
 }
