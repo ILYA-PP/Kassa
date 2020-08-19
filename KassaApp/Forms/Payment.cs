@@ -102,7 +102,7 @@ namespace KassaApp
                                     //если печать чека терминала успешна
                                     messageL.Text = "Печать чеков";
                                     if (terminal.GetReceipt() != null && fr.Print(terminal.GetReceipt(), terminal.GetReceiptName()) == 0)
-                                    {;
+                                    {
                                         //печать товарного чека
                                         if (fr.PrintReceipt(CurrentReceipt, null) == 0)
                                         {
@@ -192,6 +192,7 @@ namespace KassaApp
                 {
                     var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
                     rec.Paid = true; //признак оплаты чека
+                    rec.Summa = CurrentReceipt.Summa; //сумма по чеку
                     db.SaveChanges();
                     Log.Logger.Info($"Чек с ID = {rec.Id} отмечен, как Оплаченный");
                 }
@@ -212,7 +213,6 @@ namespace KassaApp
                 {
                     var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
                     rec.Discount = CurrentReceipt.Discount; //скидка на чек
-                    rec.Summa = CurrentReceipt.Summa; //сумма по чеку
                     rec.Payment = CurrentReceipt.Payment;//способ оплаты
                     rec.DiscountCard = CurrentReceipt.DiscountCard;//дк
                     Log.Logger.Info($"Вставка данных о чеке: Скидка: {rec.Discount} Сумма: {rec.Summa} Способ оплаты: {rec.Payment} ДК: {rec.DiscountCard}");

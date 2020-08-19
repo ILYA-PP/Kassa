@@ -112,7 +112,6 @@ namespace KassaApp.Models
                 Log.Logger.Error($"ККТ: Код: {code} Ошибка: {Driver.ResultCodeDescription}");
             }
         }
-
         protected delegate int Func();
         /// <summary>
 		/// Метод выполняет функции фискального регистратора.
@@ -152,6 +151,9 @@ namespace KassaApp.Models
                     //Снятие Z-отчёта, закрытие смены
                     if (MessageBox.Show("24 часа истеки! Зактыть смену?","Фискальный регистратор",MessageBoxButtons.YesNo) == DialogResult.Yes)
                         PrintZReport();
+                    //Открытие смены
+                    if (MessageBox.Show("Смена закрыта! Открыть новую смену?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        PrintOpenSessionReport();
                     break;
                 case 4:
                     //Открытие смены
@@ -184,7 +186,6 @@ namespace KassaApp.Models
         {
             Log.Logger.Info($"Печать нефискального документа...");
             PrepareReceipt();
-            //печать документа
             if (receiptStr == null)
                 return -1;
             int res = 0;
@@ -206,7 +207,7 @@ namespace KassaApp.Models
             res = ExecuteAndHandleError(Driver.WaitForPrinting, true); 
             while (res != 0)
             {
-                Log.Logger.Warn($"Ошибка печати");
+                Log.Logger.Warn($"Ошибка печати: {Driver.ResultCodeDescription}");
                 if (MessageBox.Show("Продолжить печать?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     Log.Logger.Info($"Продолжение печати");
@@ -231,7 +232,7 @@ namespace KassaApp.Models
                 return res;
             }
             //сохранение отчёта
-            if (Save)
+            if (Save && res == 0)
             {
                 Log.Logger.Info($"Сохранение чека...");
                 SaveReport(receiptName, receiptStr);
@@ -660,7 +661,7 @@ namespace KassaApp.Models
             int res = ExecuteAndHandleError(function, true);
             if (function != null && res == 0)
             {
-                res = ExecuteAndHandleError(Driver.WaitForPrinting);
+                res = ExecuteAndHandleError(Driver.WaitForPrinting, true);
                 //Ожидание печати чека
                 while (res != 0)
                 {

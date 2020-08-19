@@ -134,12 +134,12 @@ namespace KassaApp.Models
                 if (result != 0)
                 {
                     Log.Logger.Error($"Транзакция не отменена. Код ошибки: {result}");
-                    GetMessage($"Операция НЕ отменена. Код ошибки: {result}");
+                    GetMessage($"Транзакция НЕ отменена. Код ошибки: {result}");
                 }
                 else
                 {
                     Log.Logger.Info($"Транзакция отменена");
-                    GetMessage("Операция отменена");
+                    GetMessage("Транзакция отменена");
                 }
             }
             catch (Exception ex)

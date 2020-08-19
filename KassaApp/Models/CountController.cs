@@ -96,10 +96,10 @@ namespace KassaApp.Models
 			{
 				using (var db = new KassaDBContext())
 				{
-					foreach (Product p in receipt.Products)
+					foreach (var p in receipt.Purchase)
 					{
-						Log.Logger.Info($"Восстановление остатков по товару с ID = {p.Id} в количестве {p.Quantity} шт.");
-						Recover(p.Id, p.Quantity);//восстановление остатков товара
+						Log.Logger.Info($"Восстановление остатков по товару с ID = {p.ProductId} в количестве {p.Count} шт.");
+						Recover(p.ProductId, p.Count);//восстановление остатков товара
 					}						
 					if (receipt != null)
 					{
