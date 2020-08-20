@@ -66,6 +66,7 @@
             this.driverCB.Name = "driverCB";
             this.driverCB.Size = new System.Drawing.Size(315, 28);
             this.driverCB.TabIndex = 3;
+            this.driverCB.SelectedIndexChanged += new System.EventHandler(this.driverCB_SelectedIndexChanged);
             // 
             // usePasswordCheckB
             // 

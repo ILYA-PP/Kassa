@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.IO;
 
 namespace KassaApp.Models
 {
@@ -23,7 +24,15 @@ namespace KassaApp.Models
 		/// <returns>Используемый фискальный регистратор.</returns>
         public static IFiscalRegistrar GetFiscalRegistrar()
         {
-            return new DriverSHTRIH();
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var driverName = config.AppSettings.Settings["FRDriverName"].Value;
+            IFiscalRegistrar driver;
+            switch (driverName)
+            {
+                case "ШТРИХ-М": driver = new DriverSHTRIH(); break;
+                default: driver = new DriverSHTRIH(); break;
+            }
+            return driver;
         }
     }
 }

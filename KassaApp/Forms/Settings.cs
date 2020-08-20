@@ -19,11 +19,11 @@ namespace KassaApp
         {
             Log.Logger.Info("Открытие окна Настройки связи...");
             InitializeComponent();
-            driverCB.SelectedIndex = 0;
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             int baudRate;
             try
             {
+                driverCB.SelectedIndex = driverCB.Items.IndexOf(config.AppSettings.Settings["FRDriverName"].Value);
                 comPortTB.Text = config.AppSettings.Settings["ComNumber"].Value;
                 switch (config.AppSettings.Settings["BaudRate"].Value)
                 {
@@ -158,6 +158,14 @@ namespace KassaApp
         private void TB_KeyPress(object sender, KeyPressEventArgs e)
         {
             TextFormat.TextBoxDigitFormat(sender, e);
+        }
+
+        private void driverCB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["FRDriverName"].Value = driverCB.Text;
+            config.Save();
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }
