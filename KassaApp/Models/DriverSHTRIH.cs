@@ -149,11 +149,13 @@ namespace KassaApp.Models
                 case 3:
                     ExecuteAndHandleError(Driver.WaitForPrinting);
                     //Снятие Z-отчёта, закрытие смены
-                    if (MessageBox.Show("24 часа истеки! Зактыть смену?","Фискальный регистратор",MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("24 часа истеки! Зактыть смену?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
                         PrintZReport();
-                    //Открытие смены
-                    if (MessageBox.Show("Смена закрыта! Открыть новую смену?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                        PrintOpenSessionReport();
+                        //Открытие смены
+                        if (MessageBox.Show("Смена закрыта! Открыть новую смену?", "Фискальный регистратор", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            PrintOpenSessionReport();
+                    }
                     break;
                 case 4:
                     //Открытие смены
@@ -544,22 +546,22 @@ namespace KassaApp.Models
             if (title != null)
             {
                 template = $"{title}\r\n" +
-                $"Группа А:\r\n" +
+                $"Группа А          НДС 20%:\r\n" +
                     $"Оборот по налогу: {GetCashRegItem(209).Content}\r\n" +
                     $"Налог: {GetCashRegItem(225).Content}\r\n" +
-                $"Группа Б\r\n" +
+                $"Группа Б          НДС 10%\r\n" +
                     $"Оборот по налогу: {GetCashRegItem(213).Content}\r\n" +
                     $"Налог: {GetCashRegItem(229).Content}\r\n" +
-                $"Группа В\r\n" +
+                $"Группа В          НДС 0%\r\n" +
                     $"Оборот по налогу: {GetCashRegItem(217).Content}\r\n" +
                     $"Налог: {GetCashRegItem(233).Content}\r\n" +
-                $"Группа Г\r\n" +
+                $"Группа Г          БЕЗ НДС\r\n" +
                     $"Оборот по налогу: {GetCashRegItem(221).Content}\r\n" +
                     $"Налог: {GetCashRegItem(237).Content}\r\n" +
-                $"Группа Д\r\n" +
+                $"Группа Д          НДС 20/120\r\n" +
                     $"Оборот по налогу: {0}\r\n" +
                     $"Налог: {0}\r\n" +
-                $"Группа Е\r\n" +
+                $"Группа Е          НДС 10/110\r\n" +
                     $"Оборот по налогу: {0}\r\n" +
                     $"Налог: {0}\r\n";
             }
