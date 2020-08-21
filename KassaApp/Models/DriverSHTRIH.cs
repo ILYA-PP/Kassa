@@ -612,7 +612,7 @@ namespace KassaApp.Models
                 $"НОМЕР ОБЩЕГО ГАШЕНИЯ: {GetOperRegItem(160).Content}\r\n" +
                 $"НОМЕР ОТЧЁТА ПО СЕКЦИЯМ: {GetOperRegItem(165).Content}\r\n" +
                 $"НОМЕР ОТЧЁТА ПО НАЛОГАМ: {GetOperRegItem(178).Content}\r\n" +
-                $"НОМЕР ОТЧЁТА ПО КАССИРАМ: {0}\r\n";
+                $"НОМЕР ОТЧЁТА ПО КАССИРАМ: {GetOperRegItem(187).Content}\r\n";
             }
             Log.Logger.Info("Печать операционных регистров...");
             //печать и сохранение отчёта
