@@ -23,7 +23,7 @@ namespace KassaApp.Models
 			{
 				using (var db = new KassaDBContext())
 				{
-					var productInDB = db.Product.Where(p => p.Name == product.Name).FirstOrDefault();
+					var productInDB = db.Product.Where(p => p.Id == product.Id).FirstOrDefault();
 					Log.Logger.Info($"Попытка выбрать товар с ID = {product.Id} в количестве {product.Quantity} шт.");
 					//если количество выбранного товара меньше либо равно остатку
 					if (product.Quantity <= productInDB.Quantity)

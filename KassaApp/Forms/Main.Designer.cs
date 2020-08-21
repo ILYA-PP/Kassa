@@ -110,6 +110,7 @@
             this.sumCol});
             this.receiptDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.receiptDGV.Location = new System.Drawing.Point(3, 204);
+            this.receiptDGV.MultiSelect = false;
             this.receiptDGV.Name = "receiptDGV";
             this.receiptDGV.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;

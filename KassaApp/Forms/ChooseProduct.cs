@@ -117,7 +117,7 @@ namespace KassaApp.Forms
                                     foreach (Product p in ((Main)Owner).receipt.Products)
                                     {
                                         //если товар уже добавлен в чек новая позиция не создаётся
-                                        if (p.Name == product.Name)
+                                        if (p.Id == product.Id)
                                         {
                                             if (p.Type == 1)//учитываются только товары, без услуг
                                             {

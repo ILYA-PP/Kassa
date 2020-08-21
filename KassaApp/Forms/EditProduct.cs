@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace KassaApp
-{
+{ 
     /// <summary>
     /// Класс содержит логику работы формы редактирования выбранного продукта.
     /// </summary>
@@ -87,18 +87,20 @@ namespace KassaApp
                             product.Quantity += OldProduct.Quantity;
                             //изменение данных на форме Main
                             int index = ((Main)Owner).receipt.Products.IndexOf(
-                                ((Main)Owner).receipt.Products.Where(p => p.Name == product.Name).FirstOrDefault());
+                                ((Main)Owner).receipt.Products.Where(p => p.Id == product.Id).FirstOrDefault());
                             ((Main)Owner).receipt.Products[index] = product;
                             ((Main)Owner).DGV_Refresh();
                             //обновление данных в БД в таблице Purchase
                             var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
                             oldP.Count = product.Quantity;
                             oldP.Summa = product.Row_Summ;
+                            db.SaveChanges();
+                            ((Main)Owner).receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Count = oldP.Count;
+                            ((Main)Owner).receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Summa = oldP.Summa;
                             Log.Logger.Info($"Изменение данных о покупке в таблице Purchase");
                             Log.Logger.Info($"Новые данные: Товар: {product.Name} " +
                             $"Количество: {product.Quantity} " +
                             $"Отдел: {product.Department} Скидка: {product.Discount}");
-                            db.SaveChanges();
                         }
                         Close();
                     }

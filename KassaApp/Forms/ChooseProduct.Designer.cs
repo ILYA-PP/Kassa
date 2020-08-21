@@ -100,6 +100,7 @@
             this.sumCol});
             this.productsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.productsDGV.Location = new System.Drawing.Point(3, 73);
+            this.productsDGV.MultiSelect = false;
             this.productsDGV.Name = "productsDGV";
             this.productsDGV.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
