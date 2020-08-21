@@ -47,12 +47,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.countNUD = new System.Windows.Forms.NumericUpDown();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.departmentNUD = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.productsDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -111,7 +114,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.productsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.productsDGV.Size = new System.Drawing.Size(794, 358);
+            this.productsDGV.Size = new System.Drawing.Size(794, 298);
             this.productsDGV.TabIndex = 0;
             this.productsDGV.SelectionChanged += new System.EventHandler(this.productsDGV_SelectionChanged);
             // 
@@ -185,17 +188,18 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.productsDGV, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 494);
             this.tableLayoutPanel1.TabIndex = 48;
@@ -218,11 +222,15 @@
             // 
             // tableLayoutPanel5
             // 
-            this.tableLayoutPanel5.ColumnCount = 3;
+            this.tableLayoutPanel5.ColumnCount = 5;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 115F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 115F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label3, 2, 0);
+            this.tableLayoutPanel5.Controls.Add(this.departmentNUD, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.countNUD, 1, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 38);
@@ -285,6 +293,43 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(794, 29);
             this.tableLayoutPanel4.TabIndex = 43;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(238, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(109, 32);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "Отдел:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // departmentNUD
+            // 
+            this.departmentNUD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.departmentNUD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.departmentNUD.Location = new System.Drawing.Point(353, 3);
+            this.departmentNUD.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.departmentNUD.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.departmentNUD.Name = "departmentNUD";
+            this.departmentNUD.Size = new System.Drawing.Size(114, 26);
+            this.departmentNUD.TabIndex = 49;
+            this.departmentNUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.departmentNUD.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // ChooseProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -297,6 +342,7 @@
             this.MinimizeBox = false;
             this.Name = "ChooseProduct";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Выбрать продукт";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.productsDGV)).EndInit();
@@ -307,6 +353,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -330,5 +377,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown departmentNUD;
     }
 }

@@ -221,6 +221,7 @@
             this.MinimizeBox = false;
             this.Name = "Payment";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "Оплата";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Payment_FormClosing);
             this.panel1.ResumeLayout(false);
