@@ -343,10 +343,9 @@ namespace KassaApp.Models
                         Driver.Tax1 = 2;
                     else if (p.NDS == 0)
                         Driver.Tax1 = 4;
-                    Driver.DiscountValue = discountOnProduct;
                     Log.Logger.Info($"Фиксация позиции: Товар: {p.Name} Количество: {p.Quantity} " +
                         $"Цена: {p.Price} Скидка: {discountOnProduct}");
-                    if (ExecuteAndHandleError(Driver.FNDiscountOperation, true) != 0)
+                    if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                         return -1;
                     if(discountOnProduct > 0)
                     {

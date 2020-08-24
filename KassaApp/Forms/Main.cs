@@ -40,7 +40,7 @@ namespace KassaApp
         {
             //Если выбрана строка, то изменение
             if (receiptDGV.SelectedRows.Count > 0)
-                new EditProduct(receiptDGV.SelectedRows[0]).ShowDialog(this);
+                new EditProduct(Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt)).ShowDialog(this);
             else
                 MessageBox.Show("Строка не выбрана!");
         }
@@ -172,7 +172,8 @@ namespace KassaApp
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             rowCount_Changed();
-            receiptDGV.Rows[e.RowIndex].HeaderCell.Value = (e.RowIndex + 1).ToString();
+            foreach (DataGridViewRow r in receiptDGV.Rows)
+                r.HeaderCell.Value = (r.Index + 1).ToString();
         }
         /// <summary>
         /// Метод обрабатывает событие удаления строки таблицы.
@@ -182,6 +183,8 @@ namespace KassaApp
         private void receiptDGV_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             rowCount_Changed();
+            foreach (DataGridViewRow r in receiptDGV.Rows)
+                r.HeaderCell.Value = (r.Index + 1).ToString();
         }
         //обработка нажатия горячих клавиш
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

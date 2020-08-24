@@ -16,11 +16,11 @@ namespace KassaApp
         /// Выполняет инициализацию формы и заполнение данных для редактирования.
         /// </summary>
         /// <param name="row">Строка, которую надо изменить.</param>
-        public EditProduct(DataGridViewRow row)
+        public EditProduct(Product product)
         {
             Log.Logger.Info("Открытие окна Редактирования товара...");
             InitializeComponent();
-            OldProduct = Product.ProductFromRow(row, null);
+            OldProduct = product;
             try
             {
                 if(OldProduct != null)
@@ -28,6 +28,7 @@ namespace KassaApp
                     //установка полученных данных в поля формы
                     receiptDGV.Visible = true;
                     countNUD.Value = OldProduct.Quantity;
+                    departmentNUD.Value = OldProduct.Department;
                     discountTB.Text = string.Format("{0:f}", OldProduct.Discount);
                     receiptDGV.Rows.Add(OldProduct.Name, OldProduct.Quantity,
                         OldProduct.Price, OldProduct.Discount, OldProduct.NDS, OldProduct.Row_Summ);
