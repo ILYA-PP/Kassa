@@ -172,6 +172,7 @@ namespace KassaApp
         private void receiptDGV_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             rowCount_Changed();
+            receiptDGV.Rows[e.RowIndex].HeaderCell.Value = (e.RowIndex + 1).ToString();
         }
         /// <summary>
         /// Метод обрабатывает событие удаления строки таблицы.
@@ -263,6 +264,11 @@ namespace KassaApp
                 Log.Logger.Info($"Создан чек (ID = {receipt.Id})");
                 timer.Start();
             }
+        }
+
+        private void receiptDGV_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
+        {
+            e.Row.HeaderCell.Value = (e.Row.Index + 1).ToString();
         }
     }
 }

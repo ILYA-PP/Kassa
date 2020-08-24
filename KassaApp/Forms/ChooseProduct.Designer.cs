@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.searchTB = new System.Windows.Forms.TextBox();
             this.productsDGV = new System.Windows.Forms.DataGridView();
@@ -42,20 +42,24 @@
             this.cancelB = new System.Windows.Forms.Button();
             this.enterB = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
-            this.countNUD = new System.Windows.Forms.NumericUpDown();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.departmentNUD = new System.Windows.Forms.NumericUpDown();
+            this.countNUD = new System.Windows.Forms.NumericUpDown();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.barCodeL = new System.Windows.Forms.Label();
+            this.infoL = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.productsDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -85,14 +89,14 @@
             this.productsDGV.AllowUserToAddRows = false;
             this.productsDGV.AllowUserToDeleteRows = false;
             this.productsDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.productsDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.productsDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.productsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.productsDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameCol,
@@ -106,15 +110,15 @@
             this.productsDGV.MultiSelect = false;
             this.productsDGV.Name = "productsDGV";
             this.productsDGV.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.productsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.productsDGV.Size = new System.Drawing.Size(794, 298);
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.productsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.productsDGV.Size = new System.Drawing.Size(794, 303);
             this.productsDGV.TabIndex = 0;
             this.productsDGV.SelectionChanged += new System.EventHandler(this.productsDGV_SelectionChanged);
             // 
@@ -192,6 +196,7 @@
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel5, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 4);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -201,24 +206,8 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 494);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 499);
             this.tableLayoutPanel1.TabIndex = 48;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.enterB, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.cancelB, 2, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 437);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(794, 54);
-            this.tableLayoutPanel2.TabIndex = 0;
             // 
             // tableLayoutPanel5
             // 
@@ -251,6 +240,43 @@
             this.label2.TabIndex = 46;
             this.label2.Text = "Количество:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(238, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(109, 32);
+            this.label3.TabIndex = 48;
+            this.label3.Text = "Отдел:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // departmentNUD
+            // 
+            this.departmentNUD.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.departmentNUD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.departmentNUD.Location = new System.Drawing.Point(353, 3);
+            this.departmentNUD.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.departmentNUD.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.departmentNUD.Name = "departmentNUD";
+            this.departmentNUD.Size = new System.Drawing.Size(114, 26);
+            this.departmentNUD.TabIndex = 49;
+            this.departmentNUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.departmentNUD.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // countNUD
             // 
@@ -293,42 +319,60 @@
             this.tableLayoutPanel4.Size = new System.Drawing.Size(794, 29);
             this.tableLayoutPanel4.TabIndex = 43;
             // 
-            // label3
+            // tableLayoutPanel2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(238, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(109, 32);
-            this.label3.TabIndex = 48;
-            this.label3.Text = "Отдел:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.enterB, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.cancelB, 2, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 442);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(794, 54);
+            this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // departmentNUD
+            // tableLayoutPanel3
             // 
-            this.departmentNUD.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.departmentNUD.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.departmentNUD.Location = new System.Drawing.Point(353, 3);
-            this.departmentNUD.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.departmentNUD.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.departmentNUD.Name = "departmentNUD";
-            this.departmentNUD.Size = new System.Drawing.Size(114, 26);
-            this.departmentNUD.TabIndex = 49;
-            this.departmentNUD.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.departmentNUD.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.tableLayoutPanel3.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.OutsetPartial;
+            this.tableLayoutPanel3.ColumnCount = 1;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.barCodeL, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.infoL, 0, 1);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 382);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(794, 54);
+            this.tableLayoutPanel3.TabIndex = 44;
+            // 
+            // barCodeL
+            // 
+            this.barCodeL.AutoSize = true;
+            this.barCodeL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.barCodeL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.barCodeL.Location = new System.Drawing.Point(6, 3);
+            this.barCodeL.Name = "barCodeL";
+            this.barCodeL.Size = new System.Drawing.Size(782, 22);
+            this.barCodeL.TabIndex = 30;
+            this.barCodeL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // infoL
+            // 
+            this.infoL.AutoSize = true;
+            this.infoL.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.infoL.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.infoL.Location = new System.Drawing.Point(6, 28);
+            this.infoL.Name = "infoL";
+            this.infoL.Size = new System.Drawing.Size(782, 23);
+            this.infoL.TabIndex = 31;
+            this.infoL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ChooseProduct
             // 
@@ -336,7 +380,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.cancelB;
-            this.ClientSize = new System.Drawing.Size(800, 494);
+            this.ClientSize = new System.Drawing.Size(800, 499);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MinimizeBox = false;
@@ -347,13 +391,15 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.productsDGV)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.countNUD)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.departmentNUD)).EndInit();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -379,5 +425,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown departmentNUD;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label barCodeL;
+        private System.Windows.Forms.Label infoL;
     }
 }

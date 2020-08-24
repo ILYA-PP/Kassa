@@ -130,6 +130,8 @@ namespace KassaApp.Forms
                                                 p.Row_Summ += product.Row_Summ;
                                                 ((Main)Owner).DGV_Refresh();
                                                 db.SaveChanges();
+                                                ((Main)Owner).receipt.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault().Count = oldP.Count;
+                                                ((Main)Owner).receipt.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault().Summa = oldP.Summa;
                                                 Log.Logger.Info($"Количество товара (ID = {p.Id}) прибавлен к существующей позиции в чеке");
                                             }
                                             added = true;
@@ -192,6 +194,12 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void productsDGV_SelectionChanged(object sender, EventArgs e)
         {
+            if(productsDGV.SelectedRows.Count > 0)
+            {
+                var product = Product.ProductFromRow(productsDGV.SelectedRows[0], null);
+                barCodeL.Text = $"ШК: {product.BarCode}";
+                infoL.Text = $"Серия: {0}   ДП: {0}   МХ: {0}";
+            }
             if (productsDGV.CurrentRow != null)
                 productsDGV.CurrentRow.Selected = true;
         }

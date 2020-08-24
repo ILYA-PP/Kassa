@@ -72,6 +72,7 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void reportsDGV_SelectionChanged(object sender, EventArgs e)
         {
+            reportTB.Text = "";
             //вывод данных отчёта в текстовое поле
             if (reportsDGV.SelectedRows.Count > 0)
                 reportTB.Text = Encoding.Default.GetString((byte[])reportsDGV.SelectedRows[0].Cells["dataCol"].Value);
