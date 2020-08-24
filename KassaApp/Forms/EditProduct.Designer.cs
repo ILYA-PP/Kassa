@@ -32,7 +32,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.discountTB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.addProductB = new System.Windows.Forms.Button();
+            this.editProductB = new System.Windows.Forms.Button();
             this.countNUD = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.countB = new System.Windows.Forms.Button();
@@ -75,16 +75,16 @@
             this.label8.TabIndex = 28;
             this.label8.Text = "Скидка";
             // 
-            // addProductB
+            // editProductB
             // 
-            this.addProductB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.addProductB.Location = new System.Drawing.Point(216, 244);
-            this.addProductB.Name = "addProductB";
-            this.addProductB.Size = new System.Drawing.Size(117, 30);
-            this.addProductB.TabIndex = 27;
-            this.addProductB.Text = "Ввод";
-            this.addProductB.UseVisualStyleBackColor = true;
-            this.addProductB.Click += new System.EventHandler(this.addProductB_Click);
+            this.editProductB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.editProductB.Location = new System.Drawing.Point(216, 244);
+            this.editProductB.Name = "editProductB";
+            this.editProductB.Size = new System.Drawing.Size(117, 30);
+            this.editProductB.TabIndex = 27;
+            this.editProductB.Text = "Ввод";
+            this.editProductB.UseVisualStyleBackColor = true;
+            this.editProductB.Click += new System.EventHandler(this.EditProductB_Click);
             // 
             // countNUD
             // 
@@ -284,7 +284,7 @@
             this.Controls.Add(this.countB);
             this.Controls.Add(this.discountTB);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.addProductB);
+            this.Controls.Add(this.editProductB);
             this.Controls.Add(this.countNUD);
             this.Controls.Add(this.label3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -307,7 +307,7 @@
         #endregion
         private System.Windows.Forms.TextBox discountTB;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button addProductB;
+        private System.Windows.Forms.Button editProductB;
         private System.Windows.Forms.NumericUpDown countNUD;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button countB;

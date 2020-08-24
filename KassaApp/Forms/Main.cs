@@ -265,10 +265,5 @@ namespace KassaApp
                 timer.Start();
             }
         }
-
-        private void receiptDGV_RowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
-        {
-            e.Row.HeaderCell.Value = (e.Row.Index + 1).ToString();
-        }
     }
 }

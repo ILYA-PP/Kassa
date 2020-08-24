@@ -54,7 +54,7 @@ namespace KassaApp
         /// </summary>
         /// <param name="sender">Объект, вызвавщий метод.</param>
         /// <param name="e">Аргументы события.</param>
-        private void addProductB_Click(object sender, EventArgs e)
+        private void EditProductB_Click(object sender, EventArgs e)
         {
             try
             {
