@@ -57,12 +57,22 @@ namespace KassaApp.Models
 		/// </summary>
         public void CalculateSumm()
         {
-            Summa = 0;
+            decimal discountOnProduct = 0, discountOnReceipt = 0, price = 0;
+            DiscountSum = Summa = 0;
             if (Products != null)
                 foreach (var p in Products)
-                    Summa += p.Row_Summ;
-            DiscountSum = Math.Round(Summa * (decimal)Discount / 100, 2);
-            Summa -= DiscountSum;
+                {
+                    discountOnProduct = Math.Round(p.Price * (decimal)p.Discount / 100, 2);
+                    price = p.Price - discountOnProduct;
+                    if (Discount > 0)
+                    {
+                        discountOnReceipt = Math.Round(price * (decimal)Discount / 100, 2); ;
+                        price -= discountOnReceipt;
+                        discountOnProduct += discountOnReceipt;
+                    }
+                    Summa += Math.Round(p.Quantity * price, 2);
+                    DiscountSum += (discountOnProduct * p.Quantity);
+                }
         }
     }
 }

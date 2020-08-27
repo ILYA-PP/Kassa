@@ -115,7 +115,6 @@ namespace KassaApp
                                         }
                                         else
                                         {
-                                            //????????????????????????
                                             MessageBox.Show("Товарный чек не напечатан! Отмена транзакции.");
                                             terminal.CancelTransaction();
                                         }

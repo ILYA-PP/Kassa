@@ -321,15 +321,16 @@ namespace KassaApp.Models
                     Driver.StringForPrinting = p.Name;
                     discountOnProduct = Math.Round(p.Price * (decimal)p.Discount / 100, 2);
                     Driver.Price = p.Price - discountOnProduct;
-                    discountOnProduct *= p.Quantity;
                     if (receipt.Discount > 0)
                     {
-                        discountOnReceipt = Driver.Price * (decimal)receipt.Discount / 100;
+                        discountOnReceipt = Math.Round(Driver.Price * (decimal)receipt.Discount / 100, 2); ;
+                        Driver.Price -= discountOnReceipt;
                         discountOnProduct += discountOnReceipt;
-                        Driver.Price -= discountOnReceipt; 
                     }
                     Driver.Quantity = p.Quantity;
-                    sum += (decimal)Driver.Quantity * Driver.Price;
+                    sum += Math.Round((decimal)Driver.Quantity * Driver.Price, 2);
+                    discountOnProduct *= p.Quantity;
+                    amountDiscount += discountOnProduct;
                     Driver.Department = p.Department;
                     Driver.PaymentTypeSign = 4;
                     if (p.Type == 1)
@@ -352,7 +353,6 @@ namespace KassaApp.Models
                         Driver.StringForPrinting = StringFormatForPrint($"В том числе скидка\n={string.Format("{0:f}", discountOnProduct).Replace(",", ".")}", 3);
                         ExecuteAndHandleError(Driver.PrintString);
                     }    
-                    amountDiscount += discountOnProduct;
                     if (p.BarCode != null && p.BarCode != "")
                     {
                         Driver.StringForPrinting = StringFormatForPrint($"ШК: {p.BarCode}");
