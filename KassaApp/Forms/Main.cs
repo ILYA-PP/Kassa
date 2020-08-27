@@ -186,7 +186,9 @@ namespace KassaApp
             foreach (DataGridViewRow r in receiptDGV.Rows)
                 r.HeaderCell.Value = (r.Index + 1).ToString();
         }
-        //обработка нажатия горячих клавиш
+        /// <summary>
+        /// Метод отвечает за обработку нажатия горячих клавиш.
+        /// </summary>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)

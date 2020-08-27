@@ -70,7 +70,9 @@ namespace KassaApp.Forms
                     }
             }
         }
-        //обработка горячих клавиш
+        /// <summary>
+        /// Метод отвечает за обработку нажатия горячих клавиш.
+        /// </summary>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)

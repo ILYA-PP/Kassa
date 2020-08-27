@@ -159,7 +159,12 @@ namespace KassaApp
         {
             TextFormat.TextBoxDigitFormat(sender, e);
         }
-
+        /// <summary>
+        /// Метод обрабатывает событие изменения значения выпадающего списка Драйвер.
+        /// Отвечает за установку и сохранение драйвера для использования.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void driverCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

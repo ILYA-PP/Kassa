@@ -94,7 +94,12 @@ namespace KassaApp.Forms
                     fr.PrintOperationReg(); //Печать операционных регистров
             }
         }
-
+        /// <summary>
+        /// Метод обрабатывает событие закрытия формы.
+        /// Отвечает за запись информации о закрытии окна в лог.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void ViewRegistarers_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Logger.Info("Закрытие окна Просмотра регистров...");

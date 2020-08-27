@@ -18,7 +18,9 @@ namespace KassaApp
             Log.Logger.Info("Открытие окна Установки скидки на чек...");
             InitializeComponent();
         }
-        //обработка нажатия горячих клавиш
+        /// <summary>
+        /// Метод отвечает за обработку нажатия горячих клавиш.
+        /// </summary>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)

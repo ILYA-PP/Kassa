@@ -47,7 +47,9 @@ namespace KassaApp
             else
                 changeTB.Text = "";
         }
-        //обработка горячих клавиш
+        /// <summary>
+        /// Метод отвечает за обработку нажатия горячих клавиш.
+        /// </summary>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             switch (keyData)
@@ -251,7 +253,12 @@ namespace KassaApp
                 }
             }
         }
-
+        /// <summary>
+        /// Метод обрабатывает событие нажатия кнопки Примечание.
+        /// Отвечает за установку фокуса на поле Примечание.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавщий метод.</param>
+        /// <param name="e">Аргументы события.</param>
         private void noteB_Click(object sender, EventArgs e)
         {
             noteTB.Focus();

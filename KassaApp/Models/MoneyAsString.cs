@@ -8,20 +8,30 @@ namespace KassaApp.Models
     /// </summary>
     class MoneyAsString
     {
+        //наименования сотен
         private static string[] hunds =
         {
             "", "сто ", "двести ", "триста ", "четыреста ",
             "пятьсот ", "шестьсот ", "семьсот ", "восемьсот ", "девятьсот "
         };
-
+        //наименование десятков
         private static string[] tens =
         {
             "", "десять ", "двадцать ", "тридцать ", "сорок ", "пятьдесят ",
             "шестьдесят ", "семьдесят ", "восемьдесят ", "девяносто "
         };
-
+        /// <summary>
+        /// Метод преобразует число в пропись.
+        /// </summary>
+        /// <param name="val">Число, которое необходимо преобразовать.</param>
+        /// <param name="male">Род для тысяч.</param>
+        /// <param name="one">Склонение числа один.</param>
+        /// <param name="two">Склонение чисел от двух до четырёх.</param>
+        /// <param name="five">Склонение чисел от пяти до девяти.</param>
+        /// <returns>Пропись числа.</returns>
         public static string Str(int val, bool male, string one, string two, string five)
         {
+            //наименование единиц и десятков
             string[] frac20 =
             {
                 "", "один ", "два ", "три ", "четыре ", "пять ", "шесть ",
@@ -56,7 +66,14 @@ namespace KassaApp.Models
             if (r.Length != 0) r.Append(" ");
             return r.ToString();
         }
-
+        /// <summary>
+        /// Метод определяет склонение для разряда.
+        /// </summary>
+        /// <param name="val">Число, у которого необходимо определить склонение.</param>
+        /// <param name="one">Склонение числа один.</param>
+        /// <param name="two">Склонение чисел от двух до четырёх.</param>
+        /// <param name="five">Склонение чисел от пяти до девяти.</param>
+        /// <returns>Пропись числа.</returns>
         public static string Case(int val, string one, string two, string five)
         {
             int t = (val % 100 > 20) ? val % 10 : val % 20;
@@ -69,7 +86,10 @@ namespace KassaApp.Models
             }
         }
     };
-
+    /// <summary>
+    /// Класс содержит функционал для преобразование прописи числа
+    /// в пропись с использованием наименования денежной валюты.
+    /// </summary>
     public class RusCurrency
     {
 
@@ -80,7 +100,18 @@ namespace KassaApp.Models
                 "рубль", "рубля", "рублей",
                 "копейка", "копейки", "копеек");
         }
-
+        /// <summary>
+        /// Метод преобразует число в пропись с валютой.
+        /// </summary>
+        /// <param name="val">Число, которое необходимо преобразовать.</param>
+        /// <param name="male">Род для тысяч.</param>
+        /// <param name="seniorOne">Старшее наименование валюты для числа один</param>
+        /// <param name="seniorTwo">Старшее наименование валюты для чисел от двух до четырёх.</param>
+        /// <param name="seniorFive">Старшее наименование валюты для чисел от пяти до девяти.</param>
+        /// <param name="juniorOne">Младшее наименование валюты для числа один.</param>
+        /// <param name="juniorTwo">Младшее наименование валюты для чисел от двух до четырёх.</param>
+        /// <param name="juniorFive">Младшее наименование валюты для чисел от пяти до девяти.</param>
+        /// <returns>Пропись денежной суммы.</returns>
         public static string Str(double val, bool male,
             string seniorOne, string seniorTwo, string seniorFive,
             string juniorOne, string juniorTwo, string juniorFive)
