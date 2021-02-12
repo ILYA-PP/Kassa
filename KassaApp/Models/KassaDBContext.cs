@@ -8,13 +8,13 @@ namespace KassaApp
     /// <summary>
     /// Класс представляющий контект базы данных.
     /// </summary>
-    public partial class KassaDBContext : DbContext
+    public partial class _KassaDBContext : DbContext
     {
         /// <summary>
         /// Конструктор класса.
         /// Выполняет подключение к базе данных по указанной строке подкючения.
         /// </summary>
-        public KassaDBContext()
+        public _KassaDBContext()
             : base("name=KassaDBContext")
         {
             Log.Logger.Info($"Подключение к базе данных: " +
@@ -29,7 +29,7 @@ namespace KassaApp
         
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Database.SetInitializer<KassaDBContext>(null);
+            Database.SetInitializer<_KassaDBContext>(null);
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Product>()
                 .Property(e => e.Price)

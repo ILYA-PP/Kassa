@@ -1,5 +1,7 @@
-﻿using KassaApp.Forms;
+﻿using Dapper;
+using KassaApp.Forms;
 using KassaApp.Models;
+using KassaApp.Models.Connection;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -12,7 +14,6 @@ namespace KassaApp
     /// </summary>
     public partial class Main : Form
     {
-        public Receipt receipt;
         /// <summary>
         /// Конструктор класса.
         /// Выполняет инициализацию формы.
@@ -40,7 +41,7 @@ namespace KassaApp
         {
             //Если выбрана строка, то изменение
             if (receiptDGV.SelectedRows.Count > 0)
-                new EditProduct(Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt)).ShowDialog(this);
+                new EditProduct(Product.ProductFromRow(receiptDGV.SelectedRows[0], CurrentReceipt.Receipt)).ShowDialog(this);
             else
                 MessageBox.Show("Строка не выбрана!");
         }
@@ -51,8 +52,8 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void paymentB_Click(object sender, EventArgs e)
         {
-            if (receipt.Summa > 0)
-                new Payment(receipt).ShowDialog(this);
+            if (CurrentReceipt.Receipt.Summa > 0)
+                new Payment(CurrentReceipt.Receipt).ShowDialog(this);
             else
                 MessageBox.Show("Сумма чека равна 0. Оплата невозможна!");
         }
@@ -69,14 +70,14 @@ namespace KassaApp
             //изменение значений полей Без скидки, Скидка, Итог, Сумма и отдел
             if (receiptDGV.SelectedRows.Count > 0)
             {
-                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt);
+                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], CurrentReceipt.Receipt);
                 if (product != null)
                 {
                     nameL.Text = product.Name;
                     summL.Text = $"{product.Quantity} x {product.Price} - {product.Discount}% = {product.Row_Summ}  Отд: {product.Department}";
                     remainsL.Text = $"Ост: {product.GetBalance()}";
                     shelfLifeL.Text = $"СГ: {product.ShelfLife:dd.MM.yyyy}";
-                    if (product.ShelfLife < DateTime.Now)
+                    if (product.ShelfLife < DateTime.Now && product.ShelfLife != null)
                         shelfLifeL.BackColor = Color.Red;
                     else
                         shelfLifeL.BackColor = remainsL.BackColor;
@@ -113,24 +114,22 @@ namespace KassaApp
             if (receiptDGV.SelectedRows.Count > 0)
             {
                 //формирование удаляемого продукт из строки
-                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], receipt);
+                Product product = Product.ProductFromRow(receiptDGV.SelectedRows[0], CurrentReceipt.Receipt);
                 //вывод диалогового окна
-                if (product != null && MessageBox.Show("Вы действительно хотите удалить строку:\n" +
-                    $"| {product.Name} | {product.Quantity} | {product.Price} | " +
-                    $"{product.Row_Summ} |","",MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (product != null && MessageBox.Show("Вы действительно хотите удалить товар: " +
+                    $"{product.Name} ","",MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    using (var db = new KassaDBContext())
+                    using (var db = ConnectionFactory.GetConnection())
                     {
                         Log.Logger.Info($"Удаление данных о покупке (ID товара = {product.Id}; " +
-                            $"ID чека = {receipt.Id}) из таблицы Purchase");
+                            $"ID чека = {CurrentReceipt.Receipt.Id}) из таблицы Purchase");
                         //удаление из БД из таблицы Purchase
-                        var purchase = db.Purchase.Where(p => p.ProductId == product.Id && p.ReceiptId == receipt.Id).FirstOrDefault();
-                        db.Purchase.Remove(purchase);
-                        db.SaveChanges();
+                        var purchase = db.Query<Purchase>(SQLHelper.Select<Purchase>($"WHERE ProductId = {product.Id} AND ReceiptId = {CurrentReceipt.Receipt.Id}")).FirstOrDefault();
+                        db.Execute(SQLHelper.Delete(purchase));
                         //удаление из состава чека
-                        receipt.Purchase.Remove(receipt.Purchase.Where(p => p.Id == purchase.Id).FirstOrDefault());
-                        receipt.Products.Remove(product);
-                        receipt.CalculateSumm();
+                        CurrentReceipt.Receipt.Purchase.Remove(CurrentReceipt.Receipt.Purchase.Where(p => p.Id == purchase.Id).FirstOrDefault());
+                        CurrentReceipt.Receipt.Products.Remove(product);
+                        CurrentReceipt.Receipt.CalculateSumm();
                         //удаление из DataGridView
                         receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
                         //восстановление остатка
@@ -147,10 +146,10 @@ namespace KassaApp
         /// </summary>
         private void rowCount_Changed()
         {
-            if (receipt != null)
+            if (CurrentReceipt.Receipt != null)
             {
-                receipt.CalculateSumm();
-                if (receipt.Summa == 0)
+                CurrentReceipt.Receipt.CalculateSumm();
+                if (CurrentReceipt.Receipt.Summa == 0)
                 {
                     resultL.Text = "0,00";
                     discountTB.Text = "0,00";
@@ -158,9 +157,9 @@ namespace KassaApp
                 }
                 else
                 {
-                    resultL.Text = string.Format("{0:f}", receipt.Summa);
-                    discountTB.Text = string.Format("{0:f}", receipt.DiscountSum);
-                    nonDiscountTB.Text = string.Format("{0:f}", receipt.Summa + receipt.DiscountSum);
+                    resultL.Text = string.Format("{0:f}", CurrentReceipt.Receipt.Summa);
+                    discountTB.Text = string.Format("{0:f}", CurrentReceipt.Receipt.DiscountSum);
+                    nonDiscountTB.Text = string.Format("{0:f}", CurrentReceipt.Receipt.Summa + CurrentReceipt.Receipt.DiscountSum);
                 }
             }
         }
@@ -235,11 +234,11 @@ namespace KassaApp
         /// </summary>
         /// <param name="sender">Объект, вызвавщий метод.</param>
         /// <param name="e">Аргументы события.</param>
-        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        private async void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Logger.Info("Закрытие окна Регистрации продаж...");
             //сверка остатков по товарам, добавленным в чек
-            CountController.Reconciliation(receipt);
+            await CountController.Reconciliation(CurrentReceipt.Receipt);
         }
         /// <summary>
         /// Метод отвечает за обновление данных в таблице. 
@@ -247,7 +246,7 @@ namespace KassaApp
         public void DGV_Refresh()
         {
             receiptDGV.Rows.Clear();
-            foreach (Product p in receipt.Products)
+            foreach (Product p in CurrentReceipt.Receipt.Products)
                 Product.RowFromProduct(p, receiptDGV);
         }
         /// <summary>
@@ -256,17 +255,17 @@ namespace KassaApp
         /// </summary>
         /// <param name="sender">Объект, вызвавщий метод.</param>
         /// <param name="e">Аргументы события.</param>
-        private void Main_Load(object sender, EventArgs e)
+        private async void Main_Load(object sender, EventArgs e)
         {
             //сверка остатков по всем товарам
-            CountController.ReconciliationAll();
+            await CountController.ReconciliationAll();
             //добавление нового чека в БД в таблицу Receipt
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
-                receipt = new Receipt();
-                receipt = db.Receipt.Add(receipt);
-                db.SaveChanges();
-                Log.Logger.Info($"Создан чек (ID = {receipt.Id})");
+                CurrentReceipt.Receipt = new Receipt();
+                db.ExecuteScalar(SQLHelper.Insert(CurrentReceipt.Receipt));
+                CurrentReceipt.Receipt.Id = db.Query<int>("SELECT MAX(Id) FROM Receipt;").FirstOrDefault();
+                //Log.Logger.Info($"Создан чек (ID = {receipt.Id})");
                 timer.Start();
             }
         }

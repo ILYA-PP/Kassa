@@ -1,6 +1,9 @@
-﻿using KassaApp.Forms;
+﻿using Dapper;
+using KassaApp.Forms;
+using KassaApp.Models.Connection;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace KassaApp.Models
@@ -21,9 +24,9 @@ namespace KassaApp.Models
 		{
 			try
 			{
-				using (var db = new KassaDBContext())
+				using (var db = ConnectionFactory.GetConnection())
 				{
-					var productInDB = db.Product.Where(p => p.Id == product.Id).FirstOrDefault();
+					var productInDB = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Id = {product.Id}")).FirstOrDefault();
 					Log.Logger.Info($"Попытка выбрать товар с ID = {product.Id} в количестве {product.Quantity} шт.");
 					//если количество выбранного товара меньше либо равно остатку
 					if (product.Quantity <= productInDB.Quantity)
@@ -32,7 +35,7 @@ namespace KassaApp.Models
 						{
 							//вычесть количество из остатков в бд
 							productInDB.Quantity -= product.Quantity;
-							db.SaveChanges();
+							db.Execute(SQLHelper.Update(productInDB));
 							Log.Logger.Info($"Товар с ID = {product.Id} в количестве {product.Quantity} шт. " +
 								$"вычтен из остатков. Остаток: {productInDB.Quantity}");
 						}
@@ -64,14 +67,14 @@ namespace KassaApp.Models
 		{
 			try
 			{
-				using (var db = new KassaDBContext())
+				using (var db = ConnectionFactory.GetConnection())
 				{
-					var productInDB = db.Product.Where(p => p.Id == id).FirstOrDefault();
+					var productInDB = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Id = {id}")).FirstOrDefault();
 					if (productInDB.Type == 1)
 					{
 						//прибавить количество к остаткам в бд
 						productInDB.Quantity += count;
-						db.SaveChanges();
+						db.Execute(SQLHelper.Update(productInDB));
 						Log.Logger.Info($"Товар с ID = {id} в количестве {count} шт. восстановлен");
 					}
 					return true;
@@ -90,11 +93,11 @@ namespace KassaApp.Models
 		/// </summary>
 		/// <param name="receipt">Чек, остатки продуктов
 		/// которого необходимо восстановить.</param>
-		public static void Reconciliation(Receipt receipt)
+		public static async Task Reconciliation(Receipt receipt)
 		{
 			try
 			{
-				using (var db = new KassaDBContext())
+				using (var db = ConnectionFactory.GetConnection())
 				{
 					foreach (var p in receipt.Purchase)
 					{
@@ -103,10 +106,10 @@ namespace KassaApp.Models
 					}						
 					if (receipt != null)
 					{
+						var rec = db.Query<Receipt>(SQLHelper.Select<Receipt>($"WHERE Id = {receipt.Id}")).FirstOrDefault();
 						//удаление чека из бд
-						db.Receipt.Remove(db.Receipt.Where(r => r.Id == receipt.Id).FirstOrDefault());
+						db.Execute(SQLHelper.Delete(rec));
 						Log.Logger.Info($"Чек с ID = {receipt.Id} удалён из базы данных");
-						db.SaveChanges();
 					}
 				}
 			}
@@ -120,13 +123,14 @@ namespace KassaApp.Models
 		/// в случае, если они не были отмечены в базе данных,
 		/// как оплаченные.
 		/// </summary>
-		public static void ReconciliationAll()
+		public async static Task ReconciliationAll()
 		{
 			try
 			{
-				using (var db = new KassaDBContext())
+				using (var db = ConnectionFactory.GetConnection())
 				{
-					var receipts = db.Receipt.Where(r => r.Paid == false);
+					
+					var receipts = db.Query<Receipt>(SQLHelper.Select<Receipt>("WHERE Paid = 0"));
 					Log.Logger.Info($"В базе данных найдено {receipts.Count()} неоплаченных чека");
 					foreach (var r in receipts)
 					{
@@ -139,7 +143,7 @@ namespace KassaApp.Models
 									if (terminal.IsEnabled())
 										terminal.CancelTransaction();
 								}
-							Reconciliation(r);
+							await Reconciliation(r);
 						}
 						else
 						{
@@ -147,7 +151,6 @@ namespace KassaApp.Models
 							Log.Logger.Info($"Чек с ID = {r.Id} отмечен, как Оплаченный");
 						}
 					}
-					db.SaveChanges();
 				}
 			}
 			catch (Exception ex)

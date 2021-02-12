@@ -30,8 +30,6 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.label2 = new System.Windows.Forms.Label();
-            this.dateSearchDTP = new System.Windows.Forms.DateTimePicker();
             this.reportTB = new System.Windows.Forms.TextBox();
             this.dateCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,58 +38,41 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.dateSearchDTP = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.typeCB = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.reportsDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(3, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 37);
-            this.label2.TabIndex = 49;
-            this.label2.Text = "Дата:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // dateSearchDTP
-            // 
-            this.dateSearchDTP.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dateSearchDTP.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dateSearchDTP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dateSearchDTP.Location = new System.Drawing.Point(73, 3);
-            this.dateSearchDTP.Name = "dateSearchDTP";
-            this.dateSearchDTP.Size = new System.Drawing.Size(350, 26);
-            this.dateSearchDTP.TabIndex = 50;
-            this.dateSearchDTP.ValueChanged += new System.EventHandler(this.dateSearchDTP_ValueChanged);
-            // 
             // reportTB
             // 
             this.reportTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.reportTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.reportTB.Location = new System.Drawing.Point(441, 3);
+            this.reportTB.Location = new System.Drawing.Point(661, 5);
+            this.reportTB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.reportTB.Multiline = true;
             this.reportTB.Name = "reportTB";
             this.reportTB.ReadOnly = true;
             this.reportTB.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.reportTB.Size = new System.Drawing.Size(432, 432);
+            this.reportTB.Size = new System.Drawing.Size(649, 664);
             this.reportTB.TabIndex = 51;
             // 
             // dateCol
             // 
             this.dateCol.HeaderText = "Дата";
+            this.dateCol.MinimumWidth = 8;
             this.dateCol.Name = "dateCol";
             this.dateCol.ReadOnly = true;
             // 
             // dataCol
             // 
             this.dataCol.HeaderText = "Отчёт";
+            this.dataCol.MinimumWidth = 8;
             this.dataCol.Name = "dataCol";
             this.dataCol.ReadOnly = true;
             this.dataCol.Visible = false;
@@ -99,6 +80,7 @@
             // nameCol
             // 
             this.nameCol.HeaderText = "Наименование";
+            this.nameCol.MinimumWidth = 8;
             this.nameCol.Name = "nameCol";
             this.nameCol.ReadOnly = true;
             // 
@@ -121,7 +103,8 @@
             this.dataCol,
             this.dateCol});
             this.reportsDGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.reportsDGV.Location = new System.Drawing.Point(3, 83);
+            this.reportsDGV.Location = new System.Drawing.Point(4, 125);
+            this.reportsDGV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.reportsDGV.Name = "reportsDGV";
             this.reportsDGV.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -132,7 +115,8 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.reportsDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.reportsDGV.Size = new System.Drawing.Size(426, 346);
+            this.reportsDGV.RowHeadersWidth = 62;
+            this.reportsDGV.Size = new System.Drawing.Size(641, 534);
             this.reportsDGV.TabIndex = 52;
             this.reportsDGV.SelectionChanged += new System.EventHandler(this.reportsDGV_SelectionChanged);
             // 
@@ -145,10 +129,11 @@
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(876, 438);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1314, 674);
             this.tableLayoutPanel1.TabIndex = 53;
             // 
             // tableLayoutPanel2
@@ -158,42 +143,72 @@
             this.tableLayoutPanel2.Controls.Add(this.reportsDGV, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(4, 5);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(432, 432);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(649, 664);
             this.tableLayoutPanel2.TabIndex = 52;
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.dateSearchDTP, 1, 0);
+            this.tableLayoutPanel3.ColumnCount = 4;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.typeCB, 1, 1);
+            this.tableLayoutPanel3.Controls.Add(this.dateSearchDTP, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.label3, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.typeCB, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.button1, 3, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 5);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(426, 74);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(641, 110);
             this.tableLayoutPanel3.TabIndex = 53;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label2.Location = new System.Drawing.Point(324, 0);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 60);
+            this.label2.TabIndex = 56;
+            this.label2.Text = "Дата:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // dateSearchDTP
+            // 
+            this.dateSearchDTP.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dateSearchDTP.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dateSearchDTP.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dateSearchDTP.Location = new System.Drawing.Point(429, 5);
+            this.dateSearchDTP.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.dateSearchDTP.Name = "dateSearchDTP";
+            this.dateSearchDTP.Size = new System.Drawing.Size(208, 35);
+            this.dateSearchDTP.TabIndex = 55;
+            this.dateSearchDTP.ValueChanged += new System.EventHandler(this.dateSearchDTP_ValueChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(3, 37);
+            this.label3.Location = new System.Drawing.Point(4, 0);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 37);
-            this.label3.TabIndex = 51;
+            this.label3.Size = new System.Drawing.Size(97, 60);
+            this.label3.TabIndex = 53;
             this.label3.Text = "Тип:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -214,20 +229,33 @@
             "Выплата наличных",
             "Кассовый чек",
             "Чек терминала"});
-            this.typeCB.Location = new System.Drawing.Point(73, 40);
+            this.typeCB.Location = new System.Drawing.Point(109, 5);
+            this.typeCB.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.typeCB.Name = "typeCB";
-            this.typeCB.Size = new System.Drawing.Size(350, 28);
-            this.typeCB.TabIndex = 52;
+            this.typeCB.Size = new System.Drawing.Size(207, 37);
+            this.typeCB.TabIndex = 54;
             this.typeCB.SelectedIndexChanged += new System.EventHandler(this.typeCB_SelectedIndexChanged);
+            // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.button1.Location = new System.Drawing.Point(428, 63);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(210, 44);
+            this.button1.TabIndex = 57;
+            this.button1.Text = "Сбросить";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ViewReports
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(876, 438);
+            this.ClientSize = new System.Drawing.Size(1314, 674);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ViewReports";
@@ -246,8 +274,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DateTimePicker dateSearchDTP;
         private System.Windows.Forms.TextBox reportTB;
         private System.Windows.Forms.DataGridViewTextBoxColumn dateCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataCol;
@@ -256,7 +282,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DateTimePicker dateSearchDTP;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox typeCB;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -1,4 +1,6 @@
-﻿using KassaApp.Models;
+﻿using Dapper;
+using KassaApp.Models;
+using KassaApp.Models.Connection;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -10,7 +12,8 @@ namespace KassaApp
     /// </summary>
     public partial class Payment : Form
     {
-        private Receipt CurrentReceipt;
+        private Receipt _CurrentReceipt;
+        private bool IsPaid = false;
         /// <summary>
         /// Конструктор класса.
         /// Выполняет инициализацию формы и установку первичных хначений формы.
@@ -20,9 +23,9 @@ namespace KassaApp
         {
             Log.Logger.Info("Открытие окна Оплаты...");
             InitializeComponent();
-            CurrentReceipt = receipt;
-            resultL.Text = $"Сумма по чеку: {CurrentReceipt.Summa}";
-            moneyTB.Text = CurrentReceipt.Summa.ToString();
+            _CurrentReceipt = receipt;
+            resultL.Text = $"Сумма по чеку: {_CurrentReceipt.Summa}";
+            moneyTB.Text = _CurrentReceipt.Summa.ToString();
         }
         /// <summary>
         /// Метод обрабатывает нажатие клавиш при вводе текста в textBox.
@@ -43,7 +46,7 @@ namespace KassaApp
         private void moneyTB_TextChanged(object sender, EventArgs e)
         {
             if (moneyTB.Text != "")
-                changeTB.Text = (Math.Round(double.Parse(moneyTB.Text) - (double)CurrentReceipt.Summa, 2)).ToString();
+                changeTB.Text = (Math.Round(double.Parse(moneyTB.Text) - (double)_CurrentReceipt.Summa, 2)).ToString();
             else
                 changeTB.Text = "";
         }
@@ -83,7 +86,7 @@ namespace KassaApp
         {
             try
             {
-                Log.Logger.Info($"Оплата через терминал сумма = {CurrentReceipt.Summa}");
+                Log.Logger.Info($"Оплата через терминал сумма = {_CurrentReceipt.Summa}");
                 messageL.Text = "Идёт процесс оплаты через терминал";
                 this.Enabled = false; //блокировка формы
                 panel1.Visible = true; //показать панель сообщений
@@ -95,10 +98,10 @@ namespace KassaApp
                         {
                             if (fr.CheckConnect() == 0)
                             {
-                                CurrentReceipt.Payment = 2;
+                                _CurrentReceipt.Payment = 2;
                                 InsertData();
                                 //если оплата через терминал успешна
-                                if (terminal.Purchase(CurrentReceipt.Summa) == 0)
+                                if (terminal.Purchase(_CurrentReceipt.Summa) == 0)
                                 {                                
                                     messageL.Text = "Оплата успешно!";
                                     //если печать чека терминала успешна
@@ -106,7 +109,7 @@ namespace KassaApp
                                     if (terminal.GetReceipt() != null && fr.Print(terminal.GetReceipt(), terminal.GetReceiptName()) == 0)
                                     {
                                         //печать товарного чека
-                                        if (fr.PrintReceipt(CurrentReceipt, null) == 0)
+                                        if (fr.PrintReceipt(_CurrentReceipt, null) == 0)
                                         {
                                             messageL.Text = "Успешно";
                                             terminal.Confirmed();
@@ -147,10 +150,10 @@ namespace KassaApp
         /// <param name="e">Аргументы события</param>
         private void cashB_Click(object sender, EventArgs e)
         {
-            if (decimal.Parse(moneyTB.Text) >= CurrentReceipt.Summa)
+            if (decimal.Parse(moneyTB.Text) >= _CurrentReceipt.Summa)
                 try
                 {
-                    Log.Logger.Info($"Оплата наличными сумма = {CurrentReceipt.Summa}");
+                    Log.Logger.Info($"Оплата наличными сумма = {_CurrentReceipt.Summa}");
                     messageL.Text = "Оплата наличными";
                     this.Enabled = false; //блокировка формы
                     panel1.Visible = true; //показать панель сообщений
@@ -159,12 +162,12 @@ namespace KassaApp
                         if (fr.CheckConnect() == 0)
                         {
                             messageL.Text = "Печать чека";
-                            CurrentReceipt.Payment = 1;
+                            _CurrentReceipt.Payment = 1;
                             InsertData();
                             //замена суммы по чеку на сумму вносимых наличных
-                            CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
+                            _CurrentReceipt.Summa = decimal.Parse(moneyTB.Text);
                             //печать товарного чека
-                            if (fr.PrintReceipt(CurrentReceipt) == 0)
+                            if (fr.PrintReceipt(_CurrentReceipt) == 0)
                             {
                                 messageL.Text = "Успешно";
                                 MarkAsPaid();
@@ -189,12 +192,13 @@ namespace KassaApp
         {
             try
             {
-                using (var db = new KassaDBContext())
+                using (var db = ConnectionFactory.GetConnection())
                 {
-                    var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
+                    var rec = db.Query<Receipt>(SQLHelper.Select<Receipt>($"WHERE Id = {_CurrentReceipt.Id}")).FirstOrDefault();
                     rec.Paid = true; //признак оплаты чека
-                    rec.Summa = CurrentReceipt.Summa; //сумма по чеку
-                    db.SaveChanges();
+                    rec.Summa = _CurrentReceipt.Summa; //сумма по чеку
+                    db.Execute(SQLHelper.Update(rec));
+                    IsPaid = true;
                     Log.Logger.Info($"Чек с ID = {rec.Id} отмечен, как Оплаченный");
                 }
             }
@@ -210,15 +214,15 @@ namespace KassaApp
         {
             try
             {
-                using (var db = new KassaDBContext())
+                using (var db = ConnectionFactory.GetConnection())
                 {
-                    var rec = db.Receipt.Where(r => r.Id == CurrentReceipt.Id).FirstOrDefault();
-                    rec.Discount = CurrentReceipt.Discount; //скидка на чек
-                    rec.Payment = CurrentReceipt.Payment;//способ оплаты
-                    rec.DiscountCard = CurrentReceipt.DiscountCard;//дк
+                    var rec = db.Query<Receipt>(SQLHelper.Select<Receipt>($"WHERE Id = {_CurrentReceipt.Id}")).FirstOrDefault();
+                    rec.Discount = _CurrentReceipt.Discount; //скидка на чек
+                    rec.Payment = _CurrentReceipt.Payment;//способ оплаты
+                    rec.DiscountCard = _CurrentReceipt.DiscountCard;//дк
                     rec.Note = noteTB.Text;
                     Log.Logger.Info($"Вставка данных о чеке: Скидка: {rec.Discount} Сумма: {rec.Summa} Способ оплаты: {rec.Payment} ДК: {rec.DiscountCard}");
-                    db.SaveChanges();
+                    db.Execute(SQLHelper.Update(rec));
                 }
             }
             catch (Exception ex)
@@ -233,22 +237,22 @@ namespace KassaApp
         /// </summary>
         /// <param name="sender">Объект, вызвавщий метод.</param>
         /// <param name="e">Аргументы события.</param>
-        private void Payment_FormClosing(object sender, FormClosingEventArgs e)
+        private async void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Logger.Info("Закрытие окна Меню...");
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
                 //если в диалоговом окне выбрано Нет
-                if (MessageBox.Show("Продолжить работу с этими позициями?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+                if (IsPaid)
                 {
-                    ((Main)Owner).receipt = new Receipt();
+                    CurrentReceipt.Receipt = new Receipt();
                     ((Main)Owner).receiptDGV.Rows.Clear(); //очистка таблицы на главной форме
-                    var r = db.Receipt.Where(p => p.Id == CurrentReceipt.Id && p.Paid == false).FirstOrDefault();
+                    var r = db.Query<Receipt>(SQLHelper.Select<Receipt>($"WHERE Id = {_CurrentReceipt.Id} AND Paid = 0")).FirstOrDefault();
                     if (r != null)
-                        CountController.Reconciliation(CurrentReceipt); //сверка остатков
-                    ((Main)Owner).receipt = db.Receipt.Add(((Main)Owner).receipt);//добавление нового чека
-                    Log.Logger.Info($"Создан чек (ID = {((Main)Owner).receipt.Id})");
-                    db.SaveChanges();
+                        await CountController.Reconciliation(_CurrentReceipt); //сверка остатков
+                    db.Execute(SQLHelper.Insert(CurrentReceipt.Receipt));//добавление нового чека
+                    CurrentReceipt.Receipt.Id = db.Query<int>("SELECT MAX(Id) FROM Receipt;").FirstOrDefault();
+                    //Log.Logger.Info($"Создан чек (ID = {((Main)Owner).receipt.Id})");
                 }
             }
         }

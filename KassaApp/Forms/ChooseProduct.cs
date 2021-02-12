@@ -1,5 +1,8 @@
-﻿using KassaApp.Models;
+﻿using Dapper;
+using KassaApp.Models;
+using KassaApp.Models.Connection;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -30,12 +33,12 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
                 Log.Logger.Info($"Получение товаров, название которых содержит \"{searchTB.Text}\"");
                 //получение продуктов название которых
                 //содержит введённый в поисковую строку текст
-                var products = db.Product.Where(p => p.Name.Contains(searchTB.Text));
+                var products = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Name LIKE '%{searchTB.Text}%'"));
                 ViewResult(products);
             }
         }
@@ -44,29 +47,32 @@ namespace KassaApp.Forms
         /// Если результат поиска равен null выводятся все продукты.
         /// </summary>
         /// <param name="products">Массив, содержащий найденные продукты.</param>
-        private void ViewResult(IQueryable<Product> products)
+        private void ViewResult(IEnumerable<Product> products)
         {
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
                 Log.Logger.Info($"Получение списка товаров");
                 productsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех товарах
                 if (products == null)
-                    foreach (Product p in db.Product)
+                {
+                    var allProducts = db.Query<Product>(SQLHelper.Select<Product>());
+                    foreach (Product p in allProducts)
                     {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
-                        if (p.ShelfLife < DateTime.Now)
-                            productsDGV.Rows[productsDGV.Rows.Count-1].DefaultCellStyle.BackColor = Color.Red;
+                        if (p.ShelfLife < DateTime.Now && p.ShelfLife != null)
+                            productsDGV.Rows[productsDGV.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Red;
                     }
+                }
                 else
                     foreach (Product p in products)
                     {
                         productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
-                        if (p.ShelfLife < DateTime.Now)
-                            productsDGV.Rows[productsDGV.Rows.Count-1].DefaultCellStyle.BackColor = Color.Red;
+                        if (p.ShelfLife < DateTime.Now && p.ShelfLife != null)
+                            productsDGV.Rows[productsDGV.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Red;
                     }
             }
         }
@@ -92,7 +98,7 @@ namespace KassaApp.Forms
         {
             try
             {
-                using (var db = new KassaDBContext())
+                using (var db = ConnectionFactory.GetConnection())
                 {
                     Log.Logger.Info($"Получение товара, выбранного в списке");
                     Product product;
@@ -107,6 +113,7 @@ namespace KassaApp.Forms
                                 if (MessageBox.Show($"Срок годности товара \"{product.Name}\" истёк {product.ShelfLife:dd.MM.yyyy}!\n\n" +
                                     $"Действительно добавить товар в чек?", "Предупреждение", MessageBoxButtons.YesNo) == DialogResult.No)
                                     return;
+
                             if (product != null)
                             {
                                 product.Quantity = (int)countNUD.Value;
@@ -116,7 +123,7 @@ namespace KassaApp.Forms
                                 {
                                     bool added = false;
                                     //перебор содержимого состава чека на форме Main
-                                    foreach (Product p in ((Main)Owner).receipt.Products)
+                                    foreach (Product p in CurrentReceipt.Receipt.Products)
                                     {
                                         //если товар уже добавлен в чек новая позиция не создаётся
                                         if (p.Id == product.Id)
@@ -124,16 +131,17 @@ namespace KassaApp.Forms
                                             if (p.Type == 1)//учитываются только товары, без услуг
                                             {
                                                 //обновляется запись в БД в таблице Purchase
-                                                var oldP = db.Purchase.Where(pur => pur.ProductId == p.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
+                                                
+                                                var oldP = db.Query<Purchase>($"SELECT * FROM Purchase WHERE ProductId = {p.Id} AND ReceiptId = {CurrentReceipt.Receipt.Id}").FirstOrDefault();
                                                 oldP.Count += product.Quantity;
                                                 oldP.Summa += product.Row_Summ;
                                                 //к существующей позиции добавляется количество и сумма
                                                 p.Quantity += product.Quantity;
                                                 p.Row_Summ += product.Row_Summ;
                                                 ((Main)Owner).DGV_Refresh();
-                                                db.SaveChanges();
-                                                ((Main)Owner).receipt.Purchase.Where(pur => pur.ProductId == p.Id).FirstOrDefault().Count = oldP.Count;
-                                                ((Main)Owner).receipt.Purchase.Where(pur => pur.ProductId == p.Id).FirstOrDefault().Summa = oldP.Summa;
+                                                db.Execute(SQLHelper.Update(oldP));
+                                                CurrentReceipt.Receipt.Purchase.Where(pur => pur.ProductId == p.Id).FirstOrDefault().Count = oldP.Count;
+                                                CurrentReceipt.Receipt.Purchase.Where(pur => pur.ProductId == p.Id).FirstOrDefault().Summa = oldP.Summa;
                                                 Log.Logger.Info($"Количество товара (ID = {p.Id}) прибавлен к существующей позиции в чеке");
                                             }
                                             added = true;
@@ -143,7 +151,7 @@ namespace KassaApp.Forms
                                     if (!added)
                                     {
                                         //создаётся новая позиция в чеке
-                                        ((Main)Owner).receipt.Products.Add(product);
+                                        CurrentReceipt.Receipt.Products.Add(product);
                                         Log.Logger.Info($"Создана позиция с товаром (ID = {product.Id}) в чеке");
                                         ((Main)Owner).DGV_Refresh();
                                         //данные добавляются в БД в таблицу Purchase
@@ -153,12 +161,12 @@ namespace KassaApp.Forms
                                             Count = product.Quantity,
                                             Summa = product.Row_Summ,
                                             Date = DateTime.Now,
-                                            ReceiptId = ((Main)Owner).receipt.Id,
-                                            Receipt = db.Receipt.Where(rec => rec.Id == ((Main)Owner).receipt.Id).FirstOrDefault()
+                                            ReceiptId = CurrentReceipt.Receipt.Id,
+                                            Receipt = db.Query<Receipt>($"SELECT * FROM Receipt WHERE Id = {CurrentReceipt.Receipt.Id}").FirstOrDefault()
                                         };
-                                        ((Main)Owner).receipt.Purchase.Add(purchase);
-                                        db.Purchase.Add(purchase);
-                                        db.SaveChanges();
+                                        db.Execute(SQLHelper.Insert(purchase));
+                                        purchase.Id = db.Query<int>("SELECT MAX(Id) FROM Purchase").FirstOrDefault();
+                                        CurrentReceipt.Receipt.Purchase.Add(purchase);
                                         Log.Logger.Info($"Добавлена записть в таблицу Purchase базы данных с товаром (ID = {product.Id})");
                                     }
                                     //обновление данных формы

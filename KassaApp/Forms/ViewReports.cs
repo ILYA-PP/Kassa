@@ -1,5 +1,8 @@
-﻿using KassaApp.Models;
+﻿using Dapper;
+using KassaApp.Models;
+using KassaApp.Models.Connection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -28,16 +31,16 @@ namespace KassaApp.Forms
         /// Если результат поиска равен null выводятся все отчёты.
         /// </summary>
         /// <param name="reports">Массив, содержащий найденные отчёты.</param>
-        private void ViewResult(IQueryable<Report> reports = null)
+        private void ViewResult(IEnumerable<Report> reports = null)
         {
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
                 Log.Logger.Info($"Вывод списка отчётов");
                 reportsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех отчётах
                 if (reports == null)
-                    foreach (Report p in db.Report)
+                    foreach (Report p in db.Query<Report>(SQLHelper.Select<Report>()))
                         reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
                 else
                     foreach (Report p in reports)
@@ -52,15 +55,12 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void dateSearchDTP_ValueChanged(object sender, EventArgs e)
         {
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
                 Log.Logger.Info($"Получение списка отчётов по дате и типу");
                 //получение отчётов дата добавления которых
                 //равна выбранной дате
-                var reports = db.Report.Where(r => r.Date.Year == dateSearchDTP.Value.Year &&
-                                               r.Date.Month == dateSearchDTP.Value.Month &&
-                                               r.Date.Day == dateSearchDTP.Value.Day && 
-                                               r.Name.Contains(typeCB.SelectedItem.ToString()));
+                var reports = db.Query<Report>(SQLHelper.Select<Report>($"WHERE DATEADD(dd, 0, DATEDIFF(dd, 0, Date)) = '{dateSearchDTP.Value:yyyy-MM-dd}' AND Name LIKE '%{typeCB.SelectedItem}%'"));
                 ViewResult(reports);
             }
         }
@@ -75,7 +75,7 @@ namespace KassaApp.Forms
             reportTB.Text = "";
             //вывод данных отчёта в текстовое поле
             if (reportsDGV.SelectedRows.Count > 0)
-                reportTB.Text = Encoding.Default.GetString((byte[])reportsDGV.SelectedRows[0].Cells["dataCol"].Value);
+                reportTB.Text = reportsDGV.SelectedRows[0].Cells["dataCol"].Value.ToString();
             if (reportsDGV.CurrentRow != null)
                 reportsDGV.CurrentRow.Selected = true;
         }
@@ -85,12 +85,12 @@ namespace KassaApp.Forms
         /// <param name="name">Название отчёта</param>
         private void NameFilter(string name)
         {
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
                 Log.Logger.Info($"Получение списка отчётов, название которых содержит \"{name}\"");
                 //получение отчётов название которых
                 //содержит введённый в поисковую строку текст
-                var reports = db.Report.Where(p => p.Name.Contains(name));
+                var reports = db.Query<Report>(SQLHelper.Select<Report>($"WHERE Name LIKE '%{name}%'"));
                 ViewResult(reports);
             }
         }
@@ -115,6 +115,14 @@ namespace KassaApp.Forms
         private void ViewReports_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Logger.Info("Закрытие окна Просмотра отчётов...");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            typeCB.SelectedIndex = 0;
+            dateSearchDTP.Value = DateTime.Now;
+
+            ViewResult();
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using DrvFRLib;
+using KassaApp.Models.Connection;
 using System;
 using System.Configuration;
 using System.Data.Entity.Validation;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Dapper;
 
 namespace KassaApp.Models
 {
@@ -348,6 +350,15 @@ namespace KassaApp.Models
                         $"Цена: {p.Price} Скидка: {discountOnProduct}");
                     if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                         return -1;
+
+                    if (true)
+                    {
+                        Driver.MarkingType = 3;
+                        Driver.GTIN = "";
+                        Driver.SerialNumber = "";
+                        Driver.FNSendItemCodeData();
+                    }
+
                     if(discountOnProduct > 0)
                     {
                         Driver.StringForPrinting = StringFormatForPrint($"В том числе скидка\n={string.Format("{0:f}", discountOnProduct).Replace(",", ".")}", 3);
@@ -701,7 +712,7 @@ namespace KassaApp.Models
             {
                 try
                 {
-                    using (var db = new KassaDBContext())
+                    using (var db = ConnectionFactory.GetConnection())
                     {
                         string d = null;
                         //сохранение шаблона
@@ -712,16 +723,14 @@ namespace KassaApp.Models
                             d = Driver.StringForPrinting;
                         if (d != null)
                         {
-                            byte[] data = Encoding.Default.GetBytes(d);//перевод отчёта в байты
                             Report report = new Report()
                             {
                                 Name = reportName,
-                                ReportData = data,
+                                ReportData = d,
                                 Date = DateTime.Now
                             };
-                            db.Report.Add(report);//добавление отчёта
-                            db.SaveChanges();//сохранение отчёта
-                            GetMessage($"Отчёт \"{reportName}\" сохранён!");
+                            //$"INSERT INTO Report (Name,ReportData,Date) VALUES ({report.Name},{report.ReportData},'{report.Date:yyyy-MM-dd HH:mm:ss}')"
+                            db.Execute(SQLHelper.Insert(report));
                             Log.Logger.Info($"Отчёт \"{reportName}\" сохранён!");
                         }
                     }

@@ -28,7 +28,7 @@ namespace KassaApp.Models
         {
             get
             {
-                if (phone != null && phone[0] == '8')
+                if (!string.IsNullOrEmpty(phone) && phone[0] == '8')
                     phone = "+7" + phone.Remove(0, 1);
                 return phone;
             }
@@ -47,6 +47,7 @@ namespace KassaApp.Models
         public string DiscountCard { get; set; }
         [StringLength(1000)]
         public string Note { get; set; }
+        [NotMapped]
         //связанные с чеков продажи
         public virtual ICollection<Purchase> Purchase { get; set; }
         //продукты в чеке

@@ -1,7 +1,9 @@
 ﻿using KassaApp.Models;
+using KassaApp.Models.Connection;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using Dapper;
 
 namespace KassaApp.Forms
 {
@@ -22,12 +24,12 @@ namespace KassaApp.Forms
             InitializeComponent();
             Receipt = receipt;
             totalL.Text = string.Format("Итог по чеку: {0:f}", receipt.Summa);
-            using (var db = new KassaDBContext())
+            using (var db = ConnectionFactory.GetConnection())
             {
                 Log.Logger.Info($"Получение товаров чека (ID = {Receipt.Id})");
                 foreach (var purchase in receipt.Purchase)
                 {
-                    var product = db.Product.Where(prod => prod.Id == purchase.ProductId).FirstOrDefault();
+                    var product = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Id = {purchase.ProductId}")).FirstOrDefault();
                     product.Quantity = purchase.Count;
                     product.Row_Summ = purchase.Summa;
                     Product.RowFromProduct(product, receiptDGV);

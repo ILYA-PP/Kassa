@@ -19,6 +19,7 @@
         public DateTime Date { get; set; }
 
         public int? ReceiptId { get; set; }
+        [NotMapped]
         public virtual Receipt Receipt { get; set; }
     }
 }

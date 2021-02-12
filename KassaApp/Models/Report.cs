@@ -14,8 +14,7 @@ namespace KassaApp.Models
         public int Id { get; set; }
         [StringLength(100)]
         public string Name { get; set; }
-        [MaxLength(7000)]
-        public byte[] ReportData { get; set; }
+        public string ReportData { get; set; }
         public DateTime Date { get; set; }
     }
 }

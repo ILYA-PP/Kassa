@@ -1,6 +1,8 @@
 namespace KassaApp
 {
+    using Dapper;
     using KassaApp.Models;
+    using KassaApp.Models.Connection;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -73,7 +75,7 @@ namespace KassaApp
         public int Quantity { get; set; }
         [StringLength(100)]
         public string BarCode { get; set; }
-        public DateTime ShelfLife { get; set; }
+        public DateTime? ShelfLife { get; set; }
         /// <summary>
 		/// Метод формирует объект класса Product из строки DataGridView.
 		/// </summary>
@@ -90,12 +92,12 @@ namespace KassaApp
                     product = receipt.Products.Where(p => p.Name == row.Cells["nameCol"].Value.ToString()).FirstOrDefault();
                 else
                 {
-                    using (var db = new KassaDBContext())
+                    using (var db = ConnectionFactory.GetConnection())
                     {
                         string name = row.Cells["nameCol"].Value.ToString();
                         Log.Logger.Info($"Получение товара по имени \"{name}\"");
                         int count = int.Parse(row.Cells["countCol"].Value.ToString());
-                        product = db.Product.Where(p => p.Name == name).FirstOrDefault();
+                        product = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Name = '{name}'")).FirstOrDefault();
                         product.Quantity = count;
                         product.RowSummCalculate();
                     }
@@ -139,9 +141,10 @@ namespace KassaApp
         {
             try
             {
-                using (var db = new KassaDBContext())
+                using (var db = ConnectionFactory.GetConnection())
                 {
-                    var product = db.Product.Where(p => p.Id == Id).FirstOrDefault();
+                    
+                    var product = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Id = {Id}")).FirstOrDefault();
                     Log.Logger.Info($"Получение остатка товара (ID = {product.Id})");
                     return product.Quantity;
                 }

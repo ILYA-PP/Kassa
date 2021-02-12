@@ -1,4 +1,6 @@
-﻿using KassaApp.Models;
+﻿using Dapper;
+using KassaApp.Models;
+using KassaApp.Models.Connection;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -59,7 +61,7 @@ namespace KassaApp
         {
             try
             {
-                using (var db = new KassaDBContext())
+                using (var db = ConnectionFactory.GetConnection())
                 {
                     if (countNUD.Value != 0 && discountTB.Text != "")
                     {
@@ -87,17 +89,16 @@ namespace KassaApp
                         {
                             product.Quantity += OldProduct.Quantity;
                             //изменение данных на форме Main
-                            int index = ((Main)Owner).receipt.Products.IndexOf(
-                                ((Main)Owner).receipt.Products.Where(p => p.Id == product.Id).FirstOrDefault());
-                            ((Main)Owner).receipt.Products[index] = product;
+                            int index = CurrentReceipt.Receipt.Products.IndexOf(
+                            CurrentReceipt.Receipt.Products.Where(p => p.Id == product.Id).FirstOrDefault());
+                            CurrentReceipt.Receipt.Products[index] = product;
                             ((Main)Owner).DGV_Refresh();
                             //обновление данных в БД в таблице Purchase
-                            var oldP = db.Purchase.Where(pur => pur.ProductId == product.Id && pur.ReceiptId == ((Main)Owner).receipt.Id).FirstOrDefault();
+                            var oldP = db.Query<Purchase>(SQLHelper.Select<Purchase>($"WHERE ProductId = {product.Id} AND ReceiptId = {CurrentReceipt.Receipt.Id}")).FirstOrDefault();
                             oldP.Count = product.Quantity;
                             oldP.Summa = product.Row_Summ;
-                            db.SaveChanges();
-                            ((Main)Owner).receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Count = oldP.Count;
-                            ((Main)Owner).receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Summa = oldP.Summa;
+                            CurrentReceipt.Receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Count = oldP.Count;
+                            CurrentReceipt.Receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Summa = oldP.Summa;
                             Log.Logger.Info($"Изменение данных о покупке в таблице Purchase");
                             Log.Logger.Info($"Новые данные: Товар: {product.Name} " +
                             $"Количество: {product.Quantity} " +

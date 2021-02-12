@@ -45,14 +45,13 @@ namespace KassaApp
                 {
                     if (double.Parse(discountDataTB.Text) <= 99.99)
                     {
-                        if (((Main)Owner).receipt != null)
+                        if (CurrentReceipt.Receipt != null)
                         {
                             //скидка указывается в текущем чеке     
-                            ((Main)Owner).receipt.Discount = double.Parse(discountDataTB.Text);
-                            ((Main)Owner).receipt.CalculateSumm();
+                            CurrentReceipt.Receipt.Discount = double.Parse(discountDataTB.Text);
+                            CurrentReceipt.Receipt.CalculateSumm();
                             ((Main)Owner).DGV_Refresh();
                             Log.Logger.Info($"Установлен процент скидки в размере {discountDataTB.Text}%");
-                            MessageBox.Show("Скидка на чек установлена!");
                             Close();
                         }
                     }
@@ -64,9 +63,9 @@ namespace KassaApp
                 {
                     if (discountDataTB.Text.Length == 11)
                     {
-                        if (((Main)Owner).receipt != null)
+                        if (CurrentReceipt.Receipt != null)
                         {
-                            ((Main)Owner).receipt.DiscountCard = discountDataTB.Text;
+                            CurrentReceipt.Receipt.DiscountCard = discountDataTB.Text;
                             ((Main)Owner).DGV_Refresh();
                             Log.Logger.Info($"Установлен номер дисконтной карты {discountDataTB.Text}");
                             MessageBox.Show("Дисконтная карта установлена!");
