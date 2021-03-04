@@ -16,6 +16,7 @@ namespace KassaApp.Models
         {
             Purchase = new HashSet<Purchase>();
             Products = new List<Product>();
+            PrescriptionInfo = new PrescriptionInfo();
         }
         [NotMapped]
         public decimal DiscountSum { get; set; }
@@ -53,6 +54,8 @@ namespace KassaApp.Models
         //продукты в чеке
         [NotMapped]
         public List<Product> Products { get; set; }
+        [NotMapped]
+        public PrescriptionInfo PrescriptionInfo { get; set; }
         /// <summary>
 		/// Метод производит расчёт суммы по чеку.
 		/// </summary>

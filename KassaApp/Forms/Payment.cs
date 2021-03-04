@@ -21,7 +21,6 @@ namespace KassaApp
         /// <param name="receipt">Чек, сформированный на главной форме.</param>
         public Payment(Receipt receipt)
         {
-            Log.Logger.Info("Открытие окна Оплаты...");
             InitializeComponent();
             _CurrentReceipt = receipt;
             resultL.Text = $"Сумма по чеку: {_CurrentReceipt.Summa}";
@@ -199,6 +198,10 @@ namespace KassaApp
                     rec.Summa = _CurrentReceipt.Summa; //сумма по чеку
                     db.Execute(SQLHelper.Update(rec));
                     IsPaid = true;
+
+                    foreach(var p in _CurrentReceipt.Products)
+                        SinchronizationController.ChangesList.Add(p.Id, p.Quantity);
+                    
                     Log.Logger.Info($"Чек с ID = {rec.Id} отмечен, как Оплаченный");
                 }
             }
@@ -239,7 +242,6 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private async void Payment_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Меню...");
             using (var db = ConnectionFactory.GetConnection())
             {
                 //если в диалоговом окне выбрано Нет

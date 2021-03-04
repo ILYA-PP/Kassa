@@ -15,7 +15,6 @@ namespace KassaApp
         /// </summary>
         public DiscountOnReceipt()
         {
-            Log.Logger.Info("Открытие окна Установки скидки на чек...");
             InitializeComponent();
         }
         /// <summary>
@@ -43,7 +42,7 @@ namespace KassaApp
                 //если выбрано указание процента скидки
                 if (discountProcentRB.Checked)
                 {
-                    if (double.Parse(discountDataTB.Text) <= 99.99)
+                    if (double.Parse(discountDataTB.Text) <= 100)
                     {
                         if (CurrentReceipt.Receipt != null)
                         {
@@ -51,12 +50,12 @@ namespace KassaApp
                             CurrentReceipt.Receipt.Discount = double.Parse(discountDataTB.Text);
                             CurrentReceipt.Receipt.CalculateSumm();
                             ((Main)Owner).DGV_Refresh();
-                            Log.Logger.Info($"Установлен процент скидки в размере {discountDataTB.Text}%");
+                            Log.Logger.Info($"Установлен процент скидки в размере {discountDataTB.Text}% на чек ID={CurrentReceipt.Receipt.Id}");
                             Close();
                         }
                     }
                     else
-                        MessageBox.Show("Скидка не может превышать 99.99%");
+                        MessageBox.Show("Скидка не может превышать 100%");
                 }
                 //если выбрано указание номера дисконтной карты
                 else if (numberDiscountCardRB.Checked)
@@ -67,7 +66,7 @@ namespace KassaApp
                         {
                             CurrentReceipt.Receipt.DiscountCard = discountDataTB.Text;
                             ((Main)Owner).DGV_Refresh();
-                            Log.Logger.Info($"Установлен номер дисконтной карты {discountDataTB.Text}");
+                            Log.Logger.Info($"Установлен номер дисконтной карты {discountDataTB.Text} на чек ID={CurrentReceipt.Receipt.Id}");
                             MessageBox.Show("Дисконтная карта установлена!");
                             Close();
                         }
@@ -87,7 +86,6 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Установки скидки на чек...");
             Close();
         }
         /// <summary>

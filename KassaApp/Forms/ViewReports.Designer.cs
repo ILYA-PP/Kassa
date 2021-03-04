@@ -118,6 +118,7 @@
             this.reportsDGV.RowHeadersWidth = 62;
             this.reportsDGV.Size = new System.Drawing.Size(641, 534);
             this.reportsDGV.TabIndex = 52;
+            this.reportsDGV.Scroll += new System.Windows.Forms.ScrollEventHandler(this.reportsDGV_Scroll);
             this.reportsDGV.SelectionChanged += new System.EventHandler(this.reportsDGV_SelectionChanged);
             // 
             // tableLayoutPanel1

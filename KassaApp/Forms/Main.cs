@@ -20,8 +20,8 @@ namespace KassaApp
         /// </summary>
         public Main()
         {
-            Log.Logger.Info("Открытие окна Регистрации продаж...");
             InitializeComponent();
+            SinchronizationController sinchronization = new SinchronizationController(20000);
         }
         /// <summary>
         /// Метод отвечает за переход на форму установки скидки на чек. 
@@ -52,10 +52,18 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void paymentB_Click(object sender, EventArgs e)
         {
-            if (CurrentReceipt.Receipt.Summa > 0)
-                new Payment(CurrentReceipt.Receipt).ShowDialog(this);
+            if (CurrentReceipt.Receipt.Summa > 0 || CurrentReceipt.Receipt.Products.Count() == 1 && CurrentReceipt.Receipt.Products[0].IsPrescription)
+            {
+                if (CurrentReceipt.Receipt.Products.Where(p => p.IsPrescription == true).Count() > 0)
+                {
+                    if(new PrescriptionData().ShowDialog() == DialogResult.OK)
+                        new Payment(CurrentReceipt.Receipt).ShowDialog(this);
+                }
+                else
+                    new Payment(CurrentReceipt.Receipt).ShowDialog(this);
+            }
             else
-                MessageBox.Show("Сумма чека равна 0. Оплата невозможна!");
+                MessageBox.Show("Для нельготного товара, сумма чека не может быть равна 0. Оплата невозможна!");
         }
         /// <summary>
         /// Метод обрабатывает событие изменения выбора в dataGridView.
@@ -131,12 +139,10 @@ namespace KassaApp
                         CurrentReceipt.Receipt.Products.Remove(product);
                         CurrentReceipt.Receipt.CalculateSumm();
                         //удаление из DataGridView
-                        receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
+                        //receiptDGV.Rows.Remove(receiptDGV.SelectedRows[0]);
+                        DGV_Refresh();
                         //восстановление остатка
                         CountController.Recover(product.Id, product.Quantity);
-                        Log.Logger.Info($"Удалена позиция чека: " +
-                            $"{product.Name} | {product.Quantity} | " +
-                            $"{product.Price} | {product.Row_Summ}");
                     }
                 }
             }
@@ -236,7 +242,6 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private async void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Регистрации продаж...");
             //сверка остатков по товарам, добавленным в чек
             await CountController.Reconciliation(CurrentReceipt.Receipt);
         }
@@ -265,7 +270,7 @@ namespace KassaApp
                 CurrentReceipt.Receipt = new Receipt();
                 db.ExecuteScalar(SQLHelper.Insert(CurrentReceipt.Receipt));
                 CurrentReceipt.Receipt.Id = db.Query<int>("SELECT MAX(Id) FROM Receipt;").FirstOrDefault();
-                //Log.Logger.Info($"Создан чек (ID = {receipt.Id})");
+                Log.Logger.Info($"Создан чек (ID = {CurrentReceipt.Receipt.Id})");
                 timer.Start();
             }
         }

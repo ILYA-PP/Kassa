@@ -4,6 +4,7 @@ using KassaApp.Models.Connection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,16 +15,20 @@ namespace KassaApp.Forms
     /// </summary>
     public partial class ViewReports : Form
     {
+        private int Page { get; set; }
+        private bool End { get; set; }
         /// <summary>
         /// Конструктор класса.
         /// Выполняет инициализацию формы и первичное заполнение таблицы отчётов.
         /// </summary>
         public ViewReports()
         {
-            Log.Logger.Info("Открытие окна Просмотра отчётов...");
             InitializeComponent();
+            Page = 0;
+            End = false;
             typeCB.SelectedIndex = 0;
             ViewResult();//вывод всех отчётов
+            AddAscrollListener(reportsDGV);
         }
 
         /// <summary>
@@ -31,16 +36,17 @@ namespace KassaApp.Forms
         /// Если результат поиска равен null выводятся все отчёты.
         /// </summary>
         /// <param name="reports">Массив, содержащий найденные отчёты.</param>
-        private void ViewResult(IEnumerable<Report> reports = null)
+        private void ViewResult(IEnumerable<Report> reports = null, bool clear = true)
         {
             using (var db = ConnectionFactory.GetConnection())
             {
-                Log.Logger.Info($"Вывод списка отчётов");
-                reportsDGV.Rows.Clear();
+                if(clear)
+                    reportsDGV.Rows.Clear();
+
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех отчётах
                 if (reports == null)
-                    foreach (Report p in db.Query<Report>(SQLHelper.Select<Report>()))
+                    foreach (Report p in db.Query<Report>(SQLHelper.Select<Report>($"ORDER BY Date DESC OFFSET {Pagination.Size * Page} ROWS FETCH NEXT {Pagination.Size} ROWS ONLY")))
                         reportsDGV.Rows.Add(p.Name, p.ReportData, p.Date);
                 else
                     foreach (Report p in reports)
@@ -57,7 +63,6 @@ namespace KassaApp.Forms
         {
             using (var db = ConnectionFactory.GetConnection())
             {
-                Log.Logger.Info($"Получение списка отчётов по дате и типу");
                 //получение отчётов дата добавления которых
                 //равна выбранной дате
                 var reports = db.Query<Report>(SQLHelper.Select<Report>($"WHERE DATEADD(dd, 0, DATEDIFF(dd, 0, Date)) = '{dateSearchDTP.Value:yyyy-MM-dd}' AND Name LIKE '%{typeCB.SelectedItem}%'"));
@@ -87,7 +92,6 @@ namespace KassaApp.Forms
         {
             using (var db = ConnectionFactory.GetConnection())
             {
-                Log.Logger.Info($"Получение списка отчётов, название которых содержит \"{name}\"");
                 //получение отчётов название которых
                 //содержит введённый в поисковую строку текст
                 var reports = db.Query<Report>(SQLHelper.Select<Report>($"WHERE Name LIKE '%{name}%'"));
@@ -114,7 +118,7 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void ViewReports_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Просмотра отчётов...");
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -123,6 +127,46 @@ namespace KassaApp.Forms
             dateSearchDTP.Value = DateTime.Now;
 
             ViewResult();
+        }
+
+        private void reportsDGV_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (reportsDGV.DisplayedRowCount(false) + reportsDGV.FirstDisplayedScrollingRowIndex >= reportsDGV.RowCount && !End)
+            {
+                Page++;
+
+                using (var db = ConnectionFactory.GetConnection())
+                {
+                    var reports = db.Query<Report>(SQLHelper.Select<Report>($"ORDER BY Date DESC OFFSET {Pagination.Size * Page} ROWS FETCH NEXT {Pagination.Size} ROWS ONLY"));
+                    
+                    if(reports.Count() < Pagination.Size)
+                        End = true;
+
+                    ViewResult(reports, false);
+                }
+            }
+        }
+
+        private bool AddAscrollListener(DataGridView dgv)
+        {
+            bool ret = false;
+
+            var t = dgv.GetType();
+            var pi = t.GetProperty("VerticalScrollBar", BindingFlags.Instance | BindingFlags.NonPublic);
+            ScrollBar s = null;
+
+            if (pi != null)
+            {
+                s = pi.GetValue(dgv, null) as ScrollBar;
+            }
+
+            if (s != null)
+            {
+                s.Scroll += new ScrollEventHandler(reportsDGV_Scroll);
+                ret = true;
+            }
+
+            return ret;
         }
     }
 }

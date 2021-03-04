@@ -15,7 +15,6 @@ namespace KassaApp.Forms
         /// </summary>
         public ViewRegistarers()
         {
-            Log.Logger.Info("Открытие окна Просмотра регистров...");
             InitializeComponent();
         }
         /// <summary>
@@ -102,7 +101,7 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void ViewRegistarers_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Просмотра регистров...");
+
         }
     }
 }

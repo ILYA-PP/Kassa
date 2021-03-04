@@ -20,13 +20,11 @@ namespace KassaApp.Forms
         /// </summary>
         public Recovery(Receipt receipt)
         {
-            Log.Logger.Info("Открытие окна Восстановления остатков...");
             InitializeComponent();
             Receipt = receipt;
             totalL.Text = string.Format("Итог по чеку: {0:f}", receipt.Summa);
             using (var db = ConnectionFactory.GetConnection())
             {
-                Log.Logger.Info($"Получение товаров чека (ID = {Receipt.Id})");
                 foreach (var purchase in receipt.Purchase)
                 {
                     var product = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Id = {purchase.ProductId}")).FirstOrDefault();
@@ -44,7 +42,6 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void paidB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом Yes...");
             this.DialogResult = DialogResult.Yes;
         }
         /// <summary>
@@ -55,7 +52,6 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void notPaidB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info($"Закрытие окна Восстановления остатков с результатом No...");
             this.DialogResult = DialogResult.No;
         }
     }

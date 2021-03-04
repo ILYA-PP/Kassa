@@ -15,7 +15,13 @@ namespace KassaApp.Models.Connection
     {
         public static IDbConnection GetConnection()
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["KassaDBContext"].ToString().Replace("|DataDirectory|", Application.StartupPath);
+            var connectionString = ConfigurationManager.ConnectionStrings["KassaDBContext"].ToString();
+            return new SqlCeConnection(connectionString);
+        }
+
+        public static IDbConnection GetMainDbConnection()
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["MainDB"].ToString();
             return new SqlCeConnection(connectionString);
         }
     }

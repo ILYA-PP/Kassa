@@ -16,9 +16,7 @@ namespace KassaApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Log.Logger.Info("Запуск приложения...");
             Application.Run(new Menu());
-            Log.Logger.Info("Завершение работы приложения...");
         }
     }
 }

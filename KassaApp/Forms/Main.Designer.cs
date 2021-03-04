@@ -32,12 +32,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.receiptDGV = new System.Windows.Forms.DataGridView();
-            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.discountOnReceiptB = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nonDiscountTB = new System.Windows.Forms.TextBox();
@@ -73,6 +67,13 @@
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.resultL = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.idCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.receiptDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -103,6 +104,7 @@
             this.receiptDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.receiptDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.receiptDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idCol,
             this.nameCol,
             this.countCol,
             this.priceCol,
@@ -130,49 +132,6 @@
             this.receiptDGV.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.receiptDGV_RowsAdded);
             this.receiptDGV.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.receiptDGV_RowsRemoved);
             this.receiptDGV.SelectionChanged += new System.EventHandler(this.receiptDGV_SelectionChanged);
-            // 
-            // nameCol
-            // 
-            this.nameCol.HeaderText = "Наименование";
-            this.nameCol.MinimumWidth = 8;
-            this.nameCol.Name = "nameCol";
-            this.nameCol.ReadOnly = true;
-            // 
-            // countCol
-            // 
-            this.countCol.HeaderText = "Количество";
-            this.countCol.MinimumWidth = 8;
-            this.countCol.Name = "countCol";
-            this.countCol.ReadOnly = true;
-            // 
-            // priceCol
-            // 
-            this.priceCol.HeaderText = "Цена";
-            this.priceCol.MinimumWidth = 8;
-            this.priceCol.Name = "priceCol";
-            this.priceCol.ReadOnly = true;
-            // 
-            // discountCol
-            // 
-            this.discountCol.HeaderText = "Скидка";
-            this.discountCol.MinimumWidth = 8;
-            this.discountCol.Name = "discountCol";
-            this.discountCol.ReadOnly = true;
-            // 
-            // ndsCol
-            // 
-            this.ndsCol.HeaderText = "НДС";
-            this.ndsCol.MinimumWidth = 8;
-            this.ndsCol.Name = "ndsCol";
-            this.ndsCol.ReadOnly = true;
-            this.ndsCol.Visible = false;
-            // 
-            // sumCol
-            // 
-            this.sumCol.HeaderText = "Сумма";
-            this.sumCol.MinimumWidth = 8;
-            this.sumCol.Name = "sumCol";
-            this.sumCol.ReadOnly = true;
             // 
             // discountOnReceiptB
             // 
@@ -669,6 +628,57 @@
             // 
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // idCol
+            // 
+            this.idCol.HeaderText = "ИД";
+            this.idCol.MinimumWidth = 8;
+            this.idCol.Name = "idCol";
+            this.idCol.ReadOnly = true;
+            this.idCol.Visible = false;
+            // 
+            // nameCol
+            // 
+            this.nameCol.HeaderText = "Наименование";
+            this.nameCol.MinimumWidth = 8;
+            this.nameCol.Name = "nameCol";
+            this.nameCol.ReadOnly = true;
+            // 
+            // countCol
+            // 
+            this.countCol.HeaderText = "Количество";
+            this.countCol.MinimumWidth = 8;
+            this.countCol.Name = "countCol";
+            this.countCol.ReadOnly = true;
+            // 
+            // priceCol
+            // 
+            this.priceCol.HeaderText = "Цена";
+            this.priceCol.MinimumWidth = 8;
+            this.priceCol.Name = "priceCol";
+            this.priceCol.ReadOnly = true;
+            // 
+            // discountCol
+            // 
+            this.discountCol.HeaderText = "Скидка";
+            this.discountCol.MinimumWidth = 8;
+            this.discountCol.Name = "discountCol";
+            this.discountCol.ReadOnly = true;
+            // 
+            // ndsCol
+            // 
+            this.ndsCol.HeaderText = "НДС";
+            this.ndsCol.MinimumWidth = 8;
+            this.ndsCol.Name = "ndsCol";
+            this.ndsCol.ReadOnly = true;
+            this.ndsCol.Visible = false;
+            // 
+            // sumCol
+            // 
+            this.sumCol.HeaderText = "Сумма";
+            this.sumCol.MinimumWidth = 8;
+            this.sumCol.Name = "sumCol";
+            this.sumCol.ReadOnly = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -738,17 +748,18 @@
         public System.Windows.Forms.DataGridView receiptDGV;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.TextBox timeTB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn countCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
         private System.Windows.Forms.Label resultL;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
         private System.Windows.Forms.Label remainsL;
         private System.Windows.Forms.Label barCodeL;
         private System.Windows.Forms.Label shelfLifeL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn countCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priceCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
     }
 }

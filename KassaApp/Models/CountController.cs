@@ -129,11 +129,12 @@ namespace KassaApp.Models
 			{
 				using (var db = ConnectionFactory.GetConnection())
 				{
-					
+
 					var receipts = db.Query<Receipt>(SQLHelper.Select<Receipt>("WHERE Paid = 0"));
 					Log.Logger.Info($"В базе данных найдено {receipts.Count()} неоплаченных чека");
 					foreach (var r in receipts)
 					{
+						r.Purchase = db.Query<Purchase>(SQLHelper.Select<Purchase>($"WHERE ReceiptId = {r.Id}")).ToList();
 						if (r.Summa == 0 || new Recovery(r).ShowDialog() == DialogResult.No)
 						{
 							Log.Logger.Info($"Восстановление остатков по чеку с ID = {r.Id}");

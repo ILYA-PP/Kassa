@@ -20,7 +20,6 @@ namespace KassaApp
         /// <param name="row">Строка, которую надо изменить.</param>
         public EditProduct(Product product)
         {
-            Log.Logger.Info("Открытие окна Редактирования товара...");
             InitializeComponent();
             OldProduct = product;
             try
@@ -32,7 +31,7 @@ namespace KassaApp
                     countNUD.Value = OldProduct.Quantity;
                     departmentNUD.Value = OldProduct.Department;
                     discountTB.Text = string.Format("{0:f}", OldProduct.Discount);
-                    receiptDGV.Rows.Add(OldProduct.Name, OldProduct.Quantity,
+                    receiptDGV.Rows.Add(OldProduct.Id, OldProduct.Name, OldProduct.Quantity,
                         OldProduct.Price, OldProduct.Discount, OldProduct.NDS, OldProduct.Row_Summ);
                 }
             }
@@ -65,9 +64,6 @@ namespace KassaApp
                 {
                     if (countNUD.Value != 0 && discountTB.Text != "")
                     {
-                        Log.Logger.Info($"Старые данные: Товар: {OldProduct.Name} " +
-                            $"Количество: {OldProduct.Quantity} " +
-                            $"Отдел: {OldProduct.Department} Скидка: {OldProduct.Discount}");
                         //создание продукта с изменёнными данными
                         Product product = new Product()
                         {
@@ -82,7 +78,7 @@ namespace KassaApp
                             ShelfLife = OldProduct.ShelfLife,
                             BarCode = OldProduct.BarCode  
                         };
-                        product.RowSummCalculate();
+                        //product.RowSummCalculate();
                         product.Quantity -= OldProduct.Quantity;
                         //если изменённое количесвто не превышает остаток
                         if (CountController.Check(product))
@@ -99,7 +95,6 @@ namespace KassaApp
                             oldP.Summa = product.Row_Summ;
                             CurrentReceipt.Receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Count = oldP.Count;
                             CurrentReceipt.Receipt.Purchase.Where(p => p.ProductId == product.Id).FirstOrDefault().Summa = oldP.Summa;
-                            Log.Logger.Info($"Изменение данных о покупке в таблице Purchase");
                             Log.Logger.Info($"Новые данные: Товар: {product.Name} " +
                             $"Количество: {product.Quantity} " +
                             $"Отдел: {product.Department} Скидка: {product.Discount}");
@@ -136,7 +131,6 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Установки скидки на чек...");
             Close();
         }
         /// <summary>
@@ -195,7 +189,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void EditProduct_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Изменения товара...");
+
         }
     }
 }

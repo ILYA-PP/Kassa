@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace KassaApp.Forms
@@ -14,16 +15,21 @@ namespace KassaApp.Forms
     /// </summary>
     public partial class ChooseProduct : Form
     {
+        private int Page { get; set; }
+        private bool End { get; set; }
         /// <summary>
         /// Конструктор класса.
         /// Выполняет инициализацию формы и первичное заполнение таблицы товаров.
         /// </summary>
         public ChooseProduct()
         {
-            Log.Logger.Info($"Открытие окна Выбора товара...");
             InitializeComponent();
+            Page = 0;
+            End = false;
             ViewResult(null);
             ActiveControl = productsDGV;
+
+            AddAscrollListener(productsDGV);
         }
         /// <summary>
         /// Метод обрабатывает ввод текста в textBox.
@@ -33,34 +39,34 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void searchTB_TextChanged(object sender, EventArgs e)
         {
-            using (var db = ConnectionFactory.GetConnection())
-            {
-                Log.Logger.Info($"Получение товаров, название которых содержит \"{searchTB.Text}\"");
-                //получение продуктов название которых
-                //содержит введённый в поисковую строку текст
-                var products = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Name LIKE '%{searchTB.Text}%'"));
-                ViewResult(products);
-            }
+            if(searchTB.Text.Length >= 3)
+                using (var db = ConnectionFactory.GetConnection())
+                {
+                    //получение продуктов название которых
+                    //содержит введённый в поисковую строку текст
+                    var products = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Name LIKE '%{searchTB.Text}%'"));
+                    ViewResult(products);
+                }
         }
         /// <summary>
         /// Метод выводит результат поиска в таблицу формы.
         /// Если результат поиска равен null выводятся все продукты.
         /// </summary>
         /// <param name="products">Массив, содержащий найденные продукты.</param>
-        private void ViewResult(IEnumerable<Product> products)
+        private void ViewResult(IEnumerable<Product> products = null, bool clear = true)
         {
             using (var db = ConnectionFactory.GetConnection())
             {
-                Log.Logger.Info($"Получение списка товаров");
-                productsDGV.Rows.Clear();
+                if(clear)
+                    productsDGV.Rows.Clear();
                 //если в метод не переданы данные для вывода
                 //то выводится информация о всех товарах
                 if (products == null)
                 {
-                    var allProducts = db.Query<Product>(SQLHelper.Select<Product>());
+                    var allProducts = db.Query<Product>(SQLHelper.Select<Product>($"ORDER BY Id OFFSET {Pagination.Size * Page} ROWS FETCH NEXT {Pagination.Size} ROWS ONLY"));
                     foreach (Product p in allProducts)
                     {
-                        productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
+                        productsDGV.Rows.Add(p.Id, p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
                         if (p.ShelfLife < DateTime.Now && p.ShelfLife != null)
                             productsDGV.Rows[productsDGV.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Red;
@@ -69,7 +75,7 @@ namespace KassaApp.Forms
                 else
                     foreach (Product p in products)
                     {
-                        productsDGV.Rows.Add(p.Name, p.Quantity, p.Price,
+                        productsDGV.Rows.Add(p.Id, p.Name, p.Quantity, p.Price,
                             p.Discount, p.NDS, p.Row_Summ);
                         if (p.ShelfLife < DateTime.Now && p.ShelfLife != null)
                             productsDGV.Rows[productsDGV.Rows.Count - 1].DefaultCellStyle.BackColor = Color.Red;
@@ -96,11 +102,11 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void enterB_Click(object sender, EventArgs e)
         {
+            int maxCount = 0;
             try
             {
                 using (var db = ConnectionFactory.GetConnection())
                 {
-                    Log.Logger.Info($"Получение товара, выбранного в списке");
                     Product product;
                     Purchase purchase;
                     //если продукт выбран
@@ -113,11 +119,12 @@ namespace KassaApp.Forms
                                 if (MessageBox.Show($"Срок годности товара \"{product.Name}\" истёк {product.ShelfLife:dd.MM.yyyy}!\n\n" +
                                     $"Действительно добавить товар в чек?", "Предупреждение", MessageBoxButtons.YesNo) == DialogResult.No)
                                     return;
-
+                            maxCount = product.Quantity;
+                            
                             if (product != null)
                             {
                                 product.Quantity = (int)countNUD.Value;
-                                product.RowSummCalculate();
+                                //product.RowSummCalculate();
                                 //если количество не превышает остаток
                                 if (CountController.Check(product))
                                 {
@@ -131,7 +138,7 @@ namespace KassaApp.Forms
                                             if (p.Type == 1)//учитываются только товары, без услуг
                                             {
                                                 //обновляется запись в БД в таблице Purchase
-                                                
+
                                                 var oldP = db.Query<Purchase>($"SELECT * FROM Purchase WHERE ProductId = {p.Id} AND ReceiptId = {CurrentReceipt.Receipt.Id}").FirstOrDefault();
                                                 oldP.Count += product.Quantity;
                                                 oldP.Summa += product.Row_Summ;
@@ -173,6 +180,10 @@ namespace KassaApp.Forms
                                     ViewResult(null);
                                     Close();
                                 }
+                                else if (countNUD.Value > maxCount)
+                                {
+                                    countNUD.Value = maxCount;
+                                }
                             }
                         }
                     else
@@ -193,7 +204,6 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события.</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Выбора товара...");
             Close();
         }
         /// <summary>
@@ -212,6 +222,45 @@ namespace KassaApp.Forms
             }
             if (productsDGV.CurrentRow != null)
                 productsDGV.CurrentRow.Selected = true;
+        }
+
+        private void productsDGV_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (productsDGV.DisplayedRowCount(false) + productsDGV.FirstDisplayedScrollingRowIndex >= productsDGV.RowCount && !End)
+            {
+                Page++;
+
+                using (var db = ConnectionFactory.GetConnection())
+                {
+                    var products = db.Query<Product>(SQLHelper.Select<Product>($"ORDER BY Id OFFSET {Pagination.Size * Page} ROWS FETCH NEXT {Pagination.Size} ROWS ONLY"));
+
+                    if (products.Count() < Pagination.Size)
+                        End = true;
+
+                    ViewResult(products, false);
+                }
+            }
+        }
+        private bool AddAscrollListener(DataGridView dgv)
+        {
+            bool ret = false;
+
+            var t = dgv.GetType();
+            var pi = t.GetProperty("VerticalScrollBar", BindingFlags.Instance | BindingFlags.NonPublic);
+            ScrollBar s = null;
+
+            if (pi != null)
+            {
+                s = pi.GetValue(dgv, null) as ScrollBar;
+            }
+
+            if (s != null)
+            {
+                s.Scroll += new ScrollEventHandler(productsDGV_Scroll);
+                ret = true;
+            }
+
+            return ret;
         }
     }
 }

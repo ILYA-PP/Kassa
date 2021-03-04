@@ -33,12 +33,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.searchTB = new System.Windows.Forms.TextBox();
             this.productsDGV = new System.Windows.Forms.DataGridView();
-            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cancelB = new System.Windows.Forms.Button();
             this.enterB = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -52,6 +46,13 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.barCodeL = new System.Windows.Forms.Label();
             this.infoL = new System.Windows.Forms.Label();
+            this.idCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.countCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.discountCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ndsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sumCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.productsDGV)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -101,6 +102,7 @@
             this.productsDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.productsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.productsDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idCol,
             this.nameCol,
             this.countCol,
             this.priceCol,
@@ -124,54 +126,8 @@
             this.productsDGV.RowHeadersWidth = 62;
             this.productsDGV.Size = new System.Drawing.Size(1192, 466);
             this.productsDGV.TabIndex = 0;
+            this.productsDGV.Scroll += new System.Windows.Forms.ScrollEventHandler(this.productsDGV_Scroll);
             this.productsDGV.SelectionChanged += new System.EventHandler(this.productsDGV_SelectionChanged);
-            // 
-            // nameCol
-            // 
-            this.nameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.nameCol.HeaderText = "Наименование";
-            this.nameCol.MinimumWidth = 8;
-            this.nameCol.Name = "nameCol";
-            this.nameCol.ReadOnly = true;
-            this.nameCol.Width = 225;
-            // 
-            // countCol
-            // 
-            this.countCol.HeaderText = "Количество";
-            this.countCol.MinimumWidth = 8;
-            this.countCol.Name = "countCol";
-            this.countCol.ReadOnly = true;
-            // 
-            // priceCol
-            // 
-            this.priceCol.HeaderText = "Цена";
-            this.priceCol.MinimumWidth = 8;
-            this.priceCol.Name = "priceCol";
-            this.priceCol.ReadOnly = true;
-            // 
-            // discountCol
-            // 
-            this.discountCol.HeaderText = "Скидка";
-            this.discountCol.MinimumWidth = 8;
-            this.discountCol.Name = "discountCol";
-            this.discountCol.ReadOnly = true;
-            this.discountCol.Visible = false;
-            // 
-            // ndsCol
-            // 
-            this.ndsCol.HeaderText = "НДС";
-            this.ndsCol.MinimumWidth = 8;
-            this.ndsCol.Name = "ndsCol";
-            this.ndsCol.ReadOnly = true;
-            this.ndsCol.Visible = false;
-            // 
-            // sumCol
-            // 
-            this.sumCol.HeaderText = "Сумма";
-            this.sumCol.MinimumWidth = 8;
-            this.sumCol.Name = "sumCol";
-            this.sumCol.ReadOnly = true;
-            this.sumCol.Visible = false;
             // 
             // cancelB
             // 
@@ -397,6 +353,61 @@
             this.infoL.TabIndex = 31;
             this.infoL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // idCol
+            // 
+            this.idCol.HeaderText = "ИД";
+            this.idCol.MinimumWidth = 8;
+            this.idCol.Name = "idCol";
+            this.idCol.ReadOnly = true;
+            this.idCol.Visible = false;
+            // 
+            // nameCol
+            // 
+            this.nameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.nameCol.HeaderText = "Наименование";
+            this.nameCol.MinimumWidth = 8;
+            this.nameCol.Name = "nameCol";
+            this.nameCol.ReadOnly = true;
+            this.nameCol.Width = 225;
+            // 
+            // countCol
+            // 
+            this.countCol.HeaderText = "Количество";
+            this.countCol.MinimumWidth = 8;
+            this.countCol.Name = "countCol";
+            this.countCol.ReadOnly = true;
+            // 
+            // priceCol
+            // 
+            this.priceCol.HeaderText = "Цена";
+            this.priceCol.MinimumWidth = 8;
+            this.priceCol.Name = "priceCol";
+            this.priceCol.ReadOnly = true;
+            // 
+            // discountCol
+            // 
+            this.discountCol.HeaderText = "Скидка";
+            this.discountCol.MinimumWidth = 8;
+            this.discountCol.Name = "discountCol";
+            this.discountCol.ReadOnly = true;
+            this.discountCol.Visible = false;
+            // 
+            // ndsCol
+            // 
+            this.ndsCol.HeaderText = "НДС";
+            this.ndsCol.MinimumWidth = 8;
+            this.ndsCol.Name = "ndsCol";
+            this.ndsCol.ReadOnly = true;
+            this.ndsCol.Visible = false;
+            // 
+            // sumCol
+            // 
+            this.sumCol.HeaderText = "Сумма";
+            this.sumCol.MinimumWidth = 8;
+            this.sumCol.Name = "sumCol";
+            this.sumCol.ReadOnly = true;
+            this.sumCol.Visible = false;
+            // 
             // ChooseProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -441,16 +452,17 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown countNUD;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown departmentNUD;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Label barCodeL;
+        private System.Windows.Forms.Label infoL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn countCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn priceCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn discountCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn ndsCol;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumCol;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown departmentNUD;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Label barCodeL;
-        private System.Windows.Forms.Label infoL;
     }
 }

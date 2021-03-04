@@ -17,7 +17,6 @@ namespace KassaApp
         /// </summary>
         public Settings()
         {
-            Log.Logger.Info("Открытие окна Настройки связи...");
             InitializeComponent();
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             int baudRate;
@@ -101,7 +100,6 @@ namespace KassaApp
         {
             using (IFiscalRegistrar fr = CurrentHardware.GetFiscalRegistrar())
             {
-                Log.Logger.Info("Проверка связи с ККТ");
                 if (fr.CheckConnect() == 0)
                     MessageBox.Show("Фискальный регистратор подключен!");
             }
@@ -132,7 +130,6 @@ namespace KassaApp
         {
             using (ITerminal terminal = CurrentHardware.GetTerminal())
             {
-                Log.Logger.Info("Проверка связи с терминалом");
                 if (terminal.IsEnabled())
                     MessageBox.Show("Терминал подключен!");
                 else
@@ -147,7 +144,6 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Logger.Info("Открытие окна Настройки связи...");
         }
         /// <summary>
         /// Метод обрабатывает нажатие клавиш при вводе текста в textBox.

@@ -16,6 +16,7 @@ namespace KassaApp
     [Table("Product")]
     public partial class Product
     {
+        private int quantity;
         private double discount, nds;
         private decimal price, sum;
         public int Id { get; set; }
@@ -29,14 +30,18 @@ namespace KassaApp
         {
             get
             {
-                if (price == 0)
-                {
-                    MessageBox.Show("Цена не может быть равной 0!");
-                    price = 0.01M;
-                }
+                //if (price == 0)
+                //{
+                //    MessageBox.Show("Цена не может быть равной 0!");
+                //    price = 0.01M;
+                //}
                 return price;
             }
-            set { price = Math.Round(value, 2); }
+            set 
+            {
+                RowSummCalculate();
+                price = Math.Round(value, 2); 
+            }
         }
 
         public double NDS
@@ -64,7 +69,11 @@ namespace KassaApp
                 }
                 return discount;
             }
-            set { discount = Math.Round(value, 2); }
+            set 
+            {
+                RowSummCalculate();
+                discount = Math.Round(value, 2); 
+            }
         }
         [NotMapped]
         public decimal Row_Summ { get { return sum; } set { sum = Math.Round(value, 2); } }
@@ -72,10 +81,22 @@ namespace KassaApp
         public int Department { get; set; }
 
         public int Type { get; set; }
-        public int Quantity { get; set; }
+        public int Quantity 
+        {
+            get { return quantity; }
+            set 
+            {
+                RowSummCalculate();
+                quantity = value; 
+            } 
+        }
         [StringLength(100)]
         public string BarCode { get; set; }
         public DateTime? ShelfLife { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string MarkingCode { get; set; }
+        public bool IsPrescription { get; set; }
         /// <summary>
 		/// Метод формирует объект класса Product из строки DataGridView.
 		/// </summary>
@@ -89,15 +110,14 @@ namespace KassaApp
                 Product product;
                 //если продукт уже есть в составе чека
                 if (receipt != null)
-                    product = receipt.Products.Where(p => p.Name == row.Cells["nameCol"].Value.ToString()).FirstOrDefault();
+                    product = receipt.Products.Where(p => p.Id == (int)row.Cells["idCol"].Value).FirstOrDefault();
                 else
                 {
                     using (var db = ConnectionFactory.GetConnection())
                     {
-                        string name = row.Cells["nameCol"].Value.ToString();
-                        Log.Logger.Info($"Получение товара по имени \"{name}\"");
+                        int id = (int)row.Cells["idCol"].Value;
                         int count = int.Parse(row.Cells["countCol"].Value.ToString());
-                        product = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Name = '{name}'")).FirstOrDefault();
+                        product = db.Query<Product>(SQLHelper.Select<Product>($"WHERE Id = {id}")).FirstOrDefault();
                         product.Quantity = count;
                         product.RowSummCalculate();
                     }
@@ -119,7 +139,7 @@ namespace KassaApp
         {
             try
             {
-                dgv.Rows.Add(product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
+                dgv.Rows.Add(product.Id, product.Name, product.Quantity, product.Price, product.Discount, product.NDS, product.Row_Summ);
             }
             catch (Exception ex)
             {
@@ -129,7 +149,7 @@ namespace KassaApp
         /// <summary>
 		/// Метод производит расчёт суммы по позиции.
 		/// </summary>
-        public void RowSummCalculate()
+        private void RowSummCalculate()
         {
             Row_Summ = (Price - Math.Round(Price * (decimal)Discount / 100, 2)) * Quantity;
         }

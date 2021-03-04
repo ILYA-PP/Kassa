@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Dapper;
+using KassaApp.Models.Marking;
 
 namespace KassaApp.Models
 {
@@ -309,6 +310,46 @@ namespace KassaApp.Models
                 Log.Logger.Info("Открытие фискального чека...");
                 if (ExecuteAndHandleError(Driver.OpenCheck, true) != 0)
                     return -1;
+
+                //условие, льготный чек или нет
+                //содержит маркированнные товары или нет
+                if (true)
+                {
+                    PrefixData pd = new PrefixData()
+                    {
+                        dd = PrefixCreator.GetPrefix("dd", receipt.PrescriptionInfo.Date),
+                        dn = PrefixCreator.GetPrefix("dn", receipt.PrescriptionInfo.Number),
+                        ps = PrefixCreator.GetPrefix("ps", receipt.PrescriptionInfo.Series),
+                        sid = PrefixCreator.GetPrefix("sid", ""),
+                        sp = PrefixCreator.GetPrefix("sp", 3, 12),
+                        ss = PrefixCreator.GetPrefix("ss", 1567.92),
+                    };
+
+                    Driver.TagNumber = 1084;
+                    ExecuteAndHandleError(Driver.FNBeginSTLVTag);
+                    var my_TagID = Driver.TagID;
+
+                    Driver.TagID = my_TagID;
+                    Driver.TagNumber = 1085;
+                    Driver.TagType = 7;
+
+                    //условие, если продажа
+                    //со 100% скидкой
+                    if(true)
+                        Driver.TagValueStr = TagCreator.GetTag(1085, pd, "3108805");
+                    else
+                        Driver.TagValueStr = TagCreator.GetTag(1085, pd);
+                    
+                    ExecuteAndHandleError(Driver.FNAddTag);
+
+                    Driver.TagID = my_TagID;
+                    Driver.TagNumber = 1086;
+                    Driver.TagType = 7;
+                    Driver.TagValueStr = TagCreator.GetTag(1086, pd);
+                    ExecuteAndHandleError(Driver.FNAddTag);
+
+                    ExecuteAndHandleError(Driver.FNSendSTLVTag);
+                }
                 //if (receipt.Phone != null)
                 //    Driver.CustomerEmail = receipt.Phone;
                 //else if (receipt.Email != null)
@@ -351,14 +392,21 @@ namespace KassaApp.Models
                     if (ExecuteAndHandleError(Driver.FNOperation, true) != 0)
                         return -1;
 
-                    if (true)
-                    {
-                        Driver.MarkingType = 3;
-                        Driver.GTIN = "";
-                        Driver.SerialNumber = "";
-                        Driver.FNSendItemCodeData();
-                    }
+                    var mark = new MarkingCodeParse();
 
+                    if (mark.Parse(p.MarkingCode))
+                    {
+                        Driver.MarkingType = 17485;
+                        Driver.GTIN = mark.GTIN;
+                        Driver.SerialNumber = mark.SerialNumber;
+                        ExecuteAndHandleError(Driver.FNSendItemCodeData);
+
+                        Driver.TagNumber = 1191;
+                        Driver.TagType = 7;
+                        Driver.TagValueStr = "mdlp";
+                        Driver.FNSendTagOperation();
+                    }
+                    
                     if(discountOnProduct > 0)
                     {
                         Driver.StringForPrinting = StringFormatForPrint($"В том числе скидка\n={string.Format("{0:f}", discountOnProduct).Replace(",", ".")}", 3);

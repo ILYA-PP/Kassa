@@ -18,7 +18,6 @@ namespace KassaApp
         /// </summary>
         public Menu()
         {
-            Log.Logger.Info("Открытие окна Меню...");
             InitializeComponent();
             //путь к рабочей папке
             AppDomain.CurrentDomain.SetData("DataDirectory", Application.StartupPath);
@@ -237,7 +236,7 @@ namespace KassaApp
         /// <param name="e">Аргументы события.</param>
         private void Menu_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Меню...");
+
         }
     }
 }

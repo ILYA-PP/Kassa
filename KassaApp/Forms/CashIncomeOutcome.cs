@@ -18,7 +18,6 @@ namespace KassaApp.Forms
         public CashIncomeOutcome(bool isCashIncome)
         {
             InitializeComponent();
-            Log.Logger.Info($"Открытие окна Внесение/Выплата наличных...");
             IsCashIncome = isCashIncome;
             if (IsCashIncome)
                 operationL.Text = "Внесение наличных";
@@ -81,7 +80,6 @@ namespace KassaApp.Forms
         /// <param name="e">Аргументы события</param>
         private void cancelB_Click(object sender, EventArgs e)
         {
-            Log.Logger.Info("Закрытие окна Внесение/Выплата наличных...");
             Close();
         }
         /// <summary>
